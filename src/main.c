@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2023/04/13 19:31:46 by jauffret         ###   ########.fr       */
+/*   Updated: 2023/04/14 00:18:52 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,16 @@ int	main(int argc, char **argv)
 	data.mlx = mlx_init();
 	if (!data.mlx)
 		return (write(2, "error: memory\n", 14));
-	data.wi = 1920;
-	data.he = 1080;
-	data.cam.aspect = 16.0 / 9.0;
+	data.wi = 800;
+	data.he = 600;
+	data.cam.aspect = (float) data.wi / data.he;
 	data.cam.pos = vec3(0, 0, 0);
-	data.sphere = malloc(sizeof(t_sphere));
+	data.sphere = malloc(sizeof(t_sphere) * 2);
 	data.sphere[0].pos = vec3(0.0, 0.0, -1.0);
 	data.sphere[0].rad = 0.5;
+	data.sphere[1].pos = vec3(0.0, 100.0, -1.0);
+	data.sphere[1].rad = 100;
+	data.frame = 0;
 	data.win = mlx_new_window(data.mlx, data.wi, data.he, "fdf");
 	if (!data.win)
 	{

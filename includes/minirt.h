@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/04/13 19:42:28 by jauffret         ###   ########.fr       */
+/*   Updated: 2023/04/14 00:09:35 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,13 @@ typedef struct s_sphere
 	t_Vec4	rot;
 }		t_sphere;
 
+typedef struct s_plane
+{
+	t_Vec3	pos;
+	t_Vec3	norm;
+	t_Mat	mat;
+}	t_plane;
+
 typedef	struct s_cam
 {
 	float	aspect;
@@ -119,8 +126,10 @@ struct s_data
 	void		*win;
 	int			wi;
 	int			he;
+	int			frame;
 	t_img		img;
 	t_sphere	*sphere;
+	t_plane		*plane;
 	t_cam		cam;
 };
 

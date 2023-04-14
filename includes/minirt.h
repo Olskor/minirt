@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/04/14 00:09:35 by olskor           ###   ########.fr       */
+/*   Updated: 2023/04/14 20:04:04 by jauffret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ typedef struct s_Ray
 
 typedef struct s_Col
 {
-	int	r;
-	int	g;
-	int	b;
-	int	t;
+	double	r;
+	double	g;
+	double	b;
+	double	t;
 }		t_Col;
 
 typedef struct s_Mat
@@ -100,6 +100,16 @@ typedef struct s_plane
 	t_Mat	mat;
 }	t_plane;
 
+typedef struct s_hit
+{
+	float	t;
+	int		hit;
+	int		frontface;
+	t_Vec3	p;
+	t_Vec3	norm;
+	t_Mat	mat;
+}	t_hit;
+
 typedef	struct s_cam
 {
 	float	aspect;
@@ -122,15 +132,18 @@ typedef struct s_img
 typedef struct s_data	t_data;
 struct s_data
 {
-	void		*mlx;
-	void		*win;
-	int			wi;
-	int			he;
-	int			frame;
-	t_img		img;
-	t_sphere	*sphere;
-	t_plane		*plane;
-	t_cam		cam;
+	void			*mlx;
+	void			*win;
+	int				wi;
+	int				he;
+	int				frame;
+	t_img			img;
+	t_Col			**cimg;
+	t_sphere		*sphere;
+	t_plane			*plane;
+	unsigned int	rand;
+	int				pass;
+	t_cam			cam;
 };
 
 t_Vec3		vec3(double x, double y, double z);
@@ -156,11 +169,10 @@ int			close_window(t_data *data);
 float		max(float x, float y);
 float		min(float x, float y);
 float		saturate(float x);
-int			create_trgb(int t, int r, int g, int b);
-int			get_t(int trgb);
-int			get_r(int trgb);
-int			get_g(int trgb);
-int			get_b(int trgb);
+int			create_trgb(t_Col col);
+t_Col 		col4(double t, double r, double g, double b);
+t_Col		addcol(t_Col col1, t_Col col2);
+t_Col		scalecol(t_Col col1, double sampleperpixel);
 void		hook_setup(t_data *data);
 
 #endif

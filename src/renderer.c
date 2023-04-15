@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/04/15 02:36:32 by olskor           ###   ########.fr       */
+/*   Updated: 2023/04/15 13:25:39 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,11 +226,9 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 		hit = hit_saved;
 		if (hit.mat.col.t > 0)
 			return (hit.mat.col);
+		target = subvec3(ray.dir, scalevec3(hit.norm, (2 * dot(ray.dir,hit.norm))));
 		if (hit.mat.smooth > 0.0)
-		{
-			target = subvec3(ray.dir, scalevec3(hit.norm, (2 * dot(ray.dir,hit.norm))));
 			return (mulcol(scalecol(raycol(newray(hit.p, subvec3(target, hit.p)), data, depth - 1), 0.5), hit.mat.col));
-		}
 		target = addvec3(hit.p, addvec3(hit.norm, random_in_hemisphere(hit.norm, data)));
 		return (mulcol(scalecol(raycol(newray(hit.p, subvec3(target, hit.p)), data, depth - 1), 0.5), hit.mat.col));
 	}

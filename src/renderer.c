@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/04/15 16:02:06 by olskor           ###   ########.fr       */
+/*   Updated: 2023/04/15 20:12:59 by jauffret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,19 +178,26 @@ t_Col	computesky(t_Vec3 dir)
 {
 	float	grad;
 	t_Col	col;
+	float	strengh;
 
+	strengh = 2;
 	grad = 0.5 * (dir.y + 1.0);
-	grad = (1.0 - grad) * 0 + grad * 2;
+	grad = (1.0 - grad) * 0 + grad * strengh;
 	if (dir.y > 0)
-			col = col4(0, 2 - (grad / 2), 2 - (grad * 3/10), 2);
+		col = col4(0, strengh - (grad * 4/5), strengh - (grad * 6/10), strengh - 0.1);
 	if (dir.y <= 0)
 		col = col4(0, 0.5, 0.5, 0.5);
 	return (col);
 }
 
-t_Vec3 reflect(t_Vec3 v, t_Vec3 n)
+t_Vec3	reflect(t_Vec3 v, t_Vec3 n)
 {
     return (subvec3(v, scalevec3(n, 2 * dot(v,n))));
+}
+
+float	fresnel(t_hit hit, t_Ray ray)
+{
+	return (saturate((hit.mat.smooth * (1 - saturate(-dot(hit.norm, ray.dir))))));
 }
 
 t_Col	raycol(t_Ray ray, t_data *data, int depth)
@@ -227,8 +234,9 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 		if (hit.mat.col.t > 0)
 			return (hit.mat.col);
 		target = reflect(scalevec3(ray.dir, 500), hit.norm);
-		if (hit.mat.smooth > 0.0)
-			return (mulcol(scalecol(raycol(newray(hit.p, unit_vec3(subvec3(target, hit.p))), data, depth - 1), 0.5), hit.mat.col));
+		t_Vec3 fuzzed = scalevec3(random_in_unit_sphere(data), saturate(1 - hit.mat.smooth));
+		if (hit.mat.smooth > 0.01 && (hit.mat.metal > pseudorand(data) - 0.1 || fresnel(hit, ray) > pseudorand(data)))
+			return (mulcol(scalecol(raycol(newray(hit.p, addvec3(fuzzed, unit_vec3(subvec3(target, hit.p)))), data, depth - 1), 0.5), addcol(scalecol(hit.mat.col, hit.mat.metal), scalecol(col4(0, 1, 1, 1), 1 - hit.mat.metal))));
 		target = addvec3(hit.p, addvec3(hit.norm, random_in_hemisphere(hit.norm, data)));
 		return (mulcol(scalecol(raycol(newray(hit.p, subvec3(target, hit.p)), data, depth - 1), 0.5), hit.mat.col));
 	}
@@ -269,7 +277,7 @@ int	render(t_data *data)
 		s = int2(0, s.y + 1);
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img.mlx_img, 0, 0);
-	printf("frame : %d\n", data->frame);
+	printf("frame : %d, %f\n", data->frame, data->cimg[0][0].b);
 	data->frame++;
 	return (0);
 }

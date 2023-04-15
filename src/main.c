@@ -6,7 +6,7 @@
 /*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2023/04/15 13:57:04 by jauffret         ###   ########.fr       */
+/*   Updated: 2023/04/15 19:42:25 by jauffret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,27 +51,32 @@ int	main(int argc, char **argv)
 	data.sphere = malloc(sizeof(t_sphere) * 5);
 	data.sphere[0].pos = vec3(-0.2, 0.0, -1.5);
 	data.sphere[0].rad = 0.5;
-	data.sphere[0].mat.col = col4(0, 1.0, 0.05, 0.05);
-	data.sphere[0].mat.smooth = 0.0;
+	data.sphere[0].mat.col = col4(0, 1.0, 0.0, 0.0);
+	data.sphere[0].mat.smooth = 0.8;
+	data.sphere[0].mat.metal = 0.05;
 	data.sphere[1].pos = vec3(0.0, -100.5, -1.5);
 	data.sphere[1].rad = 100.0;
 	data.sphere[1].mat.col = col4(0, 0.05, 1.0, 0.3);
-	data.sphere[1].mat.smooth = 0.0;
+	data.sphere[1].mat.smooth = 0.2;
+	data.sphere[1].mat.metal = 0.05;
 	data.sphere[2].pos = vec3(0.1, -0.4, -1.0);
 	data.sphere[2].rad = 0.1;
-	data.sphere[2].mat.col = col4(1, 0, 0, 50);
-	data.sphere[2].mat.smooth = 0.0;
+	data.sphere[2].mat.col = col4(1, 0, 0.1, 50);
+	data.sphere[2].mat.smooth = 0.1;
+	data.sphere[2].mat.metal = 0.05;
 	data.sphere[3].pos = vec3(0.5, -0.3, -1.5);
 	data.sphere[3].rad = 0.2;
 	data.sphere[3].mat.col = col4(0, 0.98, 0.98, 0.3);
-	data.sphere[3].mat.smooth = 1.0;
+	data.sphere[3].mat.smooth = 0.75;
+	data.sphere[3].mat.metal = 1.0;
 	data.sphere[4].pos = vec3(500, 300, -150);
 	data.sphere[4].rad = 50;
 	data.sphere[4].mat.col = col4(1, 200, 200, 200);
-	data.sphere[4].mat.smooth = 0.0;
+	data.sphere[4].mat.smooth = 0.1;
+	data.sphere[4].mat.metal = 0.05;
 	data.frame = 0;
 	alloccimg(&data);
-	data.win = mlx_new_window(data.mlx, WIDTH, HEIGHT, "fdf");
+	data.win = mlx_new_window(data.mlx, WIDTH, HEIGHT, "c'est pas fdf fdp");
 	if (!data.win)
 	{
 		free(data.win);

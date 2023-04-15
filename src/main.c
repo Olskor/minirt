@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2023/04/15 02:48:07 by olskor           ###   ########.fr       */
+/*   Updated: 2023/04/15 13:57:04 by jauffret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	alloccimg(t_data *data)
 	int	i;
 
 	i = 0;
-	data->cimg = malloc(sizeof(t_Col *) * data->he);
-	while (i < data->he)
+	data->cimg = malloc(sizeof(t_Col *) * HEIGHT);
+	while (i < HEIGHT)
 	{
-		data->cimg[i] = malloc(sizeof(t_Col) * data->wi);
+		data->cimg[i] = malloc(sizeof(t_Col) * WIDTH);
 		i++;
 	}
 }
@@ -44,11 +44,9 @@ int	main(int argc, char **argv)
 	data.mlx = mlx_init();
 	if (!data.mlx)
 		return (write(2, "error: memory\n", 14));
-	data.wi = 800;
-	data.he = 600;
 	data.rand = 0;
 	data.bounces = 10;
-	data.cam.aspect = (float) data.wi / data.he;
+	data.cam.aspect = (float) WIDTH / HEIGHT;
 	data.cam.pos = vec3(0, 0.0, 0.0);
 	data.sphere = malloc(sizeof(t_sphere) * 5);
 	data.sphere[0].pos = vec3(-0.2, 0.0, -1.5);
@@ -73,7 +71,7 @@ int	main(int argc, char **argv)
 	data.sphere[4].mat.smooth = 0.0;
 	data.frame = 0;
 	alloccimg(&data);
-	data.win = mlx_new_window(data.mlx, data.wi, data.he, "fdf");
+	data.win = mlx_new_window(data.mlx, WIDTH, HEIGHT, "fdf");
 	if (!data.win)
 	{
 		free(data.win);

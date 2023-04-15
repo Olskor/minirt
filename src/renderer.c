@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/04/15 13:25:39 by olskor           ###   ########.fr       */
+/*   Updated: 2023/04/15 14:48:07 by jauffret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,16 +102,11 @@ t_Vec3	random_in_unit_sphere(t_data *data)
     }
 }
 
-t_Vec3	random_unit_vector(t_data *data)
-{
-	return (unit_vec3(random_in_unit_sphere(data)));
-}
-
 t_Vec3 random_in_hemisphere(t_Vec3 normal, t_data *data)
 {
     t_Vec3	in_unit_sphere;
 	
-	in_unit_sphere = random_unit_vector(data);
+	in_unit_sphere = random_in_unit_sphere(data);
     if (dot(in_unit_sphere, normal) < 0.0)
         return in_unit_sphere;
     else
@@ -251,12 +246,12 @@ int	render(t_data *data)
 	hvl.pos2 = vec3(0, -data->cam.vhe, 0);
 	hvl.pos3 = subvec3(subvec3(subvec3(ray.orig, scalevec3(hvl.pos1, 0.5)), scalevec3(hvl.pos2, 0.5)), vec3(0, 0, data->cam.focal));
 	render_background(&data->img, 0);
-	while (s.y < data->he)
+	while (s.y < HEIGHT)
 	{
-		while (s.x < data->wi)
+		while (s.x < WIDTH)
 		{
-			u.x = ((double) s.x + pseudorand(data) * 2 - 1) / (data->wi - 1);
-			u.y = ((double) s.y + pseudorand(data) * 2 - 1) / (data->he - 1);
+			u.x = ((double) s.x + pseudorand(data) * 2 - 1) / (WIDTH - 1);
+			u.y = ((double) s.y + pseudorand(data) * 2 - 1) / (HEIGHT - 1);
 			ray.dir = addvec3(addvec3(hvl.pos3, scalevec3(hvl.pos1, u.x)), scalevec3(hvl.pos2, u.y));
 
 			weight = 1.0 / ((float) data->frame + 1);

@@ -6,7 +6,7 @@
 /*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/04/15 14:48:07 by jauffret         ###   ########.fr       */
+/*   Updated: 2023/04/15 15:04:37 by jauffret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,11 @@ t_Col	computesky(t_Vec3 dir)
 	return (col);
 }
 
+t_Vec3 reflect(t_Vec3 v, t_Vec3 n)
+{
+    return (subvec3(v, scalevec3(n, 2 * dot(v,n))));
+}
+
 t_Col	raycol(t_Ray ray, t_data *data, int depth)
 {
 	t_hit	hit;
@@ -221,7 +226,7 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 		hit = hit_saved;
 		if (hit.mat.col.t > 0)
 			return (hit.mat.col);
-		target = subvec3(ray.dir, scalevec3(hit.norm, (2 * dot(ray.dir,hit.norm))));
+		target = reflect(ray.dir, hit.norm);
 		if (hit.mat.smooth > 0.0)
 			return (mulcol(scalecol(raycol(newray(hit.p, subvec3(target, hit.p)), data, depth - 1), 0.5), hit.mat.col));
 		target = addvec3(hit.p, addvec3(hit.norm, random_in_hemisphere(hit.norm, data)));

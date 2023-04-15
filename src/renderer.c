@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/04/14 20:24:33 by jauffret         ###   ########.fr       */
+/*   Updated: 2023/04/15 02:36:32 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,16 @@ int	render_background(t_img *img, int color)
 float	pseudorand(t_data *data)
 {
 	unsigned int	ret;
+	unsigned int	result;
 
 	ret = data->rand;
-	ret *= (ret + 195439) * (ret + 124395) * (ret + 845921);
+	ret = ret * 747796405 + 2891336453;
+	result = ((ret >> ((ret >> 28) + 4)) ^ ret) * 277803737;
+	result = (result >> 22) ^ result;
 	if (data->rand == 4294967295)
 		data->rand = 0;
 	data->rand++;
-	return (((float) ret / 4294967295));
+	return (((float) result / 4294967295));
 }
 
 t_Vec3	vec3rand(double min, double max, t_data *data)
@@ -176,6 +179,20 @@ t_Ray	newray(t_Vec3 orig, t_Vec3 dir)
 	return (ray);
 }
 
+t_Col	computesky(t_Vec3 dir)
+{
+	float	grad;
+	t_Col	col;
+
+	grad = 0.5 * (dir.y + 1.0);
+	grad = (1.0 - grad) * 0 + grad * 2;
+	if (dir.y > 0)
+			col = col4(0, 2 - (grad / 2), 2 - (grad * 3/10), 2);
+	if (dir.y <= 0)
+		col = col4(0, 0.5, 0.5, 0.5);
+	return (col);
+}
+
 t_Col	raycol(t_Ray ray, t_data *data, int depth)
 {
 	t_hit	hit;
@@ -190,7 +207,7 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 	t_max = 5000;
 	i = 0;
 	hitted = 0;
-	while (i < 3)
+	while (i < 5)
 	{
 		hit = hit_sphere(data->sphere[i], ray, 0.001, t_max);
     	if (hit.hit)
@@ -209,13 +226,15 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 		hit = hit_saved;
 		if (hit.mat.col.t > 0)
 			return (hit.mat.col);
+		if (hit.mat.smooth > 0.0)
+		{
+			target = subvec3(ray.dir, scalevec3(hit.norm, (2 * dot(ray.dir,hit.norm))));
+			return (mulcol(scalecol(raycol(newray(hit.p, subvec3(target, hit.p)), data, depth - 1), 0.5), hit.mat.col));
+		}
 		target = addvec3(hit.p, addvec3(hit.norm, random_in_hemisphere(hit.norm, data)));
-		return (scalecol(raycol(newray(hit.p, subvec3(target, hit.p)), data, depth - 1), 2));
+		return (mulcol(scalecol(raycol(newray(hit.p, subvec3(target, hit.p)), data, depth - 1), 0.5), hit.mat.col));
 	}
-	ray.dir = unit_vec3(ray.dir);
-	hit.t = 0.5 * (ray.dir.y + 1.0);
-	i = (1.0 - hit.t) * 0 + hit.t * 255;
-	return (col4(0, 255 - ((double)i / 2), 255 - ((double)i * 3/10), 255));
+	return (computesky(unit_vec3(ray.dir)));
 }
 
 int	render(t_data *data)
@@ -225,9 +244,8 @@ int	render(t_data *data)
 	t_Tri	hvl;
 	t_Ray	ray;
 	t_Col	col;
+	float	weight;
 
-	if (data->frame > data->pass)
-		return (0);
 	s = int2(0, 0);
 	ray.orig = data->cam.pos;
 	ray.dir = vec3(0, 0, 0);
@@ -242,10 +260,12 @@ int	render(t_data *data)
 			u.x = ((double) s.x + pseudorand(data) * 2 - 1) / (data->wi - 1);
 			u.y = ((double) s.y + pseudorand(data) * 2 - 1) / (data->he - 1);
 			ray.dir = addvec3(addvec3(hvl.pos3, scalevec3(hvl.pos1, u.x)), scalevec3(hvl.pos2, u.y));
+
+			weight = 1.0 / ((float) data->frame + 1);
 			if (data->frame == 0)
 				data->cimg[s.y][s.x] = addcol(col4(0, 0, 0, 0), raycol(ray, data, data->frame));
 			else
-				data->cimg[s.y][s.x] = addcol(data->cimg[s.y][s.x], scalecol(raycol(ray, data, 50), data->pass));
+				data->cimg[s.y][s.x] = addcol(scalecol(data->cimg[s.y][s.x], 1 - weight), scalecol(raycol(ray, data, 1 + data->bounces), weight));
 			img_pix_put(&data->img, s.x++, s.y, create_trgb(data->cimg[s.y][s.x]));
 		}
 		s = int2(0, s.y + 1);

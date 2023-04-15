@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/04/14 20:04:04 by jauffret         ###   ########.fr       */
+/*   Updated: 2023/04/15 02:14:14 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_Col
 typedef struct s_Mat
 {
 	t_Col	col;
-	float	rough;
+	float	smooth;
 	float	metal;
 	float	refr;
 }		t_Mat;
@@ -142,7 +142,7 @@ struct s_data
 	t_sphere		*sphere;
 	t_plane			*plane;
 	unsigned int	rand;
-	int				pass;
+	int				bounces;
 	t_cam			cam;
 };
 
@@ -170,6 +170,7 @@ float		max(float x, float y);
 float		min(float x, float y);
 float		saturate(float x);
 int			create_trgb(t_Col col);
+t_Col 		mulcol(t_Col col1, t_Col col2);
 t_Col 		col4(double t, double r, double g, double b);
 t_Col		addcol(t_Col col1, t_Col col2);
 t_Col		scalecol(t_Col col1, double sampleperpixel);

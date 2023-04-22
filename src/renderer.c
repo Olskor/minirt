@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/04/15 20:12:59 by jauffret         ###   ########.fr       */
+/*   Updated: 2023/04/22 06:37:20 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,12 +192,22 @@ t_Col	computesky(t_Vec3 dir)
 
 t_Vec3	reflect(t_Vec3 v, t_Vec3 n)
 {
-    return (subvec3(v, scalevec3(n, 2 * dot(v,n))));
+    return (subvec3(v, scalevec3(n, 2 * dot(n,v))));
 }
 
 float	fresnel(t_hit hit, t_Ray ray)
 {
 	return (saturate((hit.mat.smooth * (1 - saturate(-dot(hit.norm, ray.dir))))));
+}
+
+t_Vec3	lerpvec3(t_Vec3 u, t_Vec3 v, float val)
+{
+	t_Vec3	ret;
+
+	ret.x = v.x * val + u.x * (1 - val);
+	ret.y = v.y * val + u.y * (1 - val);
+	ret.z = v.z * val + u.z * (1 - val);
+	return (ret);
 }
 
 t_Col	raycol(t_Ray ray, t_data *data, int depth)
@@ -233,11 +243,8 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 		hit = hit_saved;
 		if (hit.mat.col.t > 0)
 			return (hit.mat.col);
-		target = reflect(scalevec3(ray.dir, 500), hit.norm);
-		t_Vec3 fuzzed = scalevec3(random_in_unit_sphere(data), saturate(1 - hit.mat.smooth));
-		if (hit.mat.smooth > 0.01 && (hit.mat.metal > pseudorand(data) - 0.1 || fresnel(hit, ray) > pseudorand(data)))
-			return (mulcol(scalecol(raycol(newray(hit.p, addvec3(fuzzed, unit_vec3(subvec3(target, hit.p)))), data, depth - 1), 0.5), addcol(scalecol(hit.mat.col, hit.mat.metal), scalecol(col4(0, 1, 1, 1), 1 - hit.mat.metal))));
 		target = addvec3(hit.p, addvec3(hit.norm, random_in_hemisphere(hit.norm, data)));
+		target = lerpvec3(target, reflect(unit_vec3(ray.dir), hit.norm), hit.mat.smooth);
 		return (mulcol(scalecol(raycol(newray(hit.p, subvec3(target, hit.p)), data, depth - 1), 0.5), hit.mat.col));
 	}
 	return (computesky(unit_vec3(ray.dir)));

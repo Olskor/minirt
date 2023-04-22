@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:13:45 by jauffret          #+#    #+#             */
-/*   Updated: 2023/04/13 18:52:36 by jauffret         ###   ########.fr       */
+/*   Updated: 2023/04/16 13:31:33 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,10 @@ double	vec3length(t_Vec3 u)
 
 t_Vec3	unit_vec3(t_Vec3 u)
 {
-	return (scalevec3(u, 1 / vec3length(u)));
+	t_Vec3	ret;
+
+	ret.x = u.x / vec3length(u);
+	ret.y = u.y / vec3length(u);
+	ret.z = u.z / vec3length(u);
+	return (ret);
 }

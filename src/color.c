@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:17:41 by jauffret          #+#    #+#             */
-/*   Updated: 2023/04/15 19:38:00 by jauffret         ###   ########.fr       */
+/*   Updated: 2023/11/02 23:44:17 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ t_Col saturatecol(t_Col col)
 
 float	aces(float x)
 {
-	float a;
-	float b;
-	float c;
-	float d;
-	float e;
-	
+	float	a;
+	float	b;
+	float	c;
+	float	d;
+	float	e;
+
 	a = 2.51f;
 	b = 0.03f;
 	c = 2.43f;

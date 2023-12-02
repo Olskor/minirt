@@ -19,8 +19,8 @@ MAGENTA = \033[0;95m
 CYAN = \033[0;96m
 WHITE = \033[0;97m
 
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 600
+HEIGHT = 400
 
 SRC_FILES	=	main position_handler get_next_line vector vector1 renderer input_handler value color
 LIBS_FILES	=	libft libmlx

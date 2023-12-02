@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/04/15 17:10:30 by jauffret         ###   ########.fr       */
+/*   Updated: 2023/11/20 14:45:32 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,25 @@ typedef struct s_plane
 	t_Mat	mat;
 }	t_plane;
 
+typedef struct s_cone
+{
+	float	rad;
+	float	h;
+	t_Mat	mat;
+	t_Vec3	pos;
+	t_Vec4	rot;
+}	t_cone;
+
+typedef struct s_cylinder
+{
+	float	rad;
+	float	h;
+	t_Mat	mat;
+	t_Vec3	pos;
+	t_Vec3	rot;
+}	t_cylinder;
+
+
 typedef struct s_hit
 {
 	float	t;
@@ -116,6 +135,7 @@ typedef	struct s_cam
 	float	vwi;
 	float	vhe;
 	float	focal;
+	float	fov;
 	t_Vec3	pos;
 	t_Vec4	rot;
 }	t_cam;
@@ -140,7 +160,11 @@ struct s_data
 	t_img			img;
 	t_Col			**cimg;
 	t_sphere		*sphere;
+	int				spherenbr;
 	t_plane			*plane;
+	int				planenbr;
+	t_cylinder		*cylinder;
+	int				cylindernbr;
 	unsigned int	rand;
 	int				bounces;
 	t_cam			cam;
@@ -175,5 +199,6 @@ t_Col 		col4(double t, double r, double g, double b);
 t_Col		addcol(t_Col col1, t_Col col2);
 t_Col		scalecol(t_Col col1, double sampleperpixel);
 void		hook_setup(t_data *data);
+float		lerp(float a, float b, float t);
 
 #endif

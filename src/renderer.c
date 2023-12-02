@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/04/22 06:37:20 by olskor           ###   ########.fr       */
+/*   Updated: 2023/11/28 14:58:09 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,26 +92,27 @@ t_Vec3	vec3rand(double min, double max, t_data *data)
 t_Vec3	random_in_unit_sphere(t_data *data)
 {
 	t_Vec3	p;
-	
-    while (1)
+
+	while (1)
 	{
-        p = vec3rand(-1,1, data);
-        if (vec3length2(p) >= 1)
-			continue;
-        return p;
-    }
+		p = vec3rand(-1, 1, data);
+		if (vec3length2(p) >= 1)
+			continue ;
+		return (p);
+	}
 }
 
-t_Vec3 random_in_hemisphere(t_Vec3 normal, t_data *data)
+t_Vec3 Lambertian_random_ray(t_Vec3 normal, t_data *data)
 {
-    t_Vec3	in_unit_sphere;
-	
-	in_unit_sphere = random_in_unit_sphere(data);
-    if (dot(in_unit_sphere, normal) < 0.0)
-        return in_unit_sphere;
-    else
-        return (scalevec3(in_unit_sphere, -1));
+	t_Vec3	random;
+	t_Vec3	target;
+
+	random = random_in_unit_sphere(data);
+	target = addvec3(normal, random);
+	target = unit_vec3(target);
+	return (target);
 }
+
 
 t_hit	hit_sphere(t_sphere sphere, t_Ray ray, float t_min, float t_max)
 {
@@ -152,17 +153,67 @@ t_hit	hit_sphere(t_sphere sphere, t_Ray ray, float t_min, float t_max)
 	return (hit);
 }
 
-float hit_plane(t_plane plane, t_Ray ray)
+t_hit	hit_plane(t_plane plane, t_Ray ray, float t_min, float t_max)
 {
+	t_hit	hit;
+	float	denom;
+	float	t;
+
+	denom = dot(plane.norm, ray.dir);
+	if (fabs(denom) > 0.0001)
+	{
+		t = dot(subvec3(plane.pos, ray.orig), plane.norm) / denom;
+		if (t > t_min && t < t_max)
+		{
+			hit.t = t;
+			hit.p = vecat(ray, hit.t);
+			hit.norm = plane.norm;
+			hit.hit = 1;
+			hit.mat = plane.mat;
+			return (hit);
+		}
+	}
+	hit.hit = 0;
+	return (hit);
+}
+
+t_hit	hit_cylinder(t_cylinder cylinder, t_Ray ray, float t_min, float t_max)
+{
+	t_hit	hit;
 	t_Vec3	oc;
 	t_Vec3	abc;
 	double	discriminant;
+	double	temp;
 
-	oc = subvec3(ray.orig, plane.pos);
-	if (dot(oc, plane.norm) < 0)
-		return (1);
-	return (0);
-
+	oc = subvec3(ray.orig, cylinder.pos);
+	abc.x = vec3length2(ray.dir) - pow(dot(ray.dir, cylinder.rot), 2);
+	abc.y = 2 * (dot(oc, ray.dir) - dot(ray.dir, cylinder.rot) * dot(oc, cylinder.rot));
+	abc.z = vec3length2(oc) - pow(dot(oc, cylinder.rot), 2) - pow(cylinder.rad, 2);
+	discriminant = pow(abc.y, 2) - 4 * abc.x * abc.z;
+	hit.mat = cylinder.mat;
+	if (discriminant > 0)
+	{
+		temp = (-abc.y - sqrt(discriminant)) / (2 * abc.x);
+		if (temp < t_max && temp > t_min)
+		{
+			hit.t = temp;
+			hit.p = vecat(ray, hit.t);
+			hit.norm = scalevec3(subvec3(hit.p, vec3(lerp(cylinder.pos.x, hit.p.x, cylinder.rot.x), lerp(cylinder.pos.y, hit.p.y, cylinder.rot.y), lerp(cylinder.pos.z, hit.p.z, cylinder.rot.z))), 1 / cylinder.rad);
+			hit.hit = 1;
+			return (hit);
+		}
+		temp = (-abc.y + sqrt(discriminant)) / (2 * abc.x);\
+		if (temp < t_max && temp > t_min)
+		{
+			hit.t = temp;
+			hit.p = vecat(ray, hit.t);
+			hit.norm = scalevec3(subvec3(hit.p, vec3(cylinder.pos.x, hit.p.y, cylinder.pos.z)), 1 / cylinder.rad);
+			hit.hit = 1;
+			return (hit);
+		}
+	}
+	hit.hit = 0;
+	return (hit);
 }
 
 t_Ray	newray(t_Vec3 orig, t_Vec3 dir)
@@ -179,12 +230,18 @@ t_Col	computesky(t_Vec3 dir)
 	float	grad;
 	t_Col	col;
 	float	strengh;
-
+	t_Vec3	sun_pos;
 	strengh = 2;
+	sun_pos = vec3(1, 0.5, 0);
 	grad = 0.5 * (dir.y + 1.0);
 	grad = (1.0 - grad) * 0 + grad * strengh;
 	if (dir.y > 0)
-		col = col4(0, strengh - (grad * 4/5), strengh - (grad * 6/10), strengh - 0.1);
+	{
+		col = col4(0, strengh - (grad * 4 / 5), strengh
+				- (grad * 6 / 10), strengh - 0.1);
+		if (dot(unit_vec3(sun_pos), unit_vec3(dir)) > 0.99)
+			col = addcol(col, col4(1, 100, 100, 80));
+	}
 	if (dir.y <= 0)
 		col = col4(0, 0.5, 0.5, 0.5);
 	return (col);
@@ -192,12 +249,19 @@ t_Col	computesky(t_Vec3 dir)
 
 t_Vec3	reflect(t_Vec3 v, t_Vec3 n)
 {
-    return (subvec3(v, scalevec3(n, 2 * dot(n,v))));
+	double	val;
+	t_Vec3	ret;
+
+	val = dot(n, v) * 2;
+	ret = subvec3(v, scalevec3(n, val));
+	ret = scalevec3(ret, 1);
+	return (ret);
 }
 
 float	fresnel(t_hit hit, t_Ray ray)
 {
-	return (saturate((hit.mat.smooth * (1 - saturate(-dot(hit.norm, ray.dir))))));
+	return (saturate((hit.mat.smooth * (1
+					- saturate(-dot(hit.norm, ray.dir))))));
 }
 
 t_Vec3	lerpvec3(t_Vec3 u, t_Vec3 v, float val)
@@ -218,16 +282,46 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 	int		hitted;
 	int		i;
 	t_Vec3	target;
-	
+
 	if (depth <= 0)
 		return (col4(0, 0, 0, 0));
-	t_max = 5000;
+	t_max = 100;
 	i = 0;
 	hitted = 0;
-	while (i < 5)
+	while (i < data->spherenbr)
 	{
 		hit = hit_sphere(data->sphere[i], ray, 0.001, t_max);
-    	if (hit.hit)
+		if (hit.hit)
+		{
+			t_max = hit.t;
+			hit_saved.norm = hit.norm;
+			hit_saved.p = hit.p;
+			hit_saved.t = hit.t;
+			hit_saved.mat = hit.mat;
+			hitted = 1;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < data->planenbr)
+	{	
+		hit = hit_plane(data->plane[i], ray, 0.001, t_max);
+		if (hit.hit)
+		{
+			t_max = hit.t;
+			hit_saved.norm = hit.norm;
+			hit_saved.p = hit.p;
+			hit_saved.t = hit.t;
+			hit_saved.mat = hit.mat;
+			hitted = 1;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < data->cylindernbr)
+	{	
+		hit = hit_cylinder(data->cylinder[i], ray, 0.001, t_max);
+		if (hit.hit)
 		{
 			t_max = hit.t;
 			hit_saved.norm = hit.norm;
@@ -243,9 +337,14 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 		hit = hit_saved;
 		if (hit.mat.col.t > 0)
 			return (hit.mat.col);
-		target = addvec3(hit.p, addvec3(hit.norm, random_in_hemisphere(hit.norm, data)));
-		target = lerpvec3(target, reflect(unit_vec3(ray.dir), hit.norm), hit.mat.smooth);
-		return (mulcol(scalecol(raycol(newray(hit.p, subvec3(target, hit.p)), data, depth - 1), 0.5), hit.mat.col));
+		t_Vec3 diffuse = addvec3(hit.p, Lambertian_random_ray(hit.norm, data));
+		t_Vec3 specular = addvec3(hit.p, reflect(ray.dir, hit.norm));
+		int isSpecular = hit.mat.metal >= pseudorand(data);
+		target = lerpvec3(diffuse, specular, hit.mat.smooth * isSpecular);
+		if (!isSpecular)
+			return (mulcol(scalecol(raycol(newray(hit.p, subvec3(target, hit.p)), data, depth - 1), 0.5), hit.mat.col));
+		else
+			return (mulcol(scalecol(raycol(newray(hit.p, subvec3(target, hit.p)), data, depth - 1), 0.5), hit.mat.col));
 	}
 	return (computesky(unit_vec3(ray.dir)));
 }
@@ -273,7 +372,6 @@ int	render(t_data *data)
 			u.x = ((double) s.x + pseudorand(data) * 2 - 1) / (WIDTH - 1);
 			u.y = ((double) s.y + pseudorand(data) * 2 - 1) / (HEIGHT - 1);
 			ray.dir = addvec3(addvec3(hvl.pos3, scalevec3(hvl.pos1, u.x)), scalevec3(hvl.pos2, u.y));
-
 			weight = 1.0 / ((float) data->frame + 1);
 			if (data->frame == 0)
 				data->cimg[s.y][s.x] = addcol(col4(0, 0, 0, 0), raycol(ray, data, data->frame));

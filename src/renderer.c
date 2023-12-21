@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/21 16:22:58 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/21 20:17:28 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,21 +177,15 @@ t_Vec3	lerpvec3(t_Vec3 u, t_Vec3 v, float val)
 	return (ret);
 }
 
-t_Col	raycol(t_Ray ray, t_data *data, int depth)
+t_Col	raycol(t_Ray ray, t_data *data, int depth);
+
+t_Col	pb_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
 {
-	t_hit	hit;
 	t_Vec3	target;
 	t_Vec3	diffuse;
 	t_Vec3	specular;
 	int		isspecular;
 
-	if (depth <= 0)
-		return (data->ambient);
-	hit.t_max = 100;
-	hit.hit = 0;
-	hit = hit_sphere(data, ray, hit);
-	hit = hit_plane(data, ray, hit);
-	hit = hit_cylinder(data, ray, hit);
 	if (hit.hit)
 	{
 		if (hit.mat.col.t > 0)
@@ -210,6 +204,20 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 	else if (depth < 1 + data->bounces)
 		return (data->ambient);
 	return (col4(0, 0, 0, 0));
+}
+
+t_Col	raycol(t_Ray ray, t_data *data, int depth)
+{
+	t_hit	hit;
+
+	if (depth <= 0)
+		return (data->ambient);
+	hit.t_max = 100;
+	hit.hit = 0;
+	hit = hit_sphere(data, ray, hit);
+	hit = hit_plane(data, ray, hit);
+	hit = hit_cylinder(data, ray, hit);
+	return (pb_shading(ray, data, hit, depth));
 }
 
 void	save_img(t_data *data)

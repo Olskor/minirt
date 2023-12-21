@@ -6,12 +6,12 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/20 13:43:51 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/21 16:20:04 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#ifndef MINIRT_H
+# define MINIRT_H
 
 # include "mlx.h"
 # include <unistd.h>
@@ -21,8 +21,8 @@
 # include <fcntl.h>
 # include <math.h>
 
-#include "../includes/libft.h"
-#include "../includes/get_next_line.h"
+# include "../includes/libft.h"
+# include "../includes/get_next_line.h"
 
 # ifndef HEIGHT
 #  define HEIGHT 1080
@@ -148,6 +148,7 @@ typedef struct s_cylinder
 typedef struct s_hit
 {
 	float	t;
+	float	t_max;
 	int		hit;
 	int		frontface;
 	t_Vec3	p;
@@ -155,7 +156,7 @@ typedef struct s_hit
 	t_Mat	mat;
 }	t_hit;
 
-typedef	struct s_cam
+typedef struct s_cam
 {
 	float	aspect;
 	float	focal;
@@ -183,6 +184,8 @@ typedef struct s_img
 	int		bpp;
 	int		line_len;
 	int		endian;
+	int		wi;
+	int		he;
 }	t_img;
 
 typedef struct s_data	t_data;
@@ -235,13 +238,20 @@ float		max(float x, float y);
 float		min(float x, float y);
 float		saturate(float x);
 int			create_trgb(t_Col col);
-t_Col 		mulcol(t_Col col1, t_Col col2);
-t_Col 		col4(double t, double r, double g, double b);
+t_Col		mulcol(t_Col col1, t_Col col2);
+t_Col		col4(double t, double r, double g, double b);
 t_Col		addcol(t_Col col1, t_Col col2);
 t_Col		scalecol(t_Col col1, double sampleperpixel);
 void		hook_setup(t_data *data);
 float		lerp(float a, float b, float t);
 float		aces(float x);
+float		pseudorand(t_data *data);
+t_Vec3		vec3rand(double min, double max, t_data *data);
+t_Vec3		random_in_unit_sphere(t_data *data);
+t_Vec3		lambertian_random_ray(t_Vec3 normal, t_data *data);
+t_hit		hit_sphere(t_data *data, t_Ray ray, t_hit hit);
+t_hit		hit_plane(t_data *data, t_Ray ray, t_hit hit);
+t_hit		hit_cylinder(t_data *data, t_Ray ray, t_hit hit);
+void		load(char	*path, t_data *data);
 
-void	load(char	*path, t_data *data);
 #endif

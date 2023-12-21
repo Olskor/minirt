@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/20 13:48:54 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/21 16:20:37 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	alloccimg(t_data *data)
 	int	i;
 
 	i = 0;
-	data->cimg = malloc(sizeof(t_Col *) * HEIGHT);
-	while (i < HEIGHT)
+	data->cimg = malloc(sizeof(t_Col *) * data->he);
+	while (i < data->he)
 	{
-		data->cimg[i] = malloc(sizeof(t_Col) * WIDTH);
+		data->cimg[i] = malloc(sizeof(t_Col) * data->wi);
 		i++;
 	}
 }
@@ -50,8 +50,10 @@ int	main(int argc, char **argv)
 	data.bounces = MAX_BOUNCES;
 	data.frame = 0;
 	data.sample = 0;
+	data.wi = WIDTH;
+	data.he = HEIGHT;
 
-	data.cam.aspect = (float) WIDTH / (float) HEIGHT;
+	data.cam.aspect = (float) data.wi / (float) data.he;
 	data.cam.pos = vec3(-2, 1, 1);
 	data.cam.rot = vec3(0, 0, -1);
 	data.cam.vup = vec3(0, 1, 0);
@@ -60,7 +62,7 @@ int	main(int argc, char **argv)
 	data.ambient = col4(0, 0.1, 0.1, 0.1);
 
 	data.sky.active = 1;
-	data.sky.sun = vec3(1, 1 ,0);
+	data.sky.sun = vec3(1, 1, 0);
 	data.sky.intensity = 2;
 
 	data.spherenbr = 4;
@@ -134,15 +136,17 @@ int	main(int argc, char **argv)
 	data.cylinder[0].mat.metal = 1.0;
 
 	alloccimg(&data);
-	data.win = mlx_new_window(data.mlx, WIDTH, HEIGHT, "c'est pas fdf fdp");
+	data.win = mlx_new_window(data.mlx, data.wi, data.he, "c'est pas fdf fdp");
 	if (!data.win)
 	{
 		free(data.win);
 		return (1);
 	}
-	data.img.mlx_img = mlx_new_image(data.mlx, WIDTH, HEIGHT);
+	data.img.mlx_img = mlx_new_image(data.mlx, data.wi, data.he);
 	data.img.addr = mlx_get_data_addr(data.img.mlx_img, &data.img.bpp,
 			&data.img.line_len, &data.img.endian);
+	data.img.wi = data.wi;
+	data.img.he = data.he;
 	hook_setup(&data);
 	mlx_loop(data.mlx);
 	return (0);

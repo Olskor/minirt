@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2023/11/28 15:01:20 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/20 13:48:54 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,24 @@ int	main(int argc, char **argv)
 	data.mlx = mlx_init();
 	if (!data.mlx)
 		return (write(2, "error: memory\n", 14));
+//	fred
+//	load(argv[1], &data);
 	data.rand = 0;
-	data.bounces = 3;
-	data.cam.aspect = (float) WIDTH / HEIGHT;
-	data.cam.pos = vec3(0, 0.0, 0.0);
+	data.bounces = MAX_BOUNCES;
+	data.frame = 0;
+	data.sample = 0;
+
+	data.cam.aspect = (float) WIDTH / (float) HEIGHT;
+	data.cam.pos = vec3(-2, 1, 1);
+	data.cam.rot = vec3(0, 0, -1);
+	data.cam.vup = vec3(0, 1, 0);
 	data.cam.fov = 70;
+
+	data.ambient = col4(0, 0.1, 0.1, 0.1);
+
+	data.sky.active = 1;
+	data.sky.sun = vec3(1, 1 ,0);
+	data.sky.intensity = 2;
 
 	data.spherenbr = 4;
 	data.sphere = malloc(sizeof(t_sphere) * data.spherenbr);
@@ -56,8 +69,8 @@ int	main(int argc, char **argv)
 	data.sphere[0].pos = vec3(-0.2, 0.0, -1.5);
 	data.sphere[0].rad = 0.5;
 	data.sphere[0].mat.col = col4(0, 1.0, 0.05, 0.05);
-	data.sphere[0].mat.smooth = 1.0;
-	data.sphere[0].mat.metal = 0.15;
+	data.sphere[0].mat.smooth = 0.7;
+	data.sphere[0].mat.metal = 0.1;
 
 	data.sphere[1].pos = vec3(0.3, -0.4, -1.0);
 	data.sphere[1].rad = 0.1;
@@ -65,10 +78,10 @@ int	main(int argc, char **argv)
 	data.sphere[1].mat.smooth = 0.0;
 	data.sphere[1].mat.metal = 0.0;
 
-	data.sphere[2].pos = vec3(0.5, -0.3, -1.5);
-	data.sphere[2].rad = 0.2;
+	data.sphere[2].pos = vec3(1.0, 0.0, -1.5);
+	data.sphere[2].rad = 0.5;
 	data.sphere[2].mat.col = col4(0, 0.98, 0.98, 0.3);
-	data.sphere[2].mat.smooth = 0.95;
+	data.sphere[2].mat.smooth = 0.85;
 	data.sphere[2].mat.metal = 1.0;
 
 	data.sphere[3].pos = vec3(-0.3, -0.4, -1);
@@ -77,7 +90,7 @@ int	main(int argc, char **argv)
 	data.sphere[3].mat.smooth = 0.75;
 	data.sphere[3].mat.metal = 1.0;
 
-	data.planenbr = 5;
+	data.planenbr = 1;
 	data.plane = malloc(sizeof(t_plane) * data.planenbr);
 
 	data.plane[0].pos = vec3(0, -0.5, 0);
@@ -86,7 +99,7 @@ int	main(int argc, char **argv)
 	data.plane[0].mat.smooth = 0.0;
 	data.plane[0].mat.metal = 0.0;
 
-	data.plane[1].pos = vec3(0, 1, 0);
+	/*data.plane[1].pos = vec3(0, 1, 0);
 	data.plane[1].norm = vec3(0, -1, 0);
 	data.plane[1].mat.col = col4(1, 1, 1, 1);
 	data.plane[1].mat.smooth = 0.0;
@@ -108,19 +121,18 @@ int	main(int argc, char **argv)
 	data.plane[4].norm = vec3(0, 0, 1);
 	data.plane[4].mat.col = col4(0, 1, 1, 1);
 	data.plane[4].mat.smooth = 0.0;
-	data.plane[4].mat.metal = 0.0;
+	data.plane[4].mat.metal = 0.0;*/
 
 	data.cylindernbr = 1;
 	data.cylinder = malloc(sizeof(t_cone) * data.cylindernbr);
 	data.cylinder[0].pos = vec3(1, 0, -1);
 	data.cylinder[0].rad = 0.1;
 	data.cylinder[0].h = 1;
-	data.cylinder[0].rot = vec3(1, 0, 0);
+	data.cylinder[0].dir = unit_vec3(vec3(1, 1, 0));
 	data.cylinder[0].mat.col = col4(0, 1, 1, 1);
 	data.cylinder[0].mat.smooth = 1.0;
 	data.cylinder[0].mat.metal = 1.0;
 
-	data.frame = 0;
 	alloccimg(&data);
 	data.win = mlx_new_window(data.mlx, WIDTH, HEIGHT, "c'est pas fdf fdp");
 	if (!data.win)

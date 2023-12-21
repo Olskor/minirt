@@ -6,13 +6,13 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:17:41 by jauffret          #+#    #+#             */
-/*   Updated: 2023/11/02 23:44:17 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/18 15:42:33 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_Col saturatecol(t_Col col)
+t_Col	saturatecol(t_Col col)
 {
 	if (col.t > 255)
 		col.t = 255;

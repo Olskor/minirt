@@ -19,17 +19,21 @@ MAGENTA = \033[0;95m
 CYAN = \033[0;96m
 WHITE = \033[0;97m
 
-WIDTH = 600
-HEIGHT = 400
+WIDTH = 800
+HEIGHT = 600
+MAX_SAMPLES = 1000
+MAX_FRAMES = 1
+MAX_BOUNCES = 100
 
-SRC_FILES	=	main position_handler get_next_line vector vector1 renderer input_handler value color
+SRC_FILES	=	main position_handler get_next_line vector vector1 renderer \
+input_handler value color reader factory
 LIBS_FILES	=	libft libmlx
 
 SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ 		= 	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
 LIBS 		= 	$(addprefix $(LIB), $(addsuffix .a, $(LIBS_FILES)))
 
-
+LFLAGS = -lXext -lX11 -lm -lbsd
 OBJF		=	.cache_exists
 
 all:		whomadeit $(NAME)
@@ -37,12 +41,12 @@ all:		whomadeit $(NAME)
 $(NAME):	$(OBJ)
 			@make -C $(LIBFT) --no-print-directory
 			@cp libft/libft.a libs/libft.a
-			@$(CC) $(CFLAGS) $(INCLUDE) $(OBJ) $(LIBS) -lXext -lX11 -lm -lbsd -o $(NAME)
-			@echo "$(GREEN)fdf Compiled successfully$(DEF_COLOR)"
+			@$(CC) $(CFLAGS) $(INCLUDE) $(OBJ) $(LIBS) $(LFLAGS) -o $(NAME)
+			@echo "$(GREEN)miniRT Compiled successfully$(DEF_COLOR)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
 			@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
-			@$(CC) $(CFLAGS) $(INCLUDE) -D WIDTH=$(WIDTH) -D HEIGHT=$(HEIGHT) -c $< -o $@
+			@$(CC) $(CFLAGS) $(INCLUDE) -D WIDTH=$(WIDTH) -D HEIGHT=$(HEIGHT) -D MAX_SAMPLES=$(MAX_SAMPLES) -D MAX_FRAMES=$(MAX_FRAMES) -D MAX_BOUNCES=$(MAX_BOUNCES) -c $< -o $@
 
 $(OBJF):
 			@mkdir -p $(OBJ_DIR)

@@ -1,44 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/20 13:43:51 by olskor           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#ifndef FDF_H
-# define FDF_H
-
 # include "mlx.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <X11/keysym.h>
-# include <fcntl.h>
+//# include <X11/keysym.h>
 # include <math.h>
 
+//fred
 #include "../includes/libft.h"
 #include "../includes/get_next_line.h"
-
-# ifndef HEIGHT
-#  define HEIGHT 1080
-# endif
-# ifndef WIDTH
-#  define WIDTH 1920
-# endif
-# ifndef MAX_SAMPLES
-#  define MAX_SAMPLES 100
-# endif
-# ifndef MAX_FRAMES
-#  define MAX_FRAMES 1
-# endif
-# ifndef MAX_BOUNCES
-#  define MAX_BOUNCES 3
-# endif
+//fred
 
 typedef struct s_Vec3
 {
@@ -98,25 +68,14 @@ typedef struct s_mesh
 	t_Vec4	rot;
 }		t_mesh;
 
-typedef struct s_light
-{
-	t_Vec3	pos;
-	t_Col	col;
-	float	intensity;
-}		t_light;
-
-typedef struct s_sky
-{
-	t_Vec3	sun;
-	float	intensity;
-	int		active;
-}		t_sky;
-
 typedef struct s_sphere
 {
 	float	rad;
 	t_Mat	mat;
 	t_Vec3	pos;
+//	fred
+//	t_Vec4	rot;
+	t_Vec3	rgb;
 }		t_sphere;
 
 typedef struct s_plane
@@ -124,6 +83,8 @@ typedef struct s_plane
 	t_Vec3	pos;
 	t_Vec3	norm;
 	t_Mat	mat;
+//	fred
+	t_Vec3	rgb;
 }	t_plane;
 
 typedef struct s_cone
@@ -132,7 +93,7 @@ typedef struct s_cone
 	float	h;
 	t_Mat	mat;
 	t_Vec3	pos;
-	t_Vec4	dir;
+	t_Vec4	rot;
 }	t_cone;
 
 typedef struct s_cylinder
@@ -141,7 +102,9 @@ typedef struct s_cylinder
 	float	h;
 	t_Mat	mat;
 	t_Vec3	pos;
-	t_Vec3	dir; //doit etre normalisé pour fonctionner
+	t_Vec3	rot;
+//	fred
+	t_Vec3	rgb;
 }	t_cylinder;
 
 
@@ -158,22 +121,14 @@ typedef struct s_hit
 typedef	struct s_cam
 {
 	float	aspect;
+	float	vwi;
+	float	vhe;
 	float	focal;
 	float	fov;
 	t_Vec3	pos;
+//	fred
+//	t_Vec4	rot;
 	t_Vec3	rot;
-	float	vwi;
-	float	vhe;
-	t_Vec3	vup;
-	t_Vec3	u;
-	t_Vec3	v;
-	t_Vec3	w;
-	t_Vec3	v_u;
-	t_Vec3	v_v;
-	t_Vec3	v_ul;
-	t_Vec3	pixdu;
-	t_Vec3	pixdv;
-	t_Vec3	pix00;
 }	t_cam;
 
 typedef struct s_img
@@ -192,23 +147,18 @@ struct s_data
 	void			*win;
 	int				wi;
 	int				he;
-	int				sample;
+	int				frame;
 	t_img			img;
 	t_Col			**cimg;
-	t_light			*light;
-	int				lightnbr;
-	t_sky			sky;
-	t_sphere		*sphere;
-	int				spherenbr;
-	t_plane			*plane;
-	int				planenbr;
-	t_cylinder		*cylinder;
-	int				cylindernbr;
+	t_sphere		**sphere;
+//	int				spherenbr;
+	t_plane			**plane;
+//	int				planenbr;
+	t_cylinder		**cylinder;
+//	int				cylindernbr;
 	unsigned int	rand;
 	int				bounces;
-	t_cam			cam;
-	t_Col			ambient;
-	int				frame;
+	t_cam			*cam;
 };
 
 t_Vec3		vec3(double x, double y, double z);
@@ -241,7 +191,9 @@ t_Col		addcol(t_Col col1, t_Col col2);
 t_Col		scalecol(t_Col col1, double sampleperpixel);
 void		hook_setup(t_data *data);
 float		lerp(float a, float b, float t);
-float		aces(float x);
 
 void	load(char	*path, t_data *data);
-#endif
+t_data	create_config(char *path);
+
+
+

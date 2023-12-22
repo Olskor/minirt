@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/21 20:17:28 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/22 17:02:51 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,49 +78,6 @@ int	render_background(t_img *img, int color)
 	return (0);
 }
 
-t_hit	hit_light(t_light light, t_Ray ray, float t_min, float t_max)
-{
-	t_Vec3	oc;
-	t_Vec3	abc;
-	t_hit	hit;
-	double	discriminant;
-	double	temp;
-
-	oc = subvec3(ray.orig, light.pos);
-	abc.x = vec3length2(ray.dir);
-	abc.y = dot(oc, ray.dir);
-	abc.z = vec3length2(oc) - pow(0.1, 2);
-	discriminant = pow(abc.y, 2) - abc.x * abc.z;
-	hit.mat.col = scalecol(light.col, light.intensity);
-	hit.mat.col.t = 1;
-	hit.mat.smooth = 0;
-	hit.mat.metal = 0;
-	hit.mat.refr = 0;
-	if (discriminant > 0)
-	{
-		temp = (-abc.y - sqrt(discriminant)) / abc.x;
-		if (temp < t_max && temp > t_min)
-		{
-			hit.t = temp;
-			hit.p = vecat(ray, hit.t);
-			hit.norm = scalevec3(subvec3(hit.p, light.pos), 1 / 0.1);
-			hit.hit = 1;
-			return (hit);
-		}
-		temp = (-abc.y + sqrt(discriminant)) / abc.x;
-		if (temp < t_max && temp > t_min)
-		{
-			hit.t = temp;
-			hit.p = vecat(ray, hit.t);
-			hit.norm = scalevec3(subvec3(hit.p, light.pos), 1 / 0.1);
-			hit.hit = 1;
-			return (hit);
-		}
-	}
-	hit.hit = 0;
-	return (hit);
-}
-
 t_Ray	newray(t_Vec3 orig, t_Vec3 dir)
 {
 	t_Ray	ray;
@@ -142,7 +99,7 @@ t_Col	computesky(t_Vec3 dir, t_sky sky)
 	{
 		col = col4(0, strengh - (grad * 4 / 5), strengh
 				- (grad * 6 / 10), strengh - 0.1);
-		if (dot(unit_vec3(sky.sun), unit_vec3(dir)) > 0.99)
+		if (-dot(unit_vec3(sky.sun), unit_vec3(dir)) > 0.995)
 			col = addcol(col, col4(1, sky.intensity * 100, sky.intensity * 100, sky.intensity * 80));
 	}
 	if (dir.y <= 0)
@@ -189,7 +146,7 @@ t_Col	pb_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
 	if (hit.hit)
 	{
 		if (hit.mat.col.t > 0)
-			return (hit.mat.col);
+			return (scalecol(hit.mat.col, 10));
 		diffuse = addvec3(hit.p, lambertian_random_ray(hit.norm, data));
 		specular = addvec3(hit.p, reflect(ray.dir, hit.norm));
 		isspecular = hit.mat.metal >= pseudorand(data);
@@ -206,6 +163,35 @@ t_Col	pb_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
 	return (col4(0, 0, 0, 0));
 }
 
+t_Col	normal_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
+{
+	int		i;
+	t_Ray	newray;
+	float	len;
+	t_Col	col;
+
+	if (hit.hit)
+	{
+		if (hit.mat.col.t > 0)
+			return (hit.mat.col);
+		i = 0;
+		if (depth <= 1)
+			return (data->ambient);
+		col = col4(0, 0, 0, 0);
+		while (i < data->lightnbr)
+		{
+			newray.orig = hit.p;
+			newray.dir = subvec3(data->light[i].pos, hit.p);
+			len = vec3length(newray.dir);
+			len = (1 / len * len) * saturate(dot(hit.norm, unit_vec3(newray.dir)));
+			col = addcol(scalecol(raycol(newray, data, 1), len), col);
+			i++;
+		}
+		return (mulcol(col, scalecol(hit.mat.col, 1 + 0 * (1 + -hit.mat.metal))));
+	}
+	return (col4(0, 0, 0, 0));
+}
+
 t_Col	raycol(t_Ray ray, t_data *data, int depth)
 {
 	t_hit	hit;
@@ -217,6 +203,10 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 	hit = hit_sphere(data, ray, hit);
 	hit = hit_plane(data, ray, hit);
 	hit = hit_cylinder(data, ray, hit);
+	if (depth < 1 + data->bounces)
+		hit = hit_light(data, ray, hit);
+	if (data->sample < 00)
+		return (normal_shading(ray, data, hit, depth));
 	return (pb_shading(ray, data, hit, depth));
 }
 
@@ -283,7 +273,7 @@ int	render(t_data *data)
 		while (s.x < data->wi)
 		{
 			pixpos = addvec3(data->cam.pix00, addvec3(scalevec3(data->cam.pixdu, s.x),scalevec3(data->cam.pixdv, s.y)));
-			ray.dir = (subvec3(addvec3(pixpos, scalevec3(random_in_unit_sphere(data), 0.005f)), data->cam.pos));
+			ray.dir = (subvec3(addvec3(pixpos, scalevec3(random_in_unit_sphere(data), 0.5 * vec3length(data->cam.pixdu))), data->cam.pos));
 			ray.orig = data->cam.pos;
 			weight = 1.0 / ((float) data->sample + 1);
 			if (data->sample == 0)

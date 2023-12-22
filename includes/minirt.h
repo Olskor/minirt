@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/21 16:20:04 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/22 04:44:52 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,7 @@ t_Vec3		lambertian_random_ray(t_Vec3 normal, t_data *data);
 t_hit		hit_sphere(t_data *data, t_Ray ray, t_hit hit);
 t_hit		hit_plane(t_data *data, t_Ray ray, t_hit hit);
 t_hit		hit_cylinder(t_data *data, t_Ray ray, t_hit hit);
+t_hit		hit_light(t_data *data, t_Ray ray, t_hit hit);
 void		load(char	*path, t_data *data);
 
 #endif

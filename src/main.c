@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/21 16:20:37 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/22 16:13:35 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,19 @@ int	main(int argc, char **argv)
 	data.ambient = col4(0, 0.1, 0.1, 0.1);
 
 	data.sky.active = 1;
-	data.sky.sun = vec3(1, 1, 0);
+	data.sky.sun = vec3(-1, -1, 0);
 	data.sky.intensity = 2;
+
+	data.lightnbr = 2;
+	data.light = malloc(sizeof(t_light) * data.lightnbr);
+
+	data.light[0].pos = vec3(0, 1, 0);
+	data.light[0].col = col4(0, 1, 1, 1);
+	data.light[0].intensity = 1;
+
+	data.light[1].pos = vec3(0, 1, -1);
+	data.light[1].col = col4(0, 0, 1, 1);
+	data.light[1].intensity = 1;
 
 	data.spherenbr = 4;
 	data.sphere = malloc(sizeof(t_sphere) * data.spherenbr);
@@ -76,7 +87,7 @@ int	main(int argc, char **argv)
 
 	data.sphere[1].pos = vec3(0.3, -0.4, -1.0);
 	data.sphere[1].rad = 0.1;
-	data.sphere[1].mat.col = col4(1, 0, 0.1, 50);
+	data.sphere[1].mat.col = col4(0, 0, 0.1, 1);
 	data.sphere[1].mat.smooth = 0.0;
 	data.sphere[1].mat.metal = 0.0;
 
@@ -88,7 +99,7 @@ int	main(int argc, char **argv)
 
 	data.sphere[3].pos = vec3(-0.3, -0.4, -1);
 	data.sphere[3].rad = 0.1;
-	data.sphere[3].mat.col = col4(1, 50, 50, 50);
+	data.sphere[3].mat.col = col4(0, 1, 1, 1);
 	data.sphere[3].mat.smooth = 0.75;
 	data.sphere[3].mat.metal = 1.0;
 

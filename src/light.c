@@ -6,11 +6,32 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 04:40:26 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/22 04:50:27 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/22 18:31:02 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+t_hit	hit_light2(double temp, t_light light, t_Ray ray, int didhit)
+{
+	t_hit	hit;
+
+	if (!didhit)
+	{
+		hit.hit = 0;
+		return (hit);
+	}
+	hit.t = temp;
+	hit.p = vecat(ray, hit.t);
+	hit.norm = scalevec3(subvec3(hit.p, light.pos), 1 / 0.1);
+	hit.mat.col = scalecol(light.col, light.intensity);
+	hit.mat.col.t = 1;
+	hit.mat.smooth = 0;
+	hit.mat.metal = 0;
+	hit.mat.refr = 0;
+	hit.hit = 1;
+	return (hit);
+}
 
 t_hit	hit_light1(t_light light, t_Ray ray, float t_min, float t_max)
 {
@@ -25,34 +46,16 @@ t_hit	hit_light1(t_light light, t_Ray ray, float t_min, float t_max)
 	abc.y = dot(oc, ray.dir);
 	abc.z = vec3length2(oc) - pow(0.1, 2);
 	discriminant = pow(abc.y, 2) - abc.x * abc.z;
-	hit.mat.col = scalecol(light.col, light.intensity);
-	hit.mat.col.t = 1;
-	hit.mat.smooth = 0;
-	hit.mat.metal = 0;
-	hit.mat.refr = 0;
 	if (discriminant > 0)
 	{
 		temp = (-abc.y - sqrt(discriminant)) / abc.x;
 		if (temp < t_max && temp > t_min)
-		{
-			hit.t = temp;
-			hit.p = vecat(ray, hit.t);
-			hit.norm = scalevec3(subvec3(hit.p, light.pos), 1 / 0.1);
-			hit.hit = 1;
-			return (hit);
-		}
+			return (hit_light2(temp, light, ray, 1));
 		temp = (-abc.y + sqrt(discriminant)) / abc.x;
 		if (temp < t_max && temp > t_min)
-		{
-			hit.t = temp;
-			hit.p = vecat(ray, hit.t);
-			hit.norm = scalevec3(subvec3(hit.p, light.pos), 1 / 0.1);
-			hit.hit = 1;
-			return (hit);
-		}
+			return (hit_light2(temp, light, ray, 1));
 	}
-	hit.hit = 0;
-	return (hit);
+	return (hit_light2(0, light, ray, 0));
 }
 
 t_hit	hit_light(t_data *data, t_Ray ray, t_hit hit)

@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/22 16:13:35 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/22 18:31:31 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	main(int argc, char **argv)
 
 	data.ambient = col4(0, 0.1, 0.1, 0.1);
 
-	data.sky.active = 1;
+	data.sky.active = 0;
 	data.sky.sun = vec3(-1, -1, 0);
 	data.sky.intensity = 2;
 

@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/22 04:44:52 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/22 18:18:23 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,6 +253,14 @@ t_hit		hit_sphere(t_data *data, t_Ray ray, t_hit hit);
 t_hit		hit_plane(t_data *data, t_Ray ray, t_hit hit);
 t_hit		hit_cylinder(t_data *data, t_Ray ray, t_hit hit);
 t_hit		hit_light(t_data *data, t_Ray ray, t_hit hit);
+void		img_pix_put(t_img *img, int x, int y, int color);
+int			render_background(t_img *img, int color);
 void		load(char	*path, t_data *data);
+t_Vec3		reflect(t_Vec3 v, t_Vec3 n);
+float		fresnel(t_hit hit, t_Ray ray);
+t_Vec3		lerpvec3(t_Vec3 u, t_Vec3 v, float val);
+t_Ray		newray(t_Vec3 orig, t_Vec3 dir);
+t_Col		raycol(t_Ray ray, t_data *data, int depth);
+void		save_img(t_data *data);
 
 #endif

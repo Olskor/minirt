@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/22 18:18:23 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/22 20:43:16 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,20 +83,24 @@ typedef struct s_Mat
 	float	refr;
 }		t_Mat;
 
+typedef struct s_mesh	t_mesh;
+
 typedef struct s_Tri
 {
 	t_Vec3	pos1;
 	t_Vec3	pos2;
 	t_Vec3	pos3;
+	t_mesh	*mesh;
 }		t_Tri;
 
-typedef struct s_mesh
+struct s_mesh
 {
 	t_Tri	*tri;
+	int		trinbr;
 	t_Mat	mat;
 	t_Vec3	pos;
 	t_Vec4	rot;
-}		t_mesh;
+};
 
 typedef struct s_light
 {
@@ -207,6 +211,7 @@ struct s_data
 	int				planenbr;
 	t_cylinder		*cylinder;
 	int				cylindernbr;
+	t_mesh			mesh;
 	unsigned int	rand;
 	int				bounces;
 	t_cam			cam;
@@ -262,5 +267,8 @@ t_Vec3		lerpvec3(t_Vec3 u, t_Vec3 v, float val);
 t_Ray		newray(t_Vec3 orig, t_Vec3 dir);
 t_Col		raycol(t_Ray ray, t_data *data, int depth);
 void		save_img(t_data *data);
+t_mesh		create_cube(void);
+t_hit		hit_mesh(t_mesh mesh, t_Ray ray, t_hit hit);
+t_mesh		translate_mesh(t_mesh mesh);
 
 #endif

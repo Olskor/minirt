@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/22 18:31:31 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/23 01:09:38 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,17 @@ int	main(int argc, char **argv)
 
 	data.ambient = col4(0, 0.1, 0.1, 0.1);
 
-	data.sky.active = 0;
+	data.sky.active = 1;
 	data.sky.sun = vec3(-1, -1, 0);
 	data.sky.intensity = 2;
+
+	data.mesh = create_cube();
+	data.mesh.mat.col = col4(0, 1, 1, 1);
+	data.mesh.mat.smooth = 1.0;
+	data.mesh.mat.metal = 1.0;
+	data.mesh.pos = vec3(0, 0, -0.5);
+
+	data.mesh = translate_mesh(data.mesh);
 
 	data.lightnbr = 2;
 	data.light = malloc(sizeof(t_light) * data.lightnbr);

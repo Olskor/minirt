@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/22 18:35:54 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/23 01:09:23 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,10 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 	hit = hit_sphere(data, ray, hit);
 	hit = hit_plane(data, ray, hit);
 	hit = hit_cylinder(data, ray, hit);
+	hit = hit_mesh(data->mesh, ray, hit);
 	if (depth < 1 + data->bounces)
 		hit = hit_light(data, ray, hit);
+	//return (col4(1, hit.norm.x, hit.norm.y, hit.norm.z));
 	return (pb_shading(ray, data, hit, depth));
 }
 

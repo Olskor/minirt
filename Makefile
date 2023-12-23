@@ -27,7 +27,7 @@ MAX_BOUNCES = 10
 
 SRC_FILES	=	main position_handler get_next_line vector vector1 renderer \
 input_handler value color reader factory random sphere plane cylinder light \
-ray img
+ray img triangle mesh
 LIBS_FILES	=	libft libmlx
 
 SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))

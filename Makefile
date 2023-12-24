@@ -23,11 +23,11 @@ WIDTH = 800
 HEIGHT = 600
 MAX_SAMPLES = 1000
 MAX_FRAMES = 1
-MAX_BOUNCES = 10
+MAX_BOUNCES = 5
 
 SRC_FILES	=	main position_handler get_next_line vector vector1 renderer \
 input_handler value color reader factory random sphere plane cylinder light \
-ray img triangle mesh
+ray img triangle mesh vector2
 LIBS_FILES	=	libft libmlx
 
 SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))

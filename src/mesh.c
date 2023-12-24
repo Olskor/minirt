@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 19:02:20 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/23 01:13:23 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/24 05:52:24 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ float	ft_atof(char *str)
 
 void	free_split(char **split)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (split[i])
 	{
 		free(split[i]);
@@ -64,19 +66,48 @@ void	free_split(char **split)
 	free(split);
 }
 
-t_Vec3	*append_pos(t_Vec3 *pos, t_Vec3 newpos, int i)
+t_Vec3	*ft_append_pos(t_Vec3 *pos, t_Vec3 newpos, int i)
 {
 	t_Vec3	*new;
 	int		j;
 
-	new = malloc(sizeof(t_Vec3) * (i + 1));
-	while (j < i)
+	if (i)
 	{
-		new[j] = pos[j];
-		j++;
+		new = malloc(sizeof(t_Vec3) * (i + 1));
+		j = 0;
+		while (j < i)
+		{
+			new[j] = pos[j];
+			j++;
+		}
+		new[j] = newpos;
+		free(pos);
+		return (new);
 	}
-	new[j] = newpos;
-	free(pos);
+	new = malloc(sizeof(t_Vec3) * (i + 1));
+	new[0] = newpos;
+	return (new);
+}
+t_Tri	*ft_append_tri(t_Tri *tri, t_Tri newtri, int i)
+{
+	t_Tri	*new;
+	int		j;
+
+	if (i)
+	{
+		new = malloc(sizeof(t_Tri) * (i + 1));
+		j = 0;
+		while (j < i)
+		{
+			new[j] = tri[j];
+			j++;
+		}
+		new[j] = newtri;
+		free(tri);
+		return (new);
+	}
+	new = malloc(sizeof(t_Tri) * (i + 1));
+	new[0] = newtri;
 	return (new);
 }
 
@@ -101,8 +132,7 @@ t_mesh	read_obj(char *obj)
 			split = ft_split(line, ' ');
 			if (split[1] && split[2] && split[3])
 			{
-				pos = realloc(pos, sizeof(t_Vec3) * (i + 1));
-				pos[i] = vec3(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
+				pos = ft_append_pos(pos, vec3(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3])), i);
 				i++;
 			}
 			free_split(split);
@@ -112,10 +142,7 @@ t_mesh	read_obj(char *obj)
 			split = ft_split(line, ' ');
 			if (split[1] && split[2] && split[3])
 			{
-				mesh.tri = realloc(mesh.tri, sizeof(t_Tri) * (j + 1));
-				mesh.tri[j].pos1 = pos[ft_atoi(split[1]) - 1];
-				mesh.tri[j].pos2 = pos[ft_atoi(split[2]) - 1];
-				mesh.tri[j].pos3 = pos[ft_atoi(split[3]) - 1];
+				mesh.tri = ft_append_tri(mesh.tri, create_triangle(pos[ft_atoi(split[1]) - 1], pos[ft_atoi(split[2]) - 1], pos[ft_atoi(split[3]) - 1]), j);
 				j++;
 			}
 			free_split(split);
@@ -125,14 +152,7 @@ t_mesh	read_obj(char *obj)
 	}
 	mesh.trinbr = j;
 	free(pos);
-	return (mesh);
-}
-
-t_mesh	create_cube(void)
-{
-	t_mesh	mesh;
-
-	mesh = read_obj("icosphere.obj");
+	close(fd);
 	return (mesh);
 }
 
@@ -146,6 +166,36 @@ t_mesh	translate_mesh(t_mesh mesh)
 		mesh.tri[i].pos1 = addvec3(mesh.tri[i].pos1, mesh.pos);
 		mesh.tri[i].pos2 = addvec3(mesh.tri[i].pos2, mesh.pos);
 		mesh.tri[i].pos3 = addvec3(mesh.tri[i].pos3, mesh.pos);
+		i++;
+	}
+	return (mesh);
+}
+
+t_mesh	rotate_mesh(t_mesh mesh)
+{
+	int		i;
+
+	i = 0;
+	while (i < mesh.trinbr)
+	{
+		mesh.tri[i].pos1 = rotatevec3(mesh.tri[i].pos1, mesh.dir, mesh.up);
+		mesh.tri[i].pos2 = rotatevec3(mesh.tri[i].pos2, mesh.dir, mesh.up);
+		mesh.tri[i].pos3 = rotatevec3(mesh.tri[i].pos3, mesh.dir, mesh.up);
+		i++;
+	}
+	return (mesh);
+}
+
+t_mesh	scale_mesh(t_mesh mesh)
+{
+	int		i;
+
+	i = 0;
+	while (i < mesh.trinbr)
+	{
+		mesh.tri[i].pos1 = mulvec3(mesh.tri[i].pos1, mesh.scale);
+		mesh.tri[i].pos2 = mulvec3(mesh.tri[i].pos2, mesh.scale);
+		mesh.tri[i].pos3 = mulvec3(mesh.tri[i].pos3, mesh.scale);
 		i++;
 	}
 	return (mesh);

@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:09:21 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/22 18:21:52 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/24 22:55:17 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,31 +36,91 @@ t_hit hit_cylinder1(t_cylinder cylinder, t_Ray ray, float t_min, float t_max)
 		if (temp < t_max && temp > t_min)
 		{
 			p = vecat(ray, temp);
-			if (vec3length2(subvec3(p, cylinder.pos)) > max2)
+			if (vec3length2(subvec3(p, cylinder.pos)) < max2)
+			{
+				norm = subvec3(subvec3(p, cylinder.pos), scalevec3(cylinder.dir, dot(subvec3(p, cylinder.pos), cylinder.dir)));
+				norm = scalevec3(norm, 1 / cylinder.rad);
+				hit.t = temp;
+				hit.p = p;
+				hit.norm = norm;
+				hit.hit = 1;
+				hit.mat = cylinder.mat;
 				return (hit);
-			norm = subvec3(subvec3(p, cylinder.pos), scalevec3(cylinder.dir, dot(subvec3(p, cylinder.pos), cylinder.dir)));
-			norm = scalevec3(norm, 1 / cylinder.rad);
-			hit.t = temp;
-			hit.p = p;
-			hit.norm = norm;
-			hit.hit = 1;
-			hit.mat = cylinder.mat;
-			return (hit);
+			}
 		}
 		temp = (-abc.y + sqrt(discriminant)) / (2 * abc.x);
 		if (temp < t_max && temp > t_min)
 		{
 			p = vecat(ray, temp);
-			if (vec3length2(subvec3(p, cylinder.pos)) > max2)
+			if (vec3length2(subvec3(p, cylinder.pos)) < max2)
+			{
+				norm = subvec3(subvec3(p, cylinder.pos), scalevec3(cylinder.dir, dot(subvec3(p, cylinder.pos), cylinder.dir)));
+				norm = scalevec3(norm, 1 / cylinder.rad);
+				hit.t = temp;
+				hit.p = p;
+				hit.norm = norm;
+				hit.hit = 1;
+				hit.mat = cylinder.mat;
 				return (hit);
-			norm = subvec3(subvec3(p, cylinder.pos), scalevec3(cylinder.dir, dot(subvec3(p, cylinder.pos), cylinder.dir)));
-			norm = scalevec3(norm, 1 / cylinder.rad);
+			}
+		}
+	}
+	hit.hit = 0;
+	return (hit);
+}
+
+t_hit	hit_planedisk1(t_cylinder cylinder, t_Ray ray, float t_min, float t_max)
+{
+	t_hit	hit;
+	float	discriminant;
+	float	temp;
+
+	discriminant = dot(cylinder.dir, ray.dir);
+	if (fabs(discriminant) > 0.0001)
+	{
+		temp = dot(subvec3(addvec3(cylinder.pos, scalevec3(cylinder.dir,
+							-cylinder.h / 2)), ray.orig),
+				cylinder.dir) / discriminant;
+		if (temp > t_min && temp < t_max)
+		{
 			hit.t = temp;
-			hit.p = p;
-			hit.norm = norm;
+			hit.p = vecat(ray, hit.t);
+			hit.norm = scalevec3(cylinder.dir, -1);
 			hit.hit = 1;
 			hit.mat = cylinder.mat;
-			return (hit);
+			if (vec3length2(subvec3(hit.p, addvec3(cylinder.pos,
+							scalevec3(cylinder.dir, -cylinder.h
+								/ 2)))) < cylinder.rad * cylinder.rad)
+				return (hit);
+		}
+	}
+	hit.hit = 0;
+	return (hit);
+}
+
+t_hit	hit_planedisk2(t_cylinder cylinder, t_Ray ray, float t_min, float t_max)
+{
+	t_hit	hit;
+	float	discriminant;
+	float	temp;
+
+	discriminant = dot(cylinder.dir, ray.dir);
+	if (fabs(discriminant) > 0.0001)
+	{
+		temp = dot(subvec3(addvec3(cylinder.pos, scalevec3(cylinder.dir,
+							cylinder.h / 2)), ray.orig),
+				cylinder.dir) / discriminant;
+		if (temp > t_min && temp < t_max)
+		{
+			hit.t = temp;
+			hit.p = vecat(ray, hit.t);
+			hit.norm = cylinder.dir;
+			hit.hit = 1;
+			hit.mat = cylinder.mat;
+			if (vec3length2(subvec3(hit.p, addvec3(cylinder.pos,
+							scalevec3(cylinder.dir, cylinder.h
+								/ 2)))) < cylinder.rad * cylinder.rad)
+				return (hit);
 		}
 	}
 	hit.hit = 0;
@@ -78,12 +138,20 @@ t_hit	hit_cylinder(t_data *data, t_Ray ray, t_hit hit)
 		hit_temp = hit_cylinder1(data->cylinder[i], ray, 0.001, hit.t_max);
 		if (hit_temp.hit)
 		{
+			hit = hit_temp;
 			hit.t_max = hit_temp.t;
-			hit.norm = hit_temp.norm;
-			hit.p = hit_temp.p;
-			hit.t = hit_temp.t;
-			hit.mat = hit_temp.mat;
-			hit.hit = hit_temp.hit;
+		}
+		hit_temp = hit_planedisk1(data->cylinder[i], ray, 0.001, hit.t_max);
+		if (hit_temp.hit)
+		{
+			hit = hit_temp;
+			hit.t_max = hit_temp.t;
+		}
+		hit_temp = hit_planedisk2(data->cylinder[i], ray, 0.001, hit.t_max);
+		if (hit_temp.hit)
+		{
+			hit = hit_temp;
+			hit.t_max = hit_temp.t;
 		}
 		i++;
 	}

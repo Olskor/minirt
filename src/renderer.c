@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/23 01:09:23 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/24 22:04:44 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,18 @@ t_Col	pb_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
 	if (data->sky.active)
 		return (computesky(unit_vec3(ray.dir), data->sky));
 	else if (depth < 1 + data->bounces)
-		return (data->ambient);
+		return (scalecol(data->ambient, 10));
 	return (col4(0, 0, 0, 0));
 }
+
+t_Col	direct_light_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
+{
+	if (hit.hit)
+	{
+		return (hit.mat.col);
+	}
+}
+t_hit	hit_mesh1(t_mesh mesh, t_Ray ray, t_hit hit);
 
 t_Col	raycol(t_Ray ray, t_data *data, int depth)
 {
@@ -99,9 +108,10 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 	hit = hit_sphere(data, ray, hit);
 	hit = hit_plane(data, ray, hit);
 	hit = hit_cylinder(data, ray, hit);
-	hit = hit_mesh(data->mesh, ray, hit);
+	hit = hit_mesh(data, ray, hit);
 	if (depth < 1 + data->bounces)
 		hit = hit_light(data, ray, hit);
+	//return (direct_light_shading(ray, data, hit, depth));
 	//return (col4(1, hit.norm.x, hit.norm.y, hit.norm.z));
 	return (pb_shading(ray, data, hit, depth));
 }
@@ -149,3 +159,7 @@ int	render(t_data *data)
 	data->sample++;
 	return (0);
 }
+
+//revoir le calcul des disques du cylindre
+//revoir les lights pour ne pas utiliser les spheres
+//uv mapping

@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/22 20:43:16 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/24 04:56:52 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,9 @@ struct s_mesh
 	int		trinbr;
 	t_Mat	mat;
 	t_Vec3	pos;
-	t_Vec4	rot;
+	t_Vec3	dir;
+	t_Vec3	up;
+	t_Vec3	scale;
 };
 
 typedef struct s_light
@@ -211,7 +213,8 @@ struct s_data
 	int				planenbr;
 	t_cylinder		*cylinder;
 	int				cylindernbr;
-	t_mesh			mesh;
+	t_mesh			*mesh;
+	int				meshnbr;
 	unsigned int	rand;
 	int				bounces;
 	t_cam			cam;
@@ -225,6 +228,8 @@ t_Vec3		addvec3(t_Vec3 u, t_Vec3 v);
 t_Vec3		subvec3(t_Vec3 u, t_Vec3 v);
 t_Vec3		mulvec3(t_Vec3 u, t_Vec3 v);
 t_Vec3		scalevec3(t_Vec3 u, double v);
+t_Vec3		rotatevec3(t_Vec3 vector, t_Vec3 dir, t_Vec3 up);
+t_Vec4		vec4(double x, double y, double z, double w);
 double		dot(t_Vec3 u, t_Vec3 v);
 t_Vec3		cross(t_Vec3 u, t_Vec3 v);
 double		vec3length2(t_Vec3 u);
@@ -267,8 +272,10 @@ t_Vec3		lerpvec3(t_Vec3 u, t_Vec3 v, float val);
 t_Ray		newray(t_Vec3 orig, t_Vec3 dir);
 t_Col		raycol(t_Ray ray, t_data *data, int depth);
 void		save_img(t_data *data);
-t_mesh		create_cube(void);
-t_hit		hit_mesh(t_mesh mesh, t_Ray ray, t_hit hit);
+t_mesh		read_obj(char *obj);
+t_hit		hit_mesh(t_data *data, t_Ray ray, t_hit hit);
 t_mesh		translate_mesh(t_mesh mesh);
+t_mesh		rotate_mesh(t_mesh mesh);
+t_mesh		scale_mesh(t_mesh mesh);
 
 #endif

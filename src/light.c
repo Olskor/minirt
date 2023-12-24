@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 04:40:26 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/22 18:31:02 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/24 21:48:28 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_hit	hit_light2(double temp, t_light light, t_Ray ray, int didhit)
 	}
 	hit.t = temp;
 	hit.p = vecat(ray, hit.t);
-	hit.norm = scalevec3(subvec3(hit.p, light.pos), 1 / 0.1);
+	hit.norm = scalevec3(subvec3(hit.p, light.pos), 1 / 0.05);
 	hit.mat.col = scalecol(light.col, light.intensity);
 	hit.mat.col.t = 1;
 	hit.mat.smooth = 0;
@@ -44,7 +44,7 @@ t_hit	hit_light1(t_light light, t_Ray ray, float t_min, float t_max)
 	oc = subvec3(ray.orig, light.pos);
 	abc.x = vec3length2(ray.dir);
 	abc.y = dot(oc, ray.dir);
-	abc.z = vec3length2(oc) - pow(0.1, 2);
+	abc.z = vec3length2(oc) - pow(0.05, 2);
 	discriminant = pow(abc.y, 2) - abc.x * abc.z;
 	if (discriminant > 0)
 	{

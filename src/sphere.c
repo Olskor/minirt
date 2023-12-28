@@ -6,11 +6,22 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:31:16 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/22 18:28:15 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/26 18:57:49 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+t_Vec3	get_uv(t_sphere sphere, t_Vec3 p)
+{
+	t_Vec3	uv;
+	t_Vec3	n;
+
+	n = unit_vec3(subvec3(p, sphere.pos));
+	uv.x = 0.5 + atan2(n.z, n.x) / (2 * M_PI);
+	uv.y = 0.5 - asin(n.y) / M_PI;
+	return (uv);
+}
 
 t_hit	hit_sphere2(double temp, t_sphere sphere, t_Ray ray, int didhit)
 {
@@ -23,6 +34,7 @@ t_hit	hit_sphere2(double temp, t_sphere sphere, t_Ray ray, int didhit)
 	}
 	hit.t = temp;
 	hit.p = vecat(ray, hit.t);
+	hit.uv = get_uv(sphere, hit.p);
 	hit.norm = scalevec3(subvec3(hit.p, sphere.pos), 1 / sphere.rad);
 	hit.mat = sphere.mat;
 	hit.hit = 1;
@@ -68,6 +80,7 @@ t_hit	hit_sphere(t_data *data, t_Ray ray, t_hit hit)
 			hit.norm = hit_temp.norm;
 			hit.p = hit_temp.p;
 			hit.t = hit_temp.t;
+			hit.uv = hit_temp.uv;
 			hit.mat = hit_temp.mat;
 			hit.hit = 1;
 		}

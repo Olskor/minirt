@@ -6,11 +6,22 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:09:21 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/24 22:55:17 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/25 17:17:43 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+t_Vec3	get_uv_cyl(t_cylinder cylinder, t_Vec3 p)
+{
+	t_Vec3	uv;
+	t_Vec3	n;
+
+	n = unit_vec3(subvec3(p, cylinder.pos));
+	uv.x = 0.5 + atan2(n.z, n.x) / (2 * M_PI);
+	uv.y = 0.5 - asin(n.y) / M_PI;
+	return (uv);
+}
 
 t_hit hit_cylinder1(t_cylinder cylinder, t_Ray ray, float t_min, float t_max)
 {
@@ -43,6 +54,7 @@ t_hit hit_cylinder1(t_cylinder cylinder, t_Ray ray, float t_min, float t_max)
 				hit.t = temp;
 				hit.p = p;
 				hit.norm = norm;
+				hit.uv = get_uv_cyl(cylinder, hit.p);
 				hit.hit = 1;
 				hit.mat = cylinder.mat;
 				return (hit);
@@ -59,6 +71,7 @@ t_hit hit_cylinder1(t_cylinder cylinder, t_Ray ray, float t_min, float t_max)
 				hit.t = temp;
 				hit.p = p;
 				hit.norm = norm;
+				hit.uv = get_uv_cyl(cylinder, hit.p);
 				hit.hit = 1;
 				hit.mat = cylinder.mat;
 				return (hit);
@@ -86,6 +99,7 @@ t_hit	hit_planedisk1(t_cylinder cylinder, t_Ray ray, float t_min, float t_max)
 			hit.t = temp;
 			hit.p = vecat(ray, hit.t);
 			hit.norm = scalevec3(cylinder.dir, -1);
+			hit.uv = get_uv_cyl(cylinder, hit.p);
 			hit.hit = 1;
 			hit.mat = cylinder.mat;
 			if (vec3length2(subvec3(hit.p, addvec3(cylinder.pos,
@@ -115,6 +129,7 @@ t_hit	hit_planedisk2(t_cylinder cylinder, t_Ray ray, float t_min, float t_max)
 			hit.t = temp;
 			hit.p = vecat(ray, hit.t);
 			hit.norm = cylinder.dir;
+			hit.uv = get_uv_cyl(cylinder, hit.p);
 			hit.hit = 1;
 			hit.mat = cylinder.mat;
 			if (vec3length2(subvec3(hit.p, addvec3(cylinder.pos,

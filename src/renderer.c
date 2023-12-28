@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/24 22:04:44 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/28 16:28:39 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,52 +68,132 @@ t_Col	pb_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
 	t_Vec3	target;
 	t_Vec3	diffuse;
 	t_Vec3	specular;
+	t_Col	col;
 	int		isspecular;
 
 	if (hit.hit)
 	{
 		if (hit.mat.col.t > 0)
-			return (scalecol(hit.mat.col, 10));
-		diffuse = addvec3(hit.p, lambertian_random_ray(hit.norm, data));
-		specular = addvec3(hit.p, reflect(ray.dir, hit.norm));
-		isspecular = hit.mat.metal >= pseudorand(data);
-		target = lerpvec3(diffuse, specular, hit.mat.smooth * isspecular);
-		return (mulcol(scalecol(raycol(newray(hit.p, subvec3(target, hit.p)),
-						data, depth - 1), 0.5), hit.mat.col));
+			return (scalecol(hit.mat.col, 1));
+		diffuse = lambertian_random_ray(hit.norm, data);
+		specular = reflect(ray.dir, hit.norm);
+		target = lerpvec3(diffuse, specular, hit.mat.smooth);
+		col = mulcol(scalecol(raycol(newray(hit.p, target),
+						data, depth - 1), 0.5),
+				lerpcol(col4(0, 0.4, 0.4, 0.4), hit.mat.col, hit.mat.metal));
+		col = scalecol(col, saturate(hit.mat.smooth + hit.mat.metal));
+		col = addcol(col,
+				mulcol(scalecol(raycol(newray(hit.p, diffuse),
+							data, depth - 1), 0.5), hit.mat.col));
+		return (col);
 	}
-	if (data->sky.active)
-		return (computesky(unit_vec3(ray.dir), data->sky));
-	else if (depth < 1 + data->bounces)
-		return (scalecol(data->ambient, 10));
 	return (col4(0, 0, 0, 0));
 }
 
-t_Col	direct_light_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
+t_Col	cook_torrance(t_hit hit, t_Ray ray, t_light light, t_Col lightcol);
+
+t_Col	light_ray(t_Ray ray, t_data *data, t_hit hit, t_light light)
 {
+	t_Col	col;
+	t_Col	lightcol;
+	t_Vec3	lightdir;
+	float	ndoth;
+	float	intensity;
+
+	col = col4(0, 0, 0, 0);
+	lightdir = subvec3(light.pos, hit.p);
+	ndoth = dot(hit.norm, unit_vec3(addvec3(lightdir,
+					subvec3(ray.orig, hit.p))));
+	intensity = light.intensity / vec3length2(lightdir);
+	intensity *= (1 - hit.mat.metal);
+	lightcol = raycol(newray(hit.p, lightdir), data, -1);
+	col = mulcol(hit.mat.col, scalecol(lightcol, saturate(dot(hit.norm, lightdir)) * intensity / 5));
+	col = addcol(col, cook_torrance(hit, ray, light, lightcol));
+	return (col);
+}
+
+t_Col	simple_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
+{
+	int		i;
+	t_Col	col;
+	float	intensity;
+
+	i = 0;
 	if (hit.hit)
 	{
-		return (hit.mat.col);
+		if (depth == -1)
+		{
+			if (hit.mat.col.t > 0)
+				return (scalecol(hit.mat.col, 1));
+			return (data->ambient);
+		}
+		col = col4(0, 0, 0, 0);
+		while (i < data->lightnbr)
+			col = addcol(col, light_ray(ray, data, hit, data->light[i++]));
+		return (mulcol(col, hit.mat.col));
 	}
+	if (data->sky.active)
+		return (computesky(unit_vec3(ray.dir), data->sky));
+	if (depth < 1 + data->bounces)
+		return (scalecol(data->ambient, 2));
 }
-t_hit	hit_mesh1(t_mesh mesh, t_Ray ray, t_hit hit);
+
+t_Vec3	unpack_normal(t_Col col)
+{
+	t_Vec3	norm;
+
+	norm.x = -(col.g * 2 - 1);
+	norm.y = -(col.r * 2 - 1);
+	norm.z = col.b;
+	return (norm);
+}
+
+t_Vec3	bump(t_Vec3 normal, t_Tex *bump, t_Vec3 uv)
+{
+	t_Col	col;
+	t_Vec3	bumpnorm;
+	t_Vec3	tangent;
+	t_Vec3	binormal;
+	t_Vec3	newnorm;
+
+	col = get_texcol(bump, uv);
+	bumpnorm = unpack_normal(col);
+	tangent = cross(normal, vec3(0, 1, 0));
+	if (vec3length2(tangent) < 0.001)
+		tangent = cross(normal, vec3(1, 0, 0));
+	binormal = cross(normal, tangent);
+	newnorm = addvec3(scalevec3(tangent, bumpnorm.x),
+			addvec3(scalevec3(binormal, bumpnorm.y),
+				scalevec3(normal, bumpnorm.z)));
+	return (unit_vec3(newnorm));
+}
 
 t_Col	raycol(t_Ray ray, t_data *data, int depth)
 {
 	t_hit	hit;
 
-	if (depth <= 0)
-		return (data->ambient);
+	if (depth == 0)
+		return (scalecol(data->ambient, 2));
 	hit.t_max = 100;
 	hit.hit = 0;
 	hit = hit_sphere(data, ray, hit);
 	hit = hit_plane(data, ray, hit);
 	hit = hit_cylinder(data, ray, hit);
 	hit = hit_mesh(data, ray, hit);
-	if (depth < 1 + data->bounces)
+	if (depth == -1)
 		hit = hit_light(data, ray, hit);
-	//return (direct_light_shading(ray, data, hit, depth));
-	//return (col4(1, hit.norm.x, hit.norm.y, hit.norm.z));
-	return (pb_shading(ray, data, hit, depth));
+	if (hit.mat.tex && hit.hit)
+		hit.mat.col = mulcol(hit.mat.col, get_texcol(hit.mat.tex, hit.uv));
+	if (hit.mat.bump && hit.hit)
+		hit.norm = bump(hit.norm, hit.mat.bump, hit.uv);
+	if (hit.mat.pbr && hit.hit)
+	{
+		hit.mat.smooth = get_texcol(hit.mat.pbr, hit.uv).g * hit.mat.smooth;
+		hit.mat.metal = get_texcol(hit.mat.pbr, hit.uv).r * hit.mat.metal;
+	}
+	if (depth == -1)
+		return (simple_shading(ray, data, hit, depth));
+	return (addcol(pb_shading(ray, data, hit, depth), simple_shading(ray, data, hit, depth)));
 }
 
 int	render(t_data *data)
@@ -160,6 +240,3 @@ int	render(t_data *data)
 	return (0);
 }
 
-//revoir le calcul des disques du cylindre
-//revoir les lights pour ne pas utiliser les spheres
-//uv mapping

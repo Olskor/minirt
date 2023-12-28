@@ -5,7 +5,7 @@ LIB			= libs/
 SRC_DIR		= src/
 OBJ_DIR		= obj/
 CC			= gcc
-CFLAGS		= -g -I
+CFLAGS		= -Ofast -I
 RM			= rm -f
 AR			= ar rcs
 
@@ -21,13 +21,13 @@ WHITE = \033[0;97m
 
 WIDTH = 800
 HEIGHT = 600
-MAX_SAMPLES = 1000
+MAX_SAMPLES = 10000
 MAX_FRAMES = 1
-MAX_BOUNCES = 5
+MAX_BOUNCES = 1
 
 SRC_FILES	=	main position_handler get_next_line vector vector1 renderer \
 input_handler value color reader factory random sphere plane cylinder light \
-ray img triangle mesh vector2
+ray img triangle mesh vector2 texture box cook_torrance
 LIBS_FILES	=	libft libmlx
 
 SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))

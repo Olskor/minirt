@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:03:50 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/24 05:45:26 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/28 16:42:30 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,26 @@ t_hit	hit_tri2(t_Vec4 afuv, t_Vec3 edge1, t_Vec3 edge2, t_Ray ray)
 		return (hit);
 	}
 	return (hit);
+}
+
+int	hit_box_tri(t_box_tri box, t_Ray ray, float t_min, float t_max)
+{
+	t_Vec3	invdir;
+	t_Vec3	tbot;
+	t_Vec3	ttop;
+	t_Vec3	tmin;
+	t_Vec3	tmax;
+
+	invdir = vec3(1 / ray.dir.x, 1 / ray.dir.y, 1 / ray.dir.z);
+	tbot = mulvec3(invdir, subvec3(box.min, ray.orig));
+	ttop = mulvec3(invdir, subvec3(box.max, ray.orig));
+	tmin = vec3(min(ttop.x, tbot.x), min(ttop.y, tbot.y), min(ttop.z, tbot.z));
+	tmax = vec3(max(ttop.x, tbot.x), max(ttop.y, tbot.y), max(ttop.z, tbot.z));
+	t_min = max(t_min, max(tmin.x, max(tmin.y, tmin.z)));
+	t_max = min(t_max, min(tmax.x, min(tmax.y, tmax.z)));
+	if (t_max < t_min)
+		return (0);
+	return (1);
 }
 
 t_hit	hit_tri1(t_Tri triangle, t_Ray ray, float t_min, float t_max)
@@ -87,7 +107,8 @@ t_hit	hit_mesh(t_data *data, t_Ray ray, t_hit hit)
 	i = 0;
 	while (i < data->meshnbr)
 	{
-		hit = hit_mesh1(data->mesh[i], ray, hit);
+		if (hit_box_tri(data->mesh[i].box, ray, 0.001, hit.t_max))
+			hit = hit_mesh1(data->mesh[i], ray, hit);
 		i++;
 	}
 	return (hit);

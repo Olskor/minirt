@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:17:41 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/18 15:42:33 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/26 22:18:55 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,15 @@ t_Col scalecol(t_Col col1, double sampleperpixel)
 	col1.g = col1.g * sampleperpixel;
 	col1.b = col1.b * sampleperpixel;
 	return (col1);
+}
+
+t_Col	lerpcol(t_Col col1, t_Col col2, float t)
+{
+	t_Col	ret;
+
+	ret.t = lerp(col1.t, col2.t, t);
+	ret.r = lerp(col1.r, col2.r, t);
+	ret.g = lerp(col1.g, col2.g, t);
+	ret.b = lerp(col1.b, col2.b, t);
+	return (ret);
 }

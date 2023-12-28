@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 19:02:20 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/24 05:52:24 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/27 10:55:38 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,72 @@ t_Tri	create_triangle(t_Vec3 pos1, t_Vec3 pos2, t_Vec3 pos3)
 	return (triangle);
 }
 
+t_box	calculate_box(t_mesh mesh)
+{
+	t_box	box;
+	int		i;
+
+	i = 0;
+	box.min = mesh.tri[0].pos1;
+	box.max = mesh.tri[0].pos1;
+	while (i < mesh.trinbr)
+	{
+		if (box.min.x > mesh.tri[i].pos1.x)
+			box.min.x = mesh.tri[i].pos1.x;
+		if (box.min.y > mesh.tri[i].pos1.y)
+			box.min.y = mesh.tri[i].pos1.y;
+		if (box.min.z > mesh.tri[i].pos1.z)
+			box.min.z = mesh.tri[i].pos1.z;
+		if (box.max.x < mesh.tri[i].pos1.x)
+			box.max.x = mesh.tri[i].pos1.x;
+		if (box.max.y < mesh.tri[i].pos1.y)
+			box.max.y = mesh.tri[i].pos1.y;
+		if (box.max.z < mesh.tri[i].pos1.z)
+			box.max.z = mesh.tri[i].pos1.z;
+		if (box.min.x > mesh.tri[i].pos2.x)
+			box.min.x = mesh.tri[i].pos2.x;
+		if (box.min.y > mesh.tri[i].pos2.y)
+			box.min.y = mesh.tri[i].pos2.y;
+		if (box.min.z > mesh.tri[i].pos2.z)
+			box.min.z = mesh.tri[i].pos2.z;
+		if (box.max.x < mesh.tri[i].pos2.x)
+			box.max.x = mesh.tri[i].pos2.x;
+		if (box.max.y < mesh.tri[i].pos2.y)
+			box.max.y = mesh.tri[i].pos2.y;
+		if (box.max.z < mesh.tri[i].pos2.z)
+			box.max.z = mesh.tri[i].pos2.z;
+		if (box.min.x > mesh.tri[i].pos3.x)
+			box.min.x = mesh.tri[i].pos3.x;
+		if (box.min.y > mesh.tri[i].pos3.y)
+			box.min.y = mesh.tri[i].pos3.y;
+		if (box.min.z > mesh.tri[i].pos3.z)
+			box.min.z = mesh.tri[i].pos3.z;
+		if (box.max.x < mesh.tri[i].pos3.x)
+			box.max.x = mesh.tri[i].pos3.x;
+		if (box.max.y < mesh.tri[i].pos3.y)
+			box.max.y = mesh.tri[i].pos3.y;
+		if (box.max.z < mesh.tri[i].pos3.z)
+			box.max.z = mesh.tri[i].pos3.z;
+		i++;
+	}
+	return (box);
+}
+
 float	ft_atof(char *str)
 {
 	float result = 0.0;
 	float sign = 1.0;
 	int i = 0;
-
+	
 	if (str[i] == '-')
-	{
+		{
 		sign = -1.0;
 		i++;
-	}
+}
 	while (str[i] >= '0' && str[i] <= '9')
-	{
+		{
 		result = result * 10.0 + (str[i] - '0');
-		i++;
+i++;
 	}
 	if (str[i] == '.')
 	{
@@ -133,6 +184,7 @@ t_mesh	read_obj(char *obj)
 			if (split[1] && split[2] && split[3])
 			{
 				pos = ft_append_pos(pos, vec3(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3])), i);
+				printf("pos: %f %f %f\n", pos[i].x, pos[i].y, pos[i].z);
 				i++;
 			}
 			free_split(split);

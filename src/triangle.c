@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:03:50 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/28 16:42:30 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 12:33:17 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,15 @@ t_hit	hit_mesh1(t_mesh mesh, t_Ray ray, t_hit hit)
 
 t_hit	hit_mesh(t_data *data, t_Ray ray, t_hit hit)
 {
-	int		i;
+	t_mesh	**mesh;
 
-	i = 0;
-	while (i < data->meshnbr)
+	mesh = data->mesh;
+	while (mesh && *mesh)
 	{
-		if (hit_box_tri(data->mesh[i].box, ray, 0.001, hit.t_max))
-			hit = hit_mesh1(data->mesh[i], ray, hit);
-		i++;
+		if (hit_box_tri((*mesh)->box, ray, 0.001, hit.t_max))
+			hit = hit_mesh1(**mesh, ray, hit);
+		mesh++;
+		hit.obj = 6;
 	}
 	return (hit);
 }

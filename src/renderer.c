@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/28 16:28:39 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 12:33:39 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,10 @@ t_Col	light_ray(t_Ray ray, t_data *data, t_hit hit, t_light light)
 
 t_Col	simple_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
 {
-	int		i;
 	t_Col	col;
 	float	intensity;
+	t_light	**light;
 
-	i = 0;
 	if (hit.hit)
 	{
 		if (depth == -1)
@@ -128,8 +127,12 @@ t_Col	simple_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
 			return (data->ambient);
 		}
 		col = col4(0, 0, 0, 0);
-		while (i < data->lightnbr)
-			col = addcol(col, light_ray(ray, data, hit, data->light[i++]));
+		light = data->light;
+		while (light && *light)
+		{
+			col = addcol(col, light_ray(ray, data, hit, **light));
+			light++;
+		}
 		return (mulcol(col, hit.mat.col));
 	}
 	if (data->sky.active)
@@ -176,17 +179,19 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 		return (scalecol(data->ambient, 2));
 	hit.t_max = 100;
 	hit.hit = 0;
+	hit.obj = 0;
 	hit = hit_sphere(data, ray, hit);
 	hit = hit_plane(data, ray, hit);
 	hit = hit_cylinder(data, ray, hit);
 	hit = hit_mesh(data, ray, hit);
+	hit = hit_box(data, ray, hit);
 	if (depth == -1)
 		hit = hit_light(data, ray, hit);
-	if (hit.mat.tex && hit.hit)
+	if (hit.mat.tex && hit.hit && depth >= 0)
 		hit.mat.col = mulcol(hit.mat.col, get_texcol(hit.mat.tex, hit.uv));
-	if (hit.mat.bump && hit.hit)
+	if (hit.mat.bump && hit.hit && depth >= 0)
 		hit.norm = bump(hit.norm, hit.mat.bump, hit.uv);
-	if (hit.mat.pbr && hit.hit)
+	if (hit.mat.pbr && hit.hit && depth >= 0)
 	{
 		hit.mat.smooth = get_texcol(hit.mat.pbr, hit.uv).g * hit.mat.smooth;
 		hit.mat.metal = get_texcol(hit.mat.pbr, hit.uv).r * hit.mat.metal;

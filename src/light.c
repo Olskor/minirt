@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 04:40:26 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/28 03:20:55 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 12:31:50 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,13 @@ t_hit	hit_light1(t_light light, t_Ray ray, float t_min, float t_max)
 
 t_hit	hit_light(t_data *data, t_Ray ray, t_hit hit)
 {
-	int		i;
+	t_light	**light;
 	t_hit	hit_temp;
 
-	i = 0;
-	while (i < data->lightnbr)
+	light = data->light;
+	while (light && *light)
 	{
-		hit_temp = hit_light1(data->light[i], ray, 0.001, hit.t_max);
+		hit_temp = hit_light1(**light, ray, 0.001, hit.t_max);
 		if (hit_temp.hit)
 		{
 			hit.t_max = hit_temp.t;
@@ -77,8 +77,12 @@ t_hit	hit_light(t_data *data, t_Ray ray, t_hit hit)
 			hit.t = hit_temp.t;
 			hit.mat = hit_temp.mat;
 			hit.hit = hit_temp.hit;
+			hit.mat.tex = 0;
+			hit.mat.bump = 0;
+			hit.mat.pbr = 0;
+			hit.obj = 4;
 		}
-		i++;
+		light++;
 	}
 	return (hit);
 }

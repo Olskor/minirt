@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 19:02:20 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/27 10:55:38 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 12:08:17 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ t_Tri	create_triangle(t_Vec3 pos1, t_Vec3 pos2, t_Vec3 pos3)
 	return (triangle);
 }
 
-t_box	calculate_box(t_mesh mesh)
+t_box_tri	calculate_box(t_mesh mesh)
 {
-	t_box	box;
-	int		i;
+	t_box_tri	box;
+	int			i;
 
 	i = 0;
 	box.min = mesh.tri[0].pos1;

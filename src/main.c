@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/28 16:36:53 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 12:30:50 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,148 +85,167 @@ int	main(int argc, char **argv)
 	data.sky.sun = vec3(-1, -1, 0);
 	data.sky.intensity = 2;
 
-	data.meshnbr = 2;
-	data.mesh = malloc(sizeof(t_mesh) * data.meshnbr);
+	data.mesh = malloc(sizeof(t_mesh *) * 2);
 
-	/*data.mesh[0].trinbr = 0;
-	data.mesh[0] = read_obj("icosphere.obj");
-	data.mesh[0].mat.col = col4(0, 1, 1, 1);
-	data.mesh[0].mat.smooth = 1.0;
-	data.mesh[0].mat.metal = 0;
-	data.mesh[0].mat.tex = 0;
-	data.mesh[0].mat.bump = 0;
-	data.mesh[0].mat.pbr = 0;
-	data.mesh[0].pos = vec3(0, -0.5, -1);
-	data.mesh[0].dir = unit_vec3(vec3(0, 0, 1));
-	data.mesh[0].up = vec3(0, 1, 0);
-	data.mesh[0].scale = vec3(0.3, 0.3, 0.3);
-	data.mesh[0] = rotate_mesh(data.mesh[0]);
-	data.mesh[0] = scale_mesh(data.mesh[0]);
-	data.mesh[0] = translate_mesh(data.mesh[0]);
-	data.mesh[0].box = calculate_box(data.mesh[0]);
+	data.mesh[0] = malloc(sizeof(t_mesh));
+	data.mesh[0]->trinbr = 0;
+	*data.mesh[0] = read_obj("icosphere.obj");
+	data.mesh[0]->mat.col = col4(0, 1, 1, 1);
+	data.mesh[0]->mat.smooth = 1.0;
+	data.mesh[0]->mat.metal = 0;
+	data.mesh[0]->mat.tex = 0;
+	data.mesh[0]->mat.bump = 0;
+	data.mesh[0]->mat.pbr = 0;
+	data.mesh[0]->pos = vec3(0, -0.5, -1);
+	data.mesh[0]->dir = unit_vec3(vec3(0, 0, 1));
+	data.mesh[0]->up = vec3(0, 1, 0);
+	data.mesh[0]->scale = vec3(0.3, 0.3, 0.3);
+	*data.mesh[0] = rotate_mesh(*data.mesh[0]);
+	*data.mesh[0] = scale_mesh(*data.mesh[0]);
+	*data.mesh[0] = translate_mesh(*data.mesh[0]);
+	data.mesh[0]->box = calculate_box(*data.mesh[0]);
 
-	data.mesh[1].trinbr = 0;
-	data.mesh[1] = read_obj("plane.obj");
-	data.mesh[1].mat.col = col4(1, 10, 10, 10);
-	data.mesh[1].mat.smooth = 0.0;
-	data.mesh[1].mat.metal = 0.0;
-	data.mesh[1].mat.tex = 0;
-	data.mesh[1].mat.bump = 0;
-	data.mesh[1].mat.pbr = 0;
-	data.mesh[1].pos = vec3(0, 0.99, -0.6);
-	data.mesh[1].dir = vec3(0, 0, 1);
-	data.mesh[1].up = vec3(0, -1, 0);
-	data.mesh[1].scale = vec3(0.3, 0.3, 0.3);
-	data.mesh[1] = rotate_mesh(data.mesh[1]);
-	data.mesh[1] = scale_mesh(data.mesh[1]);
-	data.mesh[1] = translate_mesh(data.mesh[1]);
-	data.mesh[1].box = calculate_box(data.mesh[1]);*/
+	data.mesh[1] = malloc(sizeof(t_mesh));
+	data.mesh[1]->trinbr = 0;
+	*data.mesh[1] = read_obj("plane.obj");
+	data.mesh[1]->mat.col = col4(1, 10, 10, 10);
+	data.mesh[1]->mat.smooth = 0.0;
+	data.mesh[1]->mat.metal = 0.0;
+	data.mesh[1]->mat.tex = 0;
+	data.mesh[1]->mat.bump = 0;
+	data.mesh[1]->mat.pbr = 0;
+	data.mesh[1]->pos = vec3(0, 0.99, -0.6);
+	data.mesh[1]->dir = vec3(0, 0, 1);
+	data.mesh[1]->up = vec3(0, -1, 0);
+	data.mesh[1]->scale = vec3(0.3, 0.3, 0.3);
+	*data.mesh[1] = rotate_mesh(*data.mesh[1]);
+	*data.mesh[1] = scale_mesh(*data.mesh[1]);
+	*data.mesh[1] = translate_mesh(*data.mesh[1]);
+	data.mesh[1]->box = calculate_box(*data.mesh[1]);
 
-	data.lightnbr = 2;
-	data.light = malloc(sizeof(t_light) * data.lightnbr);
+	data.mesh[2] = 0;
 
-	data.light[0].pos = vec3(-0.5, 0.7, -1.3);
-	data.light[0].col = col4(1, 1, 0, 1);
-	data.light[0].intensity = 1;
+	data.light = malloc(sizeof(t_light *) * 2);
 
-	data.light[1].pos = vec3(0.5, -0.2, -0.3);
-	data.light[1].col = col4(1, 0, 1, 1);
-	data.light[1].intensity = 1;
+	data.light[0] = malloc(sizeof(t_light));
+	data.light[0]->pos = vec3(-0.5, 0.7, -1.3);
+	data.light[0]->col = col4(1, 1, 0, 1);
+	data.light[0]->intensity = 1;
 
-	data.spherenbr = 1;
-	data.sphere = malloc(sizeof(t_sphere) * data.spherenbr);
+	data.light[1] = malloc(sizeof(t_light));
+	data.light[1]->pos = vec3(0.5, -0.2, -0.3);
+	data.light[1]->col = col4(1, 0, 1, 1);
+	data.light[1]->intensity = 1;
 
-	data.sphere[0].pos = vec3(-0.6, -0.2, -1);
-	data.sphere[0].rad = 0.3;
-	data.sphere[0].mat.col = col4(0, 1, 1, 1);
-	data.sphere[0].mat.smooth = 0.8;
-	data.sphere[0].mat.metal = 0.0;
-	data.sphere[0].mat.tex = earth;
-	data.sphere[0].mat.bump = earth_bump;
-	data.sphere[0].mat.pbr = earth_pbr;
+	data.light[2] = 0;
 
-	data.planenbr = 6;
-	data.plane = malloc(sizeof(t_plane) * data.planenbr);
+	data.sphere = malloc(sizeof(t_sphere *));
 
-	data.plane[0].pos = vec3(0, -0.5, 0);
-	data.plane[0].norm = vec3(0, 1, 0);
-	data.plane[0].mat.col = col4(0, 1, 1, 1);
-	data.plane[0].mat.smooth = 1.0;
-	data.plane[0].mat.metal = 0.0;
-	data.plane[0].mat.tex = checker;
-	data.plane[0].mat.bump = checker_height;
-	data.plane[0].mat.pbr = 0;
+	data.sphere[0] = malloc(sizeof(t_sphere));
+	data.sphere[0]->pos = vec3(-0.6, -0.2, -1);
+	data.sphere[0]->rad = 0.3;
+	data.sphere[0]->mat.col = col4(0, 1, 1, 1);
+	data.sphere[0]->mat.smooth = 0.8;
+	data.sphere[0]->mat.metal = 0.0;
+	data.sphere[0]->mat.tex = earth;
+	data.sphere[0]->mat.bump = earth_bump;
+	data.sphere[0]->mat.pbr = earth_pbr;
 
-	data.plane[1].pos = vec3(0, 1, 0);
-	data.plane[1].norm = vec3(0, -1, 0);
-	data.plane[1].mat.col = col4(0, 1, 1, 1);
-	data.plane[1].mat.smooth = 0.0;
-	data.plane[1].mat.metal = 0.0;
-	data.plane[1].mat.tex = 0;
-	data.plane[1].mat.bump = 0;
-	data.plane[1].mat.pbr = 0;
+	data.sphere[1] = 0;
 
-	data.plane[2].pos = vec3(-1, 0, 0);
-	data.plane[2].norm = vec3(1, 0, 0);
-	data.plane[2].mat.col = col4(0, 1, 0, 0);
-	data.plane[2].mat.smooth = 0.0;
-	data.plane[2].mat.metal = 0.0;
-	data.plane[2].mat.tex = 0;
-	data.plane[2].mat.bump = 0;
-	data.plane[2].mat.pbr = 0;
+	data.plane = malloc(sizeof(t_plane *) * 6);
 
-	data.plane[3].pos = vec3(1, 0, 0);
-	data.plane[3].norm = vec3(-1, 0, 0);
-	data.plane[3].mat.col = col4(0, 0, 1, 0);
-	data.plane[3].mat.smooth = 0.0;
-	data.plane[3].mat.metal = 0.0;
-	data.plane[3].mat.tex = 0;
-	data.plane[3].mat.bump = 0;
-	data.plane[3].mat.pbr = 0;
+	data.plane[0] = malloc(sizeof(t_plane));
+	data.plane[0]->pos = vec3(0, -0.5, 0);
+	data.plane[0]->norm = vec3(0, 1, 0);
+	data.plane[0]->mat.col = col4(0, 1, 1, 1);
+	data.plane[0]->mat.smooth = 1.0;
+	data.plane[0]->mat.metal = 0.0;
+	data.plane[0]->mat.tex = checker;
+	data.plane[0]->mat.bump = checker_height;
+	data.plane[0]->mat.pbr = 0;
 
-	data.plane[4].pos = vec3(0, 0, -2);
-	data.plane[4].norm = vec3(0, 0, 1);
-	data.plane[4].mat.col = col4(0, 1, 1, 1);
-	data.plane[4].mat.smooth = 0.0;
-	data.plane[4].mat.metal = 0.0;
-	data.plane[4].mat.tex = checker;
-	data.plane[4].mat.bump = checker_height;
-	data.plane[4].mat.pbr = 0;
+	data.plane[1] = malloc(sizeof(t_plane));
+	data.plane[1]->pos = vec3(0, 1, 0);
+	data.plane[1]->norm = vec3(0, -1, 0);
+	data.plane[1]->mat.col = col4(0, 1, 1, 1);
+	data.plane[1]->mat.smooth = 0.0;
+	data.plane[1]->mat.metal = 0.0;
+	data.plane[1]->mat.tex = 0;
+	data.plane[1]->mat.bump = 0;
+	data.plane[1]->mat.pbr = 0;
 
-	data.plane[5].pos = vec3(0, 0, 1);
-	data.plane[5].norm = vec3(0, 0, -1);
-	data.plane[5].mat.col = col4(0, 1, 1, 1);
-	data.plane[5].mat.smooth = 0.0;
-	data.plane[5].mat.metal = 0.0;
-	data.plane[5].mat.tex = 0;
-	data.plane[5].mat.bump = 0;
-	data.plane[5].mat.pbr = 0;
+	data.plane[2] = malloc(sizeof(t_plane));
+	data.plane[2]->pos = vec3(-1, 0, 0);
+	data.plane[2]->norm = vec3(1, 0, 0);
+	data.plane[2]->mat.col = col4(0, 1, 0, 0);
+	data.plane[2]->mat.smooth = 0.0;
+	data.plane[2]->mat.metal = 0.0;
+	data.plane[2]->mat.tex = 0;
+	data.plane[2]->mat.bump = 0;
+	data.plane[2]->mat.pbr = 0;
 
-	data.cylindernbr = 1;
-	data.cylinder = malloc(sizeof(t_cylinder) * data.cylindernbr);
+	data.plane[3] = malloc(sizeof(t_plane));
+	data.plane[3]->pos = vec3(1, 0, 0);
+	data.plane[3]->norm = vec3(-1, 0, 0);
+	data.plane[3]->mat.col = col4(0, 0, 1, 0);
+	data.plane[3]->mat.smooth = 0.0;
+	data.plane[3]->mat.metal = 0.0;
+	data.plane[3]->mat.tex = 0;
+	data.plane[3]->mat.bump = 0;
+	data.plane[3]->mat.pbr = 0;
 
-	data.cylinder[0].pos = vec3(0.6, 0, -1);
-	data.cylinder[0].dir = unit_vec3(vec3(0, 1, 0));
-	data.cylinder[0].rad = 0.25;
-	data.cylinder[0].h = 1;
-	data.cylinder[0].mat.col = col4(0, 1, 1, 1);
-	data.cylinder[0].mat.smooth = 0.98;
-	data.cylinder[0].mat.metal = 1.0;
-	data.cylinder[0].mat.tex = rainbow;
-	data.cylinder[0].mat.bump = 0;
-	data.cylinder[0].mat.pbr = 0;
+	data.plane[4] = malloc(sizeof(t_plane));
+	data.plane[4]->pos = vec3(0, 0, -2);
+	data.plane[4]->norm = vec3(0, 0, 1);
+	data.plane[4]->mat.col = col4(0, 1, 1, 1);
+	data.plane[4]->mat.smooth = 0.0;
+	data.plane[4]->mat.metal = 0.0;
+	data.plane[4]->mat.tex = checker;
+	data.plane[4]->mat.bump = checker_height;
+	data.plane[4]->mat.pbr = 0;
 
-	data.boxnbr = 1;
-	data.box = malloc(sizeof(t_box) * data.boxnbr);
+	data.plane[5] = malloc(sizeof(t_plane));
+	data.plane[5]->pos = vec3(0, 0, 1);
+	data.plane[5]->norm = vec3(0, 0, -1);
+	data.plane[5]->mat.col = col4(0, 1, 1, 1);
+	data.plane[5]->mat.smooth = 0.0;
+	data.plane[5]->mat.metal = 0.0;
+	data.plane[5]->mat.tex = 0;
+	data.plane[5]->mat.bump = 0;
+	data.plane[5]->mat.pbr = 0;
 
-	data.box[0].min = vec3(-0.1, -0.5, -1.0);
-	data.box[0].max = vec3(0.1, -0.3, -1.3);
-	data.box[0].mat.col = col4(0, 1, 1, 1);
-	data.box[0].mat.smooth = 0.0;
-	data.box[0].mat.metal = 0.0;
-	data.box[0].mat.tex = 0;
-	data.box[0].mat.bump = 0;
-	data.box[0].mat.pbr = 0;
+	data.plane[6] = NULL;
+
+	data.cylinder = malloc(sizeof(t_cylinder *));
+
+	data.cylinder[0] = malloc(sizeof(t_cylinder));
+	data.cylinder[0]->pos = vec3(0.6, 0, -1);
+	data.cylinder[0]->dir = unit_vec3(vec3(0, 1, 0));
+	data.cylinder[0]->rad = 0.25;
+	data.cylinder[0]->h = 1;
+	data.cylinder[0]->mat.col = col4(0, 1, 1, 1);
+	data.cylinder[0]->mat.smooth = 0.98;
+	data.cylinder[0]->mat.metal = 1.0;
+	data.cylinder[0]->mat.tex = rainbow;
+	data.cylinder[0]->mat.bump = 0;
+	data.cylinder[0]->mat.pbr = 0;
+	
+	data.cylinder[1] = 0;
+
+	data.box = malloc(sizeof(t_box *));
+
+	data.box[0] = malloc(sizeof(t_box));
+	data.box[0]->min = vec3(-0.1, -0.5, -0.7);
+	data.box[0]->max = vec3(0.1, -0.3, -0.5);
+	data.box[0]->mat.col = col4(0, 1, 1, 1);
+	data.box[0]->mat.smooth = 1.0;
+	data.box[0]->mat.metal = 1.0;
+	data.box[0]->mat.tex = 0;
+	data.box[0]->mat.bump = 0;
+	data.box[0]->mat.pbr = 0;
+
+	data.box[1] = 0;
 
 	mlx_loop(data.mlx);
 	return (0);

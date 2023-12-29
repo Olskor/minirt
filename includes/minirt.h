@@ -221,22 +221,17 @@ struct s_data
 	int				sample;
 	t_img			img;
 	t_Col			**cimg;
-	t_light			*light;
+	t_light			**light;
 	int				lightnbr;
 	t_sky			sky;
-	t_sphere		*sphere;
-	int				spherenbr;
-	t_plane			*plane;
-	int				planenbr;
-	t_cylinder		*cylinder;
-	int				cylindernbr;
-	t_box			*box;
-	int				boxnbr;
-	t_mesh			*mesh;
-	int				meshnbr;
+	t_sphere		**sphere;
+	t_plane			**plane;
+	t_cylinder		**cylinder;
+	t_box			**box;
+	t_mesh			**mesh;
 	unsigned int	rand;
 	int				bounces;
-	t_cam			cam;
+	t_cam			*cam;
 	t_Col			ambient;
 	int				frame;
 };
@@ -270,7 +265,7 @@ int			create_trgb(t_Col col);
 t_Col		mulcol(t_Col col1, t_Col col2);
 t_Col		col4(double t, double r, double g, double b);
 t_Col		addcol(t_Col col1, t_Col col2);
-t_Col		scalecol(t_Col col1, double sampleperpixel);
+t_Col		scalecolParser(t_Col col1, double sampleperpixel);
 void		hook_setup(t_data *data);
 float		lerp(float a, float b, float t);
 float		aces(float x);
@@ -285,7 +280,6 @@ t_hit		hit_light(t_data *data, t_Ray ray, t_hit hit);
 t_hit		hit_cone(t_data *data, t_Ray ray, t_hit hit);
 void		img_pix_put(t_img *img, int x, int y, int color);
 int			render_background(t_img *img, int color);
-void		load(char	*path, t_data *data);
 t_Vec3		reflect(t_Vec3 v, t_Vec3 n);
 float		fresnel(t_hit hit, t_Ray ray);
 t_Vec3		lerpvec3(t_Vec3 u, t_Vec3 v, float val);
@@ -305,5 +299,9 @@ t_Col		raycol(t_Ray ray, t_data *data, int depth);
 t_Col		lerpcol(t_Col col1, t_Col col2, float t);
 t_Tex		*load_img(char *path, t_data *data);
 
+//Fred
+void	load(char	*path, t_data *data);
+t_data	create_config(char *path);
+void	cleanup(t_data	d);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:09:21 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/25 17:17:43 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 12:31:22 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,31 +144,33 @@ t_hit	hit_planedisk2(t_cylinder cylinder, t_Ray ray, float t_min, float t_max)
 
 t_hit	hit_cylinder(t_data *data, t_Ray ray, t_hit hit)
 {
-	int		i;
-	t_hit	hit_temp;
+	t_cylinder	**cylinder;
+	t_hit		hit_temp;
 
-	i = 0;
-	while (i < data->cylindernbr)
+	cylinder = data->cylinder;
+	while (cylinder && *cylinder)
 	{
-		hit_temp = hit_cylinder1(data->cylinder[i], ray, 0.001, hit.t_max);
+		hit_temp = hit_cylinder1(**cylinder, ray, 0.001, hit.t_max);
 		if (hit_temp.hit)
 		{
 			hit = hit_temp;
 			hit.t_max = hit_temp.t;
 		}
-		hit_temp = hit_planedisk1(data->cylinder[i], ray, 0.001, hit.t_max);
+		hit_temp = hit_planedisk1(**cylinder, ray, 0.001, hit.t_max);
 		if (hit_temp.hit)
 		{
 			hit = hit_temp;
 			hit.t_max = hit_temp.t;
 		}
-		hit_temp = hit_planedisk2(data->cylinder[i], ray, 0.001, hit.t_max);
+		hit_temp = hit_planedisk2(**cylinder, ray, 0.001, hit.t_max);
 		if (hit_temp.hit)
 		{
 			hit = hit_temp;
 			hit.t_max = hit_temp.t;
 		}
-		i++;
+		if (hit_temp.hit)
+			hit.obj = 2;
+		cylinder++;
 	}
 	return (hit);
 }

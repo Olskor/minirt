@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:31:16 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/26 18:57:49 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 12:31:57 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@ t_hit	hit_sphere1(t_sphere sphere, t_Ray ray, float t_min, float t_max)
 
 t_hit	hit_sphere(t_data *data, t_Ray ray, t_hit hit)
 {
-	int		i;
-	t_hit	hit_temp;
+	t_hit		hit_temp;
+	t_sphere	**sphere;
 
-	i = 0;
-	while (i < data->spherenbr)
+	sphere = data->sphere;
+	while (sphere && *sphere)
 	{
-		hit_temp = hit_sphere1(data->sphere[i], ray, 0.001, hit.t_max);
+		hit_temp = hit_sphere1(**sphere, ray, 0.001, hit.t_max);
 		if (hit_temp.hit)
 		{
 			hit.t_max = hit_temp.t;
@@ -83,8 +83,9 @@ t_hit	hit_sphere(t_data *data, t_Ray ray, t_hit hit)
 			hit.uv = hit_temp.uv;
 			hit.mat = hit_temp.mat;
 			hit.hit = 1;
+			hit.obj = 5;
 		}
-		i++;
+		sphere++;
 	}
 	return (hit);
 }

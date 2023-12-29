@@ -1,5 +1,5 @@
 /* XPM */
-static char * earth_xpm[] = {
+static char * earth_bump_xpm[] = {
 "512 512 22355 3",
 "   	c #8180FF",
 ".  	c #8281FF",

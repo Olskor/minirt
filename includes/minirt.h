@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/28 16:41:53 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 12:08:07 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,13 +110,13 @@ typedef struct s_box_tri
 
 struct s_mesh
 {
-	t_Tri	*tri;
-	int		trinbr;
-	t_Mat	mat;
-	t_Vec3	pos;
-	t_Vec3	dir;
-	t_Vec3	up;
-	t_Vec3	scale;
+	t_Tri		*tri;
+	int			trinbr;
+	t_Mat		mat;
+	t_Vec3		pos;
+	t_Vec3		dir;
+	t_Vec3		up;
+	t_Vec3		scale;
 	t_box_tri	box;
 };
 
@@ -136,9 +136,9 @@ typedef struct s_sky
 
 typedef struct s_sphere
 {
-	float	rad;
-	t_Mat	mat;
-	t_Vec3	pos;
+	float		rad;
+	t_Mat		mat;
+	t_Vec3		pos;
 }		t_sphere;
 
 typedef struct s_plane
@@ -146,7 +146,7 @@ typedef struct s_plane
 	t_Vec3	pos;
 	t_Vec3	norm;
 	t_Mat	mat;
-}	t_plane;
+}		t_plane;
 
 typedef struct s_box
 {
@@ -155,16 +155,16 @@ typedef struct s_box
 	t_Vec3	dir;
 	t_Vec3	up;
 	t_Mat	mat;
-}	t_box;
+}		t_box;
 
 typedef struct s_cylinder
 {
-	float	rad;
-	float	h;
-	t_Mat	mat;
-	t_Vec3	pos;
-	t_Vec3	dir;
-}	t_cylinder;
+	float		rad;
+	float		h;
+	t_Mat		mat;
+	t_Vec3		pos;
+	t_Vec3		dir;
+}		t_cylinder;
 
 
 typedef struct s_hit
@@ -177,6 +177,7 @@ typedef struct s_hit
 	t_Vec3	norm;
 	t_Mat	mat;
 	t_Vec3	uv;
+	int		obj;
 }	t_hit;
 
 typedef struct s_cam
@@ -221,19 +222,13 @@ struct s_data
 	int				sample;
 	t_img			img;
 	t_Col			**cimg;
-	t_light			*light;
-	int				lightnbr;
+	t_light			**light;
 	t_sky			sky;
-	t_sphere		*sphere;
-	int				spherenbr;
-	t_plane			*plane;
-	int				planenbr;
-	t_cylinder		*cylinder;
-	int				cylindernbr;
-	t_box			*box;
-	int				boxnbr;
-	t_mesh			*mesh;
-	int				meshnbr;
+	t_sphere		**sphere;
+	t_plane			**plane;
+	t_cylinder		**cylinder;
+	t_box			**box;
+	t_mesh			**mesh;
 	unsigned int	rand;
 	int				bounces;
 	t_cam			cam;
@@ -282,7 +277,7 @@ t_hit		hit_sphere(t_data *data, t_Ray ray, t_hit hit);
 t_hit		hit_plane(t_data *data, t_Ray ray, t_hit hit);
 t_hit		hit_cylinder(t_data *data, t_Ray ray, t_hit hit);
 t_hit		hit_light(t_data *data, t_Ray ray, t_hit hit);
-t_hit		hit_cone(t_data *data, t_Ray ray, t_hit hit);
+t_hit		hit_box(t_data *data, t_Ray ray, t_hit hit);
 void		img_pix_put(t_img *img, int x, int y, int color);
 int			render_background(t_img *img, int color);
 void		load(char	*path, t_data *data);
@@ -297,7 +292,7 @@ t_hit		hit_mesh(t_data *data, t_Ray ray, t_hit hit);
 t_mesh		translate_mesh(t_mesh mesh);
 t_mesh		rotate_mesh(t_mesh mesh);
 t_mesh		scale_mesh(t_mesh mesh);
-t_box		calculate_box(t_mesh mesh);
+t_box_tri	calculate_box(t_mesh mesh);
 t_Tex		*checker_tex(void);
 t_Tex		*rainbowtex(void);
 t_Col		get_texcol(t_Tex *tex, t_Vec3 uv);

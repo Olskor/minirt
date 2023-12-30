@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/29 12:08:07 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 23:37:51 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,6 +299,10 @@ t_Col		get_texcol(t_Tex *tex, t_Vec3 uv);
 t_Col		raycol(t_Ray ray, t_data *data, int depth);
 t_Col		lerpcol(t_Col col1, t_Col col2, float t);
 t_Tex		*load_img(char *path, t_data *data);
+t_Vec3		bump(t_Vec3 normal, t_Tex *bump, t_Vec3 uv);
+t_Vec3		unpack_normal(t_Col col);
+t_Col		simple_shading(t_Ray ray, t_data *data, t_hit hit, int depth);
+t_Col		light_ray(t_Ray ray, t_data *data, t_hit hit, t_light light);
 
 //Fred
 void	load(char	*path, t_data *data);

@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 19:02:20 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/29 12:08:17 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 16:47:30 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ t_mesh	read_obj(char *obj)
 	i = 0;
 	j = 0;
 	fd = open(obj, O_RDONLY);
+	pos = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -184,7 +185,6 @@ t_mesh	read_obj(char *obj)
 			if (split[1] && split[2] && split[3])
 			{
 				pos = ft_append_pos(pos, vec3(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3])), i);
-				printf("pos: %f %f %f\n", pos[i].x, pos[i].y, pos[i].z);
 				i++;
 			}
 			free_split(split);
@@ -203,7 +203,8 @@ t_mesh	read_obj(char *obj)
 		line = get_next_line(fd);
 	}
 	mesh.trinbr = j;
-	free(pos);
+	if (pos)
+		free(pos);
 	close(fd);
 	return (mesh);
 }

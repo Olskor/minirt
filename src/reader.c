@@ -6,11 +6,11 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:41:39 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/20 13:48:49 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 16:49:32 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fred.h"
+/*#include "../includes/fred.h"
 
 t_sphere	*cr_sphere(char	**line);
 t_cam	*cr_camera(char	**line);
@@ -155,4 +155,4 @@ t_data	create_config(char *path)
 	data. win= NULL;
 	load(path, &data);
 	return (data);
-}
+}*/

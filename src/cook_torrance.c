@@ -6,51 +6,80 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 12:26:07 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/27 14:09:45 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 22:57:39 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_Col	FresnelTerm(t_Col F0, float cosA)
+t_Vec3	get_uv_cyl(t_cylinder cylinder, t_Vec3 p)
 {
-	float	t = pow(1 - cosA, 5);
-    return addcol(F0, scalecol(addcol(col4(0, 1, 1, 1), scalecol(F0, -1)), t));
+	t_Vec3	uv;
+	t_Vec3	n;
+
+	n = unit_vec3(subvec3(p, cylinder.pos));
+	uv.x = 0.5 + atan2(n.z, n.x) / (2 * M_PI);
+	uv.y = 0.5 - asin(n.y) / M_PI;
+	return (uv);
 }
+
+t_Col	fresnelterm(t_Col F0, float cosA)
+{
+	float	t;
+
+	t = pow(1 - cosA, 5);
+	return (addcol(F0, scalecol(
+				addcol(col4(0, 1, 1, 1), scalecol(F0, -1)), t)));
+}
+
+typedef struct s_ct
+{
+	t_Vec3	normal;
+	t_Vec3	lightdir;
+	t_Vec3	viewdir;
+	t_Vec3	halfdir;
+	float	ndotl;
+	float	ndotv;
+	float	ndoth;
+	float	ldoth;
+	float	roughness;
+	float	lambdav;
+	float	lambdal;
+	float	v;
+	float	a2;
+	float	d;
+	float	dd;
+	t_Col	speccolor;
+	float	specularterm;
+	float	intensity;
+	t_Col	col;
+}	t_ct;
 
 t_Col	cook_torrance(t_hit hit, t_Ray ray, t_light light, t_Col lightcol)
 {
-	t_Vec3	normal   = unit_vec3(hit.norm);
-	t_Vec3	lightDir = unit_vec3(subvec3(light.pos, hit.p));
-	t_Vec3	viewDir  = unit_vec3(subvec3(ray.orig, hit.p));
-	t_Vec3	halfDir  = unit_vec3(addvec3(lightDir, viewDir));
+	t_ct	ct;
 
-	float	NdotL = saturate(dot(normal, lightDir));
-	float	NdotV = fabs(dot(normal, viewDir));
-	float	NdotH = saturate(dot(normal, halfDir));
-	float	LdotH = saturate(dot(lightDir, halfDir));
-	float	perceptualRoughness = 1 - hit.mat.smooth;
-	float	roughness = max(perceptualRoughness * perceptualRoughness, 0.002);
-	float	roughnessSqr = roughness * roughness;
-
-	float	lambdaV = NdotL * (NdotV * (1 - roughness) + roughness);
-	float	lambdaL = NdotV * (NdotL * (1 - roughness) + roughness);
-	float	V = 0.5f / (lambdaV + lambdaL + 0.000001);
-
-	float	a2 = roughness * roughness;
-    float	d = (NdotH * a2 - NdotH) * NdotH + 1.0f;
-    float	D = (1 / M_PI) * a2 / (d * d + 0.00000001);
-
-	float	oneMinusReflectivity = 1 - hit.mat.metal;
-	t_Col	specColor = lerpcol(col4(1, 0.04, 0.04, 0.04), hit.mat.col, hit.mat.metal);
-
-	float	specularterm = (0, D * V * M_PI * NdotL);
-
-	specularterm *= (specColor.r + specColor.g + specColor.b) > 0.0;
-
-	float	intensity = light.intensity / vec3length2(lightDir);
-	t_Col	col = scalecol(lightcol, intensity);
-
-	t_Col	color = mulcol(scalecol(col, specularterm), FresnelTerm(specColor, LdotH));
-	return (color);
+	ct.normal = unit_vec3(hit.norm);
+	ct.lightdir = unit_vec3(subvec3(light.pos, hit.p));
+	ct.viewdir = unit_vec3(subvec3(ray.orig, hit.p));
+	ct.halfdir = unit_vec3(addvec3(ct.lightdir, ct.viewdir));
+	ct.ndotl = saturate(dot(ct.normal, ct.lightdir));
+	ct.ndotv = fabs(dot(ct.normal, ct.viewdir));
+	ct.ndoth = saturate(dot(ct.normal, ct.halfdir));
+	ct.ldoth = saturate(dot(ct.lightdir, ct.halfdir));
+	ct.roughness = max((1 - hit.mat.smooth) * (1 - hit.mat.smooth), 0.002);
+	ct.lambdav = ct.ndotl * (ct.ndotv * (1 - ct.roughness) + ct.roughness);
+	ct.lambdal = ct.ndotv * (ct.ndotl * (1 - ct.roughness) + ct.roughness);
+	ct.v = 0.5f / (ct.lambdav + ct.lambdal + 0.000001);
+	ct.a2 = ct.roughness * ct.roughness;
+	ct.d = (ct.ndoth * ct.a2 - ct.ndoth) * ct.ndoth + 1.0f;
+	ct.dd = (1 / M_PI) * ct.a2 / (ct.d * ct.d + 0.00000001);
+	ct.speccolor = lerpcol(col4(1, 0.04, 0.04, 0.04),
+			hit.mat.col, hit.mat.metal);
+	ct.specularterm = (ct.dd * ct.v * M_PI * ct.ndotl);
+	ct.specularterm *= (ct.speccolor.r + ct.speccolor.g + ct.speccolor.b) > 0.0;
+	ct.intensity = light.intensity / vec3length2(ct.lightdir);
+	ct.col = scalecol(lightcol, ct.intensity);
+	return (mulcol(scalecol(ct.col, ct.specularterm),
+			fresnelterm(ct.speccolor, ct.ldoth)));
 }

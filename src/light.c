@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 04:40:26 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/29 12:31:50 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 16:45:32 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ t_hit	hit_light1(t_light light, t_Ray ray, float t_min, float t_max)
 {
 	t_Vec3	oc;
 	t_Vec3	abc;
-	t_hit	hit;
 	double	discriminant;
 	double	temp;
 

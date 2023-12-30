@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:03:50 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/29 12:33:17 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 16:46:21 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	hit_box_tri(t_box_tri box, t_Ray ray, float t_min, float t_max)
 	return (1);
 }
 
-t_hit	hit_tri1(t_Tri triangle, t_Ray ray, float t_min, float t_max)
+t_hit	hit_tri1(t_Tri triangle, t_Ray ray, float t_max)
 {
 	t_hit	hit;
 	t_Vec3	edge1;
@@ -85,7 +85,7 @@ t_hit	hit_mesh1(t_mesh mesh, t_Ray ray, t_hit hit)
 	i = 0;
 	while (i < mesh.trinbr)
 	{
-		hit_temp = hit_tri1(mesh.tri[i], ray, 0.001, hit.t_max);
+		hit_temp = hit_tri1(mesh.tri[i], ray, hit.t_max);
 		if (hit_temp.hit)
 		{
 			hit.t_max = hit_temp.t;

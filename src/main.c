@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/29 12:30:50 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 16:36:28 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,6 +246,8 @@ int	main(int argc, char **argv)
 	data.box[0]->mat.pbr = 0;
 
 	data.box[1] = 0;
+
+	argv[1] = 0;
 
 	mlx_loop(data.mlx);
 	return (0);

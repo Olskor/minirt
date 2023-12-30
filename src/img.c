@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 18:12:34 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/25 17:17:38 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 17:24:39 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,52 +49,4 @@ int	render_background(t_img *img, int color)
 		++i;
 	}
 	return (0);
-}
-
-void	save_img(t_data *data)
-{
-	int		fd;
-	int		i;
-	int		j;
-	char	*filename;
-	char	*tmp;
-
-	tmp = ft_itoa(data->frame);
-	data->frame++;
-	filename = ft_strjoin("img/", tmp);
-	filename = ft_strjoin(filename, ".ppm");
-	fd = open(filename, O_CREAT | O_WRONLY, 0666);
-	write(fd, "P3\n", 3);
-	free(tmp);
-	tmp = ft_itoa(data->wi);
-	write(fd, tmp, ft_strlen(tmp));
-	write(fd, " ", 1);
-	free(tmp);
-	tmp = ft_itoa(data->he);
-	write(fd, tmp, ft_strlen(tmp));
-	write(fd, "\n", 1);
-	i = 0;
-	while (i < data->he)
-	{
-		j = 0;
-		while (j < data->wi)
-		{
-			tmp = ft_itoa((int) (aces(data->cimg[i][j].b) * 255.99));
-			write(fd, tmp, ft_strlen(tmp));
-			write(fd, "\n", 1);
-			free(tmp);
-			tmp = ft_itoa((int) (aces(data->cimg[i][j].r) * 255.99));
-			write(fd, tmp, ft_strlen(tmp));
-			write(fd, "\n", 1);
-			free(tmp);
-			tmp = ft_itoa((int) (aces(data->cimg[i][j].g) * 255.99));
-			write(fd, tmp, ft_strlen(tmp));
-			write(fd, "\n", 1);
-			free(tmp);
-			j++;
-		}
-		i++;
-	}
-	free(filename);
-	close(fd);
 }

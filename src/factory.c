@@ -1,5 +1,5 @@
 //#include "minirt.h"
-#include "../includes/fred.h"
+/*#include "../includes/fred.h"
 
 t_Col	cr_col(t_Vec3 v)
 {
@@ -154,5 +154,5 @@ t_cylinder	*cr_cylinder(char	**line)
 	on_spaces(line);
 	_grab_col(&ret->mat.col, line);
 	return (ret);
-}
+}*/
 

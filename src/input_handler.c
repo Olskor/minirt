@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jauffret <jauffret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:18:17 by jauffret          #+#    #+#             */
-/*   Updated: 2023/04/12 14:25:25 by jauffret         ###   ########.fr       */
+/*   Updated: 2023/12/29 16:44:12 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,21 @@ void	hook_setup(t_data *data)
 
 int	mouse_handle(int button, int x, int y, t_data *data)
 {
+	if (button && x && y && data)
+		return (0);
 	return (0);
 }
 
 int	input_next(int keysym, t_data *data)
 {
+	if (data && keysym)
+		return (0);
 	return (0);
 }
 
 int	handle_input(int keysym, t_data *data)
 {
+	if (keysym && data)
+		return (0);
 	return (input_next(keysym, data));
 }

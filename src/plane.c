@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:03:50 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/25 17:16:16 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/29 12:31:14 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,13 @@ t_hit	hit_plane1(t_plane plane, t_Ray ray, float t_min, float t_max)
 
 t_hit	hit_plane(t_data *data, t_Ray ray, t_hit hit)
 {
-	int		i;
+	t_plane	**plane;
 	t_hit	hit_temp;
 
-	i = 0;
-	while (i < data->planenbr)
+	plane = data->plane;
+	while (plane && *plane)
 	{
-		hit_temp = hit_plane1(data->plane[i], ray, 0.001, hit.t_max);
+		hit_temp = hit_plane1(**plane, ray, 0.001, hit.t_max);
 		if (hit_temp.hit)
 		{
 			hit.t_max = hit_temp.t;
@@ -97,8 +97,9 @@ t_hit	hit_plane(t_data *data, t_Ray ray, t_hit hit)
 			hit.mat = hit_temp.mat;
 			hit.uv = hit_temp.uv;
 			hit.hit = hit_temp.hit;
+			hit.obj = 1;
 		}
-		i++;
+		plane++;
 	}
 	return (hit);
 }

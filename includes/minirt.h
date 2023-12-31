@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/29 23:37:51 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/31 17:46:33 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,6 @@ struct s_data
 	t_img			img;
 	t_Col			**cimg;
 	t_light			**light;
-	int				lightnbr;
 	t_sky			sky;
 	t_sphere		**sphere;
 	t_plane			**plane;
@@ -233,7 +232,7 @@ struct s_data
 	unsigned int	rand;
 	int				bounces;
 	t_cam			*cam;
-	t_Col			ambient;
+	t_Col			*ambient;
 	int				frame;
 };
 
@@ -267,6 +266,7 @@ t_Col		mulcol(t_Col col1, t_Col col2);
 t_Col		col4(double t, double r, double g, double b);
 t_Col		addcol(t_Col col1, t_Col col2);
 t_Col		scalecolParser(t_Col col1, double sampleperpixel);
+t_Col		scalecol(t_Col col, double scale);
 void		hook_setup(t_data *data);
 float		lerp(float a, float b, float t);
 float		aces(float x);
@@ -303,10 +303,14 @@ t_Vec3		bump(t_Vec3 normal, t_Tex *bump, t_Vec3 uv);
 t_Vec3		unpack_normal(t_Col col);
 t_Col		simple_shading(t_Ray ray, t_data *data, t_hit hit, int depth);
 t_Col		light_ray(t_Ray ray, t_data *data, t_hit hit, t_light light);
-
-//Fred
-void	load(char	*path, t_data *data);
-t_data	create_config(char *path);
-void	cleanup(t_data	d);
+void		load(char	*path, t_data *data);
+void		create_config(char *path, t_data *data);
+void		cleanup(t_data	d);
+void		_add_cylinder(t_cylinder *cylinder, t_data *data);
+void		_add_sphere(t_sphere *sphere, t_data *data);
+void		_add_plane(t_plane *plane, t_data *data);
+void		_add_light(t_light *l, t_data *data);
+t_light		*cr_light(char **line);
+t_Col		*cr_ambient(char	**line);
 
 #endif

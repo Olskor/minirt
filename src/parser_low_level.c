@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_low_level.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:30:18 by fbourgue          #+#    #+#             */
-/*   Updated: 2023/12/30 00:35:47 by fbourgue         ###   ########.fr       */
+/*   Updated: 2023/12/31 16:11:21 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	on_spaces(char **s_init)
 {
-	char	*c;
 	char	**s;
 
 	s = s_init;
@@ -27,6 +26,18 @@ void	on_spaces(char **s_init)
 	}
 }
 
+char	*ft_spacechr(const char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '\n')
+		i++;
+	if (s[i] == ' ' || s[i] == '\t' || s[i] != '\n')
+		return ((char *) s + i);
+	return (0);
+}
+
 char	*next(char **line)
 {
 	char	*ret;
@@ -35,7 +46,9 @@ char	*next(char **line)
 
 	on_spaces(line);
 	next_coma = ft_strchr(*line, ',');
-	next_space = ft_strchr(*line, ' ');
+	if (!next_coma)
+		next_coma = ft_strchr(*line, '\n');
+	next_space = ft_spacechr(*line);
 	if (next_space == 0 || (next_coma && (next_coma < next_space)))
 		ret = ft_substr(*line, 0, next_coma - *line);
 	else
@@ -55,7 +68,7 @@ double	_double(char *params)
 	div = 1;
 	r = ft_atoi(params);
 	dot = ft_strchr(params, '.');
-	if (! dot)
+	if (!dot)
 	{
 		free(params);
 		return (r);
@@ -75,11 +88,10 @@ double	_double(char *params)
 double	_doubleFailBack(char **params, double failBack)
 {
 	double	ret;
-
+	printf(*params);
 	if (params && *params && **params && (ft_strlen(*params) > 0))
 	{
 		ret = _double(next(params));
-		free (*params);
 		return (ret);
 	}
 	else

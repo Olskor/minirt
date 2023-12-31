@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 23:35:03 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/29 23:57:38 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/31 17:44:19 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_Col	light_ray(t_Ray ray, t_data *data, t_hit hit, t_light light)
 
 	col = col4(0, 0, 0, 0);
 	lightdir = subvec3(light.pos, hit.p);
-	intensity = light.intensity / vec3length2(lightdir);
+	intensity = light.intensity / vec3length(lightdir);
 	intensity *= (1 - hit.mat.metal);
 	lightcol = raycol(newray(hit.p, lightdir), data, -1);
 	col = mulcol(hit.mat.col, scalecol(lightcol,
@@ -62,12 +62,9 @@ t_Col	simple_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
 	if (hit.hit)
 	{
 		if (depth == -1)
-		{
 			if (hit.mat.col.t > 0)
 				return (scalecol(hit.mat.col, 1));
-			return (data->ambient);
-		}
-		col = col4(0, 0, 0, 0);
+		col = *data->ambient;
 		light = data->light;
 		while (light && *light)
 		{
@@ -78,8 +75,6 @@ t_Col	simple_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
 	}
 	if (data->sky.active)
 		return (computesky(unit_vec3(ray.dir), data->sky));
-	if (depth < 1 + data->bounces)
-		return (scalecol(data->ambient, 2));
 	return (col4(0, 0, 0, 0));
 }
 

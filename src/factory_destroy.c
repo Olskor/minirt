@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   factory_destroy.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 00:30:27 by fbourgue          #+#    #+#             */
-/*   Updated: 2023/12/30 00:30:37 by fbourgue         ###   ########.fr       */
+/*   Updated: 2023/12/30 14:09:19 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	_kill_pointer_tab(void **t)
 		free(*t);
 		t++;
 	}
-	free(*t);
+	free(t);
 }
 
 void	cleanup(t_data	d)

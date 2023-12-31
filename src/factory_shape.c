@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   factory_shape.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:39:22 by fbourgue          #+#    #+#             */
-/*   Updated: 2023/12/30 00:38:27 by fbourgue         ###   ########.fr       */
+/*   Updated: 2023/12/31 13:55:02 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ void	_add_plane(t_plane*s, t_data *data)
 
 	pt_data = data->plane;
 	nb = _tab_size(data->plane, sizeof(t_plane *));
-	tab = calloc(sizeof(t_plane *), (nb +2));
+	tab = calloc(sizeof(t_plane *), (nb + 2));
 	pt_tab = tab;
 	while (pt_data && *pt_data)
-		*(pt_tab++) =* (pt_data++);
+		*(pt_tab++) = *(pt_data++);
 	*(pt_tab++) = s;
 	tab[nb + 1] = NULL;
 	free (data->plane);
@@ -77,7 +77,7 @@ void	_add_sphere(t_sphere *s, t_data *data)
 	tab = calloc(sizeof(t_sphere *), (nb +2));
 	pt_tab = tab;
 	while (pt_data && *pt_data)
-		*(pt_tab++) =* (pt_data++);
+		*(pt_tab++) = *(pt_data++);
 	*(pt_tab++) = s;
 	tab[nb + 1] = NULL;
 	free (data->sphere);

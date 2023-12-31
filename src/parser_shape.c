@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_shape.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:29:21 by fbourgue          #+#    #+#             */
-/*   Updated: 2023/12/30 00:37:09 by fbourgue         ###   ########.fr       */
+/*   Updated: 2023/12/31 16:14:50 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,14 @@ t_plane	*cr_plane(char	**line)
 	unit_vec3(ret->norm);
 	on_spaces(line);
 	_grab_col(&ret->mat.col, line);
-//	ret->mat.smooth = _doubleFailBack(line,0.0);
-//	ret->mat.metal = _doubleFailBack(line,0.0);
+	ret->mat.tex = 0;
+	ret->mat.bump = 0;
+	ret->mat.pbr = 0;
+	ret->mat.col.t = 0;
+	on_spaces(line);
+	ret->mat.smooth = _doubleFailBack(line, 0.0);
+	on_spaces(line);
+	ret->mat.metal = _doubleFailBack(line, 0.0);
 	return (ret);
 }
 
@@ -59,15 +65,21 @@ t_cylinder	*cr_cylinder(char	**line)
 	_grab_3_doubles(&ret->pos, line);
 	on_spaces(line);
 	_grab_3_doubles(&ret->dir, line);
-	unit_vec3(ret->dir);
+	ret->dir = unit_vec3(ret->dir);
 	on_spaces(line);
 	ret->rad = (_double(next(line)) / 2);
 	on_spaces(line);
 	ret->h = (_double(next(line)));
 	on_spaces(line);
 	_grab_col(&ret->mat.col, line);
-//	ret->mat.smooth = _doubleFailBack(line,0.0);
-//	ret->mat.metal = _doubleFailBack(line,0.0);
+	ret->mat.tex = 0;
+	ret->mat.bump = 0;
+	ret->mat.pbr = 0;
+	ret->mat.col.t = 0;
+	on_spaces(line);
+	ret->mat.smooth = _doubleFailBack(line, 0.0);
+	on_spaces(line);
+	ret->mat.metal = _doubleFailBack(line, 0.0);
 	return (ret);
 }
 
@@ -83,7 +95,14 @@ t_sphere	*cr_sphere(char	**line)
 	ret->rad = (_double(next(line)) / 2);
 	on_spaces(line);
 	_grab_col(&ret->mat.col, line);
-//	ret->mat.smooth = _doubleFailBack(line,0.0);
-//	ret->mat.metal = _doubleFailBack(line,0.0);
+	ret->mat.tex = 0;
+	ret->mat.bump = 0;
+	ret->mat.pbr = 0;
+	ret->mat.col.t = 0;
+	printf(*line);
+	on_spaces(line);
+	ret->mat.smooth = _doubleFailBack(line, 0.0);
+	on_spaces(line);
+	ret->mat.metal = _doubleFailBack(line, 0.0);
 	return (ret);
 }

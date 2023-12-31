@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:28:39 by fbourgue          #+#    #+#             */
-/*   Updated: 2023/12/30 00:34:34 by fbourgue         ###   ########.fr       */
+/*   Updated: 2023/12/31 17:46:38 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,17 @@ void	_grab_col(t_Col *ret, char **line)
 	*ret = (cr_col(vec3(t_int[0], t_int[1], t_int[2])));
 }
 
-t_Col	cr_ambient(char	**line)
+t_Col	*cr_ambient(char	**line)
 {
-	t_Col	ret;
-	t_Col	c;
+	t_Col	*ret;
 	double	intensity;
 
 	(*line) += 1;
 	on_spaces(line);
 	intensity = _double(next(line));
-	_grab_col(&c, line);
-	ret = scalecolParser(c, intensity);
+	ret = malloc(sizeof(t_Col));
+	_grab_col(ret, line);
+	*ret = scalecolParser(*ret, intensity);
 	return (ret);
 }
 
@@ -79,11 +79,11 @@ t_cam	*cr_camera(char	**line)
 	on_spaces(line);
 	ret = malloc(sizeof(t_cam));
 	_grab_3_doubles(&ret->pos, line);
-	unit_vec3(ret->pos);
 	on_spaces(line);
 	_grab_3_doubles(&ret->rot, line);
 	ret->rot = addvec3(ret->rot, ret->pos);
 	on_spaces(line);
+	ret->vup = vec3(0, 1, 0);
 	ret->fov = ft_atoi_free_param(next(line));
 	return (ret);
 }

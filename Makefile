@@ -26,8 +26,10 @@ MAX_FRAMES = 1
 MAX_BOUNCES = 1
 
 SRC_FILES	=	main position_handler get_next_line vector vector1 renderer \
-input_handler value color reader factory random sphere plane cylinder light \
-ray img triangle mesh vector2 texture box cook_torrance color2 renderer2
+input_handler value color reader random sphere plane cylinder light \
+ray img triangle mesh vector2 texture box cook_torrance color2 renderer2 \
+parser parser_shape parser_low_level factory_shape \
+factory_misc parser_util factory_destroy
 LIBS_FILES	=	libft libmlx
 
 SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))

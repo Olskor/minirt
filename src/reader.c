@@ -6,18 +6,18 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:41:39 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/29 16:49:32 by olskor           ###   ########.fr       */
+/*   Updated: 2023/12/31 17:49:51 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*#include "../includes/fred.h"
+#include "minirt.h"
 
 t_sphere	*cr_sphere(char	**line);
 t_cam	*cr_camera(char	**line);
 t_plane	*cr_plane(char	**line);
 t_cylinder	*cr_cylinder(char	**line);
 
-int	_tab_size(void *t, int struct_size)
+/*int	_tab_size(void *t, int struct_size)
 {
 	int	nb;
 	void	*pt;
@@ -89,11 +89,11 @@ void	_add_sphere(t_sphere *s, t_data *data)
 	tab[nb + 1] = NULL;
 	free (data->sphere);
 	data->sphere = tab;
-}
+}*/
 
 void	load(char	*path, t_data *data)
 {
-	int						fd;
+	int		fd;
 	char	*line;
 	char	*sline;
 
@@ -112,47 +112,43 @@ void	load(char	*path, t_data *data)
 		}
 		else if (ft_strnstr(line, "sp", 2))
 		{
-
 			_add_sphere(cr_sphere(&line), data);
 		}
-		else if (ft_strnstr(line, "C", 1))
+		else if (ft_strnstr(line, "c", 1))
 		{
 			if (data->cam)
-			{
 				perror("Error\nUne caméra est déja configurée");
-			}
 			data->cam = cr_camera(&line);
 		}
-
-//		il manque :
-//		Ambient lighting
-//		light
-
+		else if (ft_strnstr(line, "l", 1))
+			_add_light(cr_light(&line), data);
+		else if (ft_strnstr(line, "A", 1))
+		{
+			if (data->ambient)
+				perror("Error\nUne Ambient est déja configurée");
+			data->ambient = cr_ambient(&line);
+		}
 		free (sline);
 		line = get_next_line(fd);
 		sline = line;
 	}
 	close(fd);
-	free (sline);;
+	free (sline);
 }
 
-t_data	create_config(char *path)
+void	create_config(char *path, t_data *data)
 {
-	t_data	data;
-
-	data.bounces = 0;
-//	data.cam = 0;
-	data.cimg = NULL;
-	data.cylinder = NULL;
-	data.frame = 0;
-	data.he= 0;
-//	data.img = 0;
-	data.mlx = NULL;
-	data.plane = NULL;
-	data. rand= 0;
-	data.sphere = NULL;
-	data. wi= 0;
-	data. win= NULL;
-	load(path, &data);
-	return (data);
-}*/
+	data->frame = 0;
+	data->rand = 0;
+	data->sample = 0;
+	data->sky.active = 0;
+	data->ambient = NULL;
+	data->cylinder = NULL;
+	data->plane = NULL;
+	data->sphere = NULL;
+	data->light = NULL;
+	data->mesh = NULL;
+	data->box = NULL;
+	printf("load\n");
+	load(path, data);
+}

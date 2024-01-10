@@ -5,7 +5,7 @@ LIB			= libs/
 SRC_DIR		= src/
 OBJ_DIR		= obj/
 CC			= gcc
-CFLAGS		= -g -Wall -Werror -Wextra -I
+CFLAGS		= -g -Wall -Werror -Wextra -I 
 RM			= rm -f
 AR			= ar rcs
 
@@ -29,14 +29,16 @@ SRC_FILES	=	main position_handler get_next_line vector vector1 renderer \
 input_handler value color reader random sphere plane cylinder light \
 ray img triangle mesh vector2 texture box cook_torrance color2 renderer2 \
 parser parser_shape parser_low_level factory_shape \
-factory_misc parser_util factory_destroy
+factory_misc parser_util factory_destroy parser_util2 parser_low_level2 \
+reader2 reader3 factory_shape2
+
 LIBS_FILES	=	libft libmlx
 
 SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ 		= 	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
 LIBS 		= 	$(addprefix $(LIB), $(addsuffix .a, $(LIBS_FILES)))
 
-LFLAGS = -lXext -lX11 -lm -lbsd
+LFLAGS = -lXext -lX11 -lm -lbsd 
 OBJF		=	.cache_exists
 
 all:		whomadeit $(NAME)

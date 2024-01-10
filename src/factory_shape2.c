@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   factory_misc.c                                     :+:      :+:    :+:   */
+/*   factory_shape2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/28 16:26:20 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/10 11:07:00 by fbourgue         ###   ########.fr       */
+/*   Created: 2024/01/10 12:13:07 by fbourgue          #+#    #+#             */
+/*   Updated: 2024/01/10 12:13:13 by fbourgue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt.h"
+#include "minirt.h"
 
 int	_tab_size(void *t, int struct_size);
 
-void	_add_light(t_light *s, t_data *data)
+void	_add_cube(t_cube *s, t_data *data)
 {
-	t_light	**tab;
-	t_light	**pt_tab;
-	t_light	**pt_data;
+	t_cube	**tab;
+	t_cube	**pt_tab;
+	t_cube	**pt_data;
 	int		nb;
 
-	pt_data = data->light;
-	nb = _tab_size(data->light, sizeof(t_light *));
-	tab = calloc(sizeof(t_light *), (nb + 2));
+	pt_data = data->cube;
+	nb = _tab_size(data->cube, sizeof(t_cube *));
+	tab = calloc(sizeof(t_cube *), (nb +2));
 	pt_tab = tab;
 	while (pt_data && *pt_data)
 		*(pt_tab++) = *(pt_data++);
 	*(pt_tab++) = s;
 	tab[nb + 1] = NULL;
-	free (data->light);
-	data->light = tab;
+	free (data->cube);
+	data->cube = tab;
 }

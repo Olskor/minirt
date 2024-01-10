@@ -3,40 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   parser_low_level.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:30:18 by fbourgue          #+#    #+#             */
-/*   Updated: 2023/12/31 16:11:21 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/10 11:19:06 by fbourgue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
-void	on_spaces(char **s_init)
-{
-	char	**s;
-
-	s = s_init;
-	while (s && *s && (
-			**s == ' ' || **s == '\t' || **s == '\n'
-		)
-	)
-	{
-		(*s)++;
-	}
-}
-
-char	*ft_spacechr(const char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '\n')
-		i++;
-	if (s[i] == ' ' || s[i] == '\t' || s[i] != '\n')
-		return ((char *) s + i);
-	return (0);
-}
+char	*ft_spacechr(const char *s);
+void	error_parse(char *msg);
+void	on_spaces(char **s_init);
 
 char	*next(char **line)
 {
@@ -57,15 +35,30 @@ char	*next(char **line)
 	return (ret);
 }
 
+double	__conv_double(int i, double r, char *dot)
+{
+	double	deci;
+	int		div;
+
+	div = 1;
+	while (--i > 0)
+		div *= 10;
+	deci = ft_atoi (++dot);
+	if (r >= 0)
+		r += (deci / div);
+	else
+		r -= (deci / div);
+	return (r);
+}
+
 double	_double(char *params)
 {
 	double	r;
-	double	deci;
 	char	*dot;
-	int		div;
 	int		i;
 
-	div = 1;
+	if (! (params && *params))
+		error_parse(NULL);
 	r = ft_atoi(params);
 	dot = ft_strchr(params, '.');
 	if (!dot)
@@ -74,21 +67,15 @@ double	_double(char *params)
 		return (r);
 	}
 	i = ft_strlen(dot);
-	while (--i > 0)
-		div *= 10;
-	deci = ft_atoi(++dot);
-	if (r >= 0)
-		r += (deci / div);
-	else
-		r -= (deci / div);
+	r = __conv_double (i, r, dot);
 	free(params);
 	return (r);
 }
 
-double	_doubleFailBack(char **params, double failBack)
+double	_double_fail_back(char **params, double failBack)
 {
 	double	ret;
-	printf(*params);
+
 	if (params && *params && **params && (ft_strlen(*params) > 0))
 	{
 		ret = _double(next(params));

@@ -20,6 +20,7 @@
 # include <X11/keysym.h>
 # include <fcntl.h>
 # include <math.h>
+#include <errno.h>
 
 # include "../includes/libft.h"
 # include "../includes/get_next_line.h"
@@ -157,6 +158,15 @@ typedef struct s_box
 	t_Mat	mat;
 }		t_box;
 
+
+typedef struct s_cube
+{
+	t_Vec3	pos;
+	t_Vec3	dir;
+	float	size;
+	t_Mat	mat;
+}		t_cube;
+
 typedef struct s_cylinder
 {
 	float		rad;
@@ -227,13 +237,16 @@ struct s_data
 	t_sphere		**sphere;
 	t_plane			**plane;
 	t_cylinder		**cylinder;
-	t_box			**box;
+	t_cube			**cube;
 	t_mesh			**mesh;
 	unsigned int	rand;
 	int				bounces;
 	t_cam			*cam;
 	t_Col			*ambient;
 	int				frame;
+	int				b_no_more_light;
+	int				b_no_more_res;
+	int				b_parse_error;
 };
 
 t_Vec3		vec3(double x, double y, double z);
@@ -265,7 +278,7 @@ int			create_trgb(t_Col col);
 t_Col		mulcol(t_Col col1, t_Col col2);
 t_Col		col4(double t, double r, double g, double b);
 t_Col		addcol(t_Col col1, t_Col col2);
-t_Col		scalecolParser(t_Col col1, double sampleperpixel);
+t_Col		scalecol_parser(t_Col col1, double sampleperpixel);
 t_Col		scalecol(t_Col col, double scale);
 void		hook_setup(t_data *data);
 float		lerp(float a, float b, float t);
@@ -305,12 +318,12 @@ t_Col		simple_shading(t_Ray ray, t_data *data, t_hit hit, int depth);
 t_Col		light_ray(t_Ray ray, t_data *data, t_hit hit, t_light light);
 void		load(char	*path, t_data *data);
 void		create_config(char *path, t_data *data);
-void		cleanup(t_data	d);
+void		cleanup(t_data	*d);
 void		_add_cylinder(t_cylinder *cylinder, t_data *data);
 void		_add_sphere(t_sphere *sphere, t_data *data);
 void		_add_plane(t_plane *plane, t_data *data);
 void		_add_light(t_light *l, t_data *data);
-t_light		*cr_light(char **line);
-t_Col		*cr_ambient(char	**line);
+t_light		*cr_light(char **line, t_data	*d);
+t_Col		*cr_ambient(char	**line, t_data	*d);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   factory_shape.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:39:22 by fbourgue          #+#    #+#             */
-/*   Updated: 2023/12/31 13:55:02 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/10 11:08:55 by fbourgue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	_add_cylinder(t_cylinder*s, t_data *data)
 	tab = calloc(sizeof(t_cylinder *), (nb +2));
 	pt_tab = tab;
 	while (pt_data && *pt_data)
-		*(pt_tab++) =* (pt_data++);
+		*(pt_tab++) = *(pt_data++);
 	*(pt_tab++) = s;
 	tab[nb + 1] = NULL;
 	free (data->cylinder);

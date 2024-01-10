@@ -86,18 +86,19 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 	hit = hit_box(data, ray, hit);
 	if (depth == -1)
 		hit = hit_light(data, ray, hit);
-	if (hit.mat.tex && hit.hit && depth >= 0)
-		//hit.mat.col = mulcol(hit.mat.col, get_texcol(hit.mat.tex, hit.uv));
-	if (hit.mat.bump && hit.hit && depth >= 0)
-		//hit.norm = bump(hit.norm, hit.mat.bump, hit.uv);
-	if (hit.mat.pbr && hit.hit && depth >= 0)
-	{
-		//hit.mat.smooth = get_texcol(hit.mat.pbr, hit.uv).g * hit.mat.smooth;
-		//hit.mat.metal = get_texcol(hit.mat.pbr, hit.uv).r * hit.mat.metal;
-	}
+//	if (hit.mat.tex && hit.hit && depth >= 0)
+//		//hit.mat.col = mulcol(hit.mat.col, get_texcol(hit.mat.tex, hit.uv));
+//	if (hit.mat.bump && hit.hit && depth >= 0)
+//		//hit.norm = bump(hit.norm, hit.mat.bump, hit.uv);
+//	if (hit.mat.pbr && hit.hit && depth >= 0)
+//	{
+//		//hit.mat.smooth = get_texcol(hit.mat.pbr, hit.uv).g * hit.mat.smooth;
+//		//hit.mat.metal = get_texcol(hit.mat.pbr, hit.uv).r * hit.mat.metal;
+//	}
+
 	if (depth == -1)
 		return (simple_shading(ray, data, hit, depth));
-	//return (simple_shading(ray, data, hit, depth));
+//	//return (simple_shading(ray, data, hit, depth));
 	return (addcol(pb_shading(ray, data, hit, depth),
 			simple_shading(ray, data, hit, depth)));
 }

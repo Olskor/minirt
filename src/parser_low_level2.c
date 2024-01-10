@@ -1,34 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   factory_misc.c                                     :+:      :+:    :+:   */
+/*   parser_low_level2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/28 16:26:20 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/10 11:07:00 by fbourgue         ###   ########.fr       */
+/*   Created: 2024/01/10 11:16:19 by fbourgue          #+#    #+#             */
+/*   Updated: 2024/01/10 11:19:27 by fbourgue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
-int	_tab_size(void *t, int struct_size);
-
-void	_add_light(t_light *s, t_data *data)
+void	on_spaces(char **s_init)
 {
-	t_light	**tab;
-	t_light	**pt_tab;
-	t_light	**pt_data;
-	int		nb;
+	char	**s;
 
-	pt_data = data->light;
-	nb = _tab_size(data->light, sizeof(t_light *));
-	tab = calloc(sizeof(t_light *), (nb + 2));
-	pt_tab = tab;
-	while (pt_data && *pt_data)
-		*(pt_tab++) = *(pt_data++);
-	*(pt_tab++) = s;
-	tab[nb + 1] = NULL;
-	free (data->light);
-	data->light = tab;
+	s = s_init;
+	while (s && *s && (
+			**s == ' ' || **s == '\t' || **s == '\n'
+		)
+	)
+	{
+		(*s)++;
+	}
+}
+
+char	*ft_spacechr(const char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '\n')
+		i++;
+	if (s[i] == ' ' || s[i] == '\t' || s[i] != '\n')
+		return ((char *) s + i);
+	return (0);
 }

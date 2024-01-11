@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:29:21 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/11 12:45:39 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/11 16:04:06 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ t_plane	*cr_plane(char	**line, t_data	*d)
 	_grab_3_doubles(&ret->norm, line);
 	unit_vec3(ret->norm);
 	_grab_col(&ret->mat.col, line, d);
-	ret->mat.tex = 0;
-	ret->mat.bump = 0;
-	ret->mat.pbr = 0;
-	ret->mat.col.t = 0;
 	ret->mat.smooth = _double_fail_back(line, 0.0);
 	ret->mat.metal = _double_fail_back(line, 0.0);
+	ret->mat.texpath = _text_fail_back(line);
+	ret->mat.bumpath = _text_fail_back(line);
+	ret->mat.pbrpath = _text_fail_back(line);
+	ret->mat.col.t = 0;
 	return (ret);
 }
 
@@ -58,8 +58,10 @@ t_cylinder	*cr_cylinder(char	**line, t_data	*d)
 	_grab_3_doubles(&ret->pos, line);
 	_grab_3_doubles(&ret->dir, line);
 	ret->dir = unit_vec3(ret->dir);
-	ret->rad = _valide_positif((_double(next(line)) / 2), "le rayon d'un cylindre", d);
-	ret->h = _valide_positif(_double(next(line)), "la hauteur d'un cylindre", d);
+	ret->rad = _valide_positif((_double(next(line)) / 2),
+			"le rayon d'un cylindre", d);
+	ret->h = _valide_positif(_double(next(line)),
+			"la hauteur d'un cylindre", d);
 	_grab_col(&ret->mat.col, line, d);
 	ret->mat.tex = 0;
 	ret->mat.bump = 0;
@@ -80,12 +82,12 @@ t_sphere	*cr_sphere(char	**line, t_data	*d)
 	ret->rad = _valide_positif((_double(next(line)) / 2),
 			"le rayon d'une sphère ", d);
 	_grab_col(&ret->mat.col, line, d);
-	ret->mat.tex = 0;
-	ret->mat.bump = 0;
-	ret->mat.pbr = 0;
-	ret->mat.col.t = 0;
 	ret->mat.smooth = _double_fail_back(line, 0.0);
 	ret->mat.metal = _double_fail_back(line, 0.0);
+	ret->mat.texpath = _text_fail_back(line);
+	ret->mat.bumpath = _text_fail_back(line);
+	ret->mat.pbrpath = _text_fail_back(line);
+	ret->mat.col.t = 0;
 	return (ret);
 }
 

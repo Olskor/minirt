@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/31 17:46:33 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/11 15:31:17 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <X11/keysym.h>
 # include <fcntl.h>
 # include <math.h>
-#include <errno.h>
+# include <errno.h>
 
 # include "../includes/libft.h"
 # include "../includes/get_next_line.h"
@@ -89,8 +89,11 @@ typedef struct s_Mat
 	float	smooth;
 	float	metal;
 	t_Tex	*tex;
+	char	*texpath;
 	t_Tex	*bump;
+	char	*bumpath;
 	t_Tex	*pbr;
+	char	*pbrpath;
 }		t_Mat;
 
 typedef struct s_mesh	t_mesh;
@@ -158,7 +161,6 @@ typedef struct s_box
 	t_Mat	mat;
 }		t_box;
 
-
 typedef struct s_cube
 {
 	t_Vec3	pos;
@@ -175,7 +177,6 @@ typedef struct s_cylinder
 	t_Vec3		pos;
 	t_Vec3		dir;
 }		t_cylinder;
-
 
 typedef struct s_hit
 {
@@ -257,6 +258,8 @@ t_Vec3		mulvec3(t_Vec3 u, t_Vec3 v);
 t_Vec3		scalevec3(t_Vec3 u, double v);
 t_Vec3		rotatevec3(t_Vec3 vector, t_Vec3 dir, t_Vec3 up);
 t_Vec4		vec4(double x, double y, double z, double w);
+t_Vec3		minvec3(t_Vec3 vec1, t_Vec3 vec2);
+t_Vec3		maxvec3(t_Vec3 vec1, t_Vec3 vec2);
 double		dot(t_Vec3 u, t_Vec3 v);
 t_Vec3		cross(t_Vec3 u, t_Vec3 v);
 double		vec3length2(t_Vec3 u);
@@ -325,5 +328,9 @@ void		_add_plane(t_plane *plane, t_data *data);
 void		_add_light(t_light *l, t_data *data);
 t_light		*cr_light(char **line, t_data	*d);
 t_Col		*cr_ambient(char	**line, t_data	*d);
+void		create_cube(t_data *data);
+t_Col		computesky(t_Vec3 dir, t_sky sky);
+t_hit		init_hit(void);
+char		*_text_fail_back(char **params);
 
 #endif

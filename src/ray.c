@@ -6,11 +6,26 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 18:14:25 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/22 18:16:06 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/11 14:40:54 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+t_hit	init_hit(void)
+{
+	t_hit	hit;
+
+	hit.hit = 0;
+	hit.t_max = 100;
+	hit.mat.col = col4(0, 0, 0, 0);
+	hit.mat.smooth = 0;
+	hit.mat.metal = 0;
+	hit.mat.tex = NULL;
+	hit.mat.bump = NULL;
+	hit.mat.pbr = NULL;
+	return (hit);
+}
 
 t_Vec3	reflect(t_Vec3 v, t_Vec3 n)
 {

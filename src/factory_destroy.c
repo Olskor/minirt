@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   factory_destroy.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 00:30:27 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/10 11:06:54 by fbourgue         ###   ########.fr       */
+/*   Updated: 2024/01/11 16:00:34 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+
+void	free_texture(t_data *data);
 
 void	_kill_pointer_tab(void **t)
 {
@@ -21,14 +23,26 @@ void	_kill_pointer_tab(void **t)
 	}
 }
 
+void	_free_mesh(t_mesh **mesh)
+{
+	while (mesh && *mesh)
+	{
+		free((*mesh)->tri);
+		free(*mesh);
+		mesh++;
+	}
+}
+
 void	cleanup(t_data	*d)
 {
+	free_texture(d);
 	_kill_pointer_tab((void **)d->cylinder);
 	_kill_pointer_tab((void **)d->plane);
 	_kill_pointer_tab((void **)d->sphere);
 	_kill_pointer_tab((void **)d->light);
 	_kill_pointer_tab((void **)d->cimg);
 	_kill_pointer_tab((void **)d->cube);
+	_free_mesh(d->mesh);
 	free(d->cam);
 	free (d->cylinder);
 	free (d->sphere);
@@ -37,5 +51,6 @@ void	cleanup(t_data	*d)
 	free(d->light);
 	free(d->cimg);
 	free(d->cube);
+	free(d->mesh);
 	free(d);
 }

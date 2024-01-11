@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 11:58:23 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/30 13:27:46 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/11 15:54:23 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_Tex	*load_img(char *path, t_data *data)
 	tex = malloc(sizeof(t_Tex));
 	tex->img = malloc(sizeof(t_Col *) * img.wi);
 	tex->res = img.wi;
-	while (i++ < img.wi)
+	while (i++ < img.wi - 1)
 	{
 		tex->img[i] = malloc(sizeof(t_Col) * img.wi);
 		img.he = 0;

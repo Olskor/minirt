@@ -9,7 +9,7 @@
 				"type": "cppdbg",
 				"request": "launch",
 				"program": "${workspaceFolder}/minirt",
-				"args": ["scenes/all_shapes.rt"],
+				"args": ["scenes/test.rt"],
 				"preLaunchTask": "make",
 				"stopAtEntry": false,
 				"cwd": "${workspaceFolder}",

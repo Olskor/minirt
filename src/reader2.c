@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reader2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:40:57 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/10 11:42:57 by fbourgue         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:54:06 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ char	*_valide_ambiant(t_data *data, char *line)
 	if (data->ambient)
 		error_parse ("Une Ambient est déja configurée");
 	data->ambient = cr_ambient (&line, data);
+	data->ambient->t = 1;
 	return (line);
 }
 

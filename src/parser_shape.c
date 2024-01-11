@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_shape.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:29:21 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/10 11:20:42 by fbourgue         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:45:39 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ t_cube	*cr_cube(char	**line, t_data	*d)
 	(*line) += 2;
 	ret = malloc(sizeof(t_cube));
 	_grab_3_doubles(&ret->pos, line);
+	_grab_3_doubles(&ret->dir, line);
 	ret->size = _valide_positif((_double(next(line)) / 2),
 			"La longueur du côté d'un cube ", d);
 	_grab_col(&ret->mat.col, line, d);

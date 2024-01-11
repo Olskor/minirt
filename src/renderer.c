@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/31 17:45:06 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/11 12:57:34 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_Col	pb_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
 	}
 	if (data->sky.active)
 		return (computesky(unit_vec3(ray.dir), data->sky));
-	return (col4(0, 0, 0, 0));
+	return (scalecol(*data->ambient, 2));
 }
 
 t_Col	raycol(t_Ray ray, t_data *data, int depth)
@@ -76,29 +76,26 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 	t_hit	hit;
 
 	if (depth == 0)
-		return (*data->ambient);
+		return (col4(0, 0, 0, 0));
 	hit.hit = 0;
 	hit.t_max = 100;
 	hit = hit_sphere(data, ray, hit);
 	hit = hit_plane(data, ray, hit);
 	hit = hit_cylinder(data, ray, hit);
 	hit = hit_mesh(data, ray, hit);
-	hit = hit_box(data, ray, hit);
 	if (depth == -1)
 		hit = hit_light(data, ray, hit);
-//	if (hit.mat.tex && hit.hit && depth >= 0)
-//		//hit.mat.col = mulcol(hit.mat.col, get_texcol(hit.mat.tex, hit.uv));
-//	if (hit.mat.bump && hit.hit && depth >= 0)
-//		//hit.norm = bump(hit.norm, hit.mat.bump, hit.uv);
-//	if (hit.mat.pbr && hit.hit && depth >= 0)
-//	{
-//		//hit.mat.smooth = get_texcol(hit.mat.pbr, hit.uv).g * hit.mat.smooth;
-//		//hit.mat.metal = get_texcol(hit.mat.pbr, hit.uv).r * hit.mat.metal;
-//	}
-
+	if (hit.mat.tex && hit.hit && depth >= 0)
+		hit.mat.col = mulcol(hit.mat.col, get_texcol(hit.mat.tex, hit.uv));
+	if (hit.mat.bump && hit.hit && depth >= 0)
+		hit.norm = bump(hit.norm, hit.mat.bump, hit.uv);
+	if (hit.mat.pbr && hit.hit && depth >= 0)
+	{
+		hit.mat.smooth = get_texcol(hit.mat.pbr, hit.uv).g * hit.mat.smooth;
+		hit.mat.metal = get_texcol(hit.mat.pbr, hit.uv).r * hit.mat.metal;
+	}
 	if (depth == -1)
 		return (simple_shading(ray, data, hit, depth));
-//	//return (simple_shading(ray, data, hit, depth));
 	return (addcol(pb_shading(ray, data, hit, depth),
 			simple_shading(ray, data, hit, depth)));
 }
@@ -142,7 +139,7 @@ int	render(t_data *data)
 		close_window(data);
 		return (0);
 	}
-	printf("sample : %d, %f\n", data->sample, data->cimg[0][0].b);
+	printf("sample : %d\n", data->sample);
 	data->sample++;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2023/12/31 15:55:24 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/11 11:59:46 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	alloccimg(t_data *data)
 		i++;
 	}
 }
+
+void	create_cube(t_data *data);
 
 int	main(int argc, char **argv)
 {
@@ -68,8 +70,8 @@ int	main(int argc, char **argv)
 	data->img.wi = data->wi;
 	data->img.he = data->he;
 	hook_setup(data);
-//	create_config(argv[1], data);
 	data->cam->aspect = (float) data->wi / (float) data->he;
+	create_cube(data);
 	mlx_loop(data->mlx);
 	return (0);
 }

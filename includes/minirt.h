@@ -350,6 +350,6 @@ char		*_valide_ambiant(t_data *data, char *line);
 void		_syntax_error(char *line, t_data *data);
 void		_config_error(char *line, t_data *data);
 void		set_resolution(char **line, t_data *data);
-
+t_Vec3	_valide_vect_norm(t_Vec3 v, t_data *d);
 
 #endif

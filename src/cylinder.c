@@ -6,24 +6,13 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:09:21 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/29 22:57:54 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 16:59:51 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 t_Vec3	get_uv_cyl(t_cylinder cylinder, t_Vec3 p);
-
-typedef struct s_hcyl
-{
-	t_Vec3	oc;
-	t_Vec3	abc;
-	double	discriminant;
-	double	temp;
-	double	max2;
-	t_Vec3	p;
-	t_Vec3	norm;
-}				t_hcyl;
 
 t_hit	hit_cylinder2(t_hcyl hc, t_cylinder cylinder, t_hit hit)
 {

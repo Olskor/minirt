@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 12:26:07 by olskor            #+#    #+#             */
-/*   Updated: 2023/12/29 22:57:39 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 16:59:35 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,29 +31,6 @@ t_Col	fresnelterm(t_Col F0, float cosA)
 	return (addcol(F0, scalecol(
 				addcol(col4(0, 1, 1, 1), scalecol(F0, -1)), t)));
 }
-
-typedef struct s_ct
-{
-	t_Vec3	normal;
-	t_Vec3	lightdir;
-	t_Vec3	viewdir;
-	t_Vec3	halfdir;
-	float	ndotl;
-	float	ndotv;
-	float	ndoth;
-	float	ldoth;
-	float	roughness;
-	float	lambdav;
-	float	lambdal;
-	float	v;
-	float	a2;
-	float	d;
-	float	dd;
-	t_Col	speccolor;
-	float	specularterm;
-	float	intensity;
-	t_Col	col;
-}	t_ct;
 
 t_Col	cook_torrance(t_hit hit, t_Ray ray, t_light light, t_Col lightcol)
 {

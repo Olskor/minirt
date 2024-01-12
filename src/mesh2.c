@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 13:44:08 by olskor            #+#    #+#             */
-/*   Updated: 2024/01/12 15:33:09 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 16:33:12 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_box_tri	calculate_box(t_mesh mesh);
 float		ft_atof(char *str);
 void		free_split(char **split);
 t_Vec3		*ft_append_pos(t_Vec3 *pos, t_Vec3 newpos, int i);
+void		_mesh_init(t_mesh *mesh, t_Vec3 **pos, t_Int2 *ij);
 
 t_Tri	*ft_append_tri(t_Tri *tri, t_Tri newtri, int i)
 {
@@ -70,8 +71,6 @@ void	ft_split_pos(char *line, t_Vec3 **pos, int *i)
 	}
 	free_split(split);
 }
-
-void	_mesh_init(t_mesh *mesh, t_Vec3 **pos, t_Int2 *ij);
 
 t_mesh	read_obj(char *obj, t_data *d, int i)
 {

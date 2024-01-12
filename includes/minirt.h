@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2024/01/12 15:08:21 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 17:00:05 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,40 @@ typedef struct s_img
 	int		he;
 }	t_img;
 
+typedef struct s_ct
+{
+	t_Vec3	normal;
+	t_Vec3	lightdir;
+	t_Vec3	viewdir;
+	t_Vec3	halfdir;
+	float	ndotl;
+	float	ndotv;
+	float	ndoth;
+	float	ldoth;
+	float	roughness;
+	float	lambdav;
+	float	lambdal;
+	float	v;
+	float	a2;
+	float	d;
+	float	dd;
+	t_Col	speccolor;
+	float	specularterm;
+	float	intensity;
+	t_Col	col;
+}	t_ct;
+
+typedef struct s_hcyl
+{
+	t_Vec3	oc;
+	t_Vec3	abc;
+	double	discriminant;
+	double	temp;
+	double	max2;
+	t_Vec3	p;
+	t_Vec3	norm;
+}				t_hcyl;
+
 typedef struct s_data	t_data;
 struct s_data
 {
@@ -272,7 +306,7 @@ int			create_trgb(t_Col col);
 t_Col		mulcol(t_Col col1, t_Col col2);
 t_Col		col4(double t, double r, double g, double b);
 t_Col		addcol(t_Col col1, t_Col col2);
-void	scalecol_parser(t_Col *col1, double sampleperpixel);
+void		scalecol_parser(t_Col *col1, double sampleperpixel);
 t_Col		scalecol(t_Col col, double scale);
 void		hook_setup(t_data *data);
 float		lerp(float a, float b, float t);

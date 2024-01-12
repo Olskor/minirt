@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 13:44:08 by olskor            #+#    #+#             */
-/*   Updated: 2024/01/12 12:40:02 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 14:28:17 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ft_split_pos(char *line, t_Vec3 **pos, int *i)
 	free_split(split);
 }
 
-t_mesh	read_obj(char *obj, t_data *d)
+t_mesh	read_obj(char *obj, t_data *d, int i)
 {
 	t_mesh	mesh;
 	t_Vec3	*pos;
@@ -94,8 +94,8 @@ t_mesh	read_obj(char *obj, t_data *d)
 		line = get_next_line(fd);
 	}
 	mesh.trinbr = ij.y;
-	if (pos)
-		free(pos);
+	_test_free(pos, 1);
+	_test_free(obj, i);
 	close(fd);
 	return (mesh);
 }

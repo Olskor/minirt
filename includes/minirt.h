@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2024/01/12 14:01:23 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 14:28:59 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,7 +294,7 @@ t_Vec3		lerpvec3(t_Vec3 u, t_Vec3 v, float val);
 t_Ray		newray(t_Vec3 orig, t_Vec3 dir);
 t_Col		raycol(t_Ray ray, t_data *data, int depth);
 void		save_img(t_data *data);
-t_mesh		read_obj(char *obj, t_data *d);
+t_mesh		read_obj(char *obj, t_data *d, int i);
 t_hit		hit_mesh(t_data *data, t_Ray ray, t_hit hit);
 t_mesh		translate_mesh(t_mesh mesh);
 t_mesh		rotate_mesh(t_mesh mesh);
@@ -353,5 +353,7 @@ void		_config_error(char *line, t_data *data);
 void		set_resolution(char **line, t_data *data);
 t_Vec3		_valide_vect_norm(t_Vec3 v, t_data *d);
 float		ft_atof(char *str);
+void		_kill_pointer_tab(void **t);
+void		_test_free(void *ptr, int i);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 15:57:59 by olskor            #+#    #+#             */
-/*   Updated: 2024/01/12 12:40:26 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 14:42:57 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	freetex(t_Tex *tex)
 {
 	int	i;
 
+	i = 0;
 	if (!tex)
 		return ;
-	i = 0;
 	while (i < tex->res)
 	{
 		free(tex->img[i]);

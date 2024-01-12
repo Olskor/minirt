@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 13:45:48 by olskor            #+#    #+#             */
-/*   Updated: 2024/01/11 13:47:22 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 14:29:24 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,10 @@ t_mesh	scale_mesh(t_mesh mesh)
 		i++;
 	}
 	return (mesh);
+}
+
+void	_test_free(void *ptr, int i)
+{
+	if (ptr != NULL && i == 1)
+		free(ptr);
 }

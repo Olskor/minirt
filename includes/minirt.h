@@ -351,5 +351,7 @@ void		_syntax_error(char *line, t_data *data);
 void		_config_error(char *line, t_data *data);
 void		set_resolution(char **line, t_data *data);
 t_Vec3	_valide_vect_norm(t_Vec3 v, t_data *d);
+double	_valide_positif_non_nul(double d, char *msg, t_data *data);
+int	_valide_data(t_data *d);
 
 #endif

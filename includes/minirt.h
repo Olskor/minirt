@@ -281,7 +281,7 @@ int			create_trgb(t_Col col);
 t_Col		mulcol(t_Col col1, t_Col col2);
 t_Col		col4(double t, double r, double g, double b);
 t_Col		addcol(t_Col col1, t_Col col2);
-t_Col		scalecol_parser(t_Col col1, double sampleperpixel);
+void	scalecol_parser(t_Col *col1, double sampleperpixel);
 t_Col		scalecol(t_Col col, double scale);
 void		hook_setup(t_data *data);
 float		lerp(float a, float b, float t);

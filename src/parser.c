@@ -47,7 +47,7 @@ t_Col	*cr_ambient(char	**line, t_data	*d)
 	intensity = _double(next(line), d);
 	ret = malloc(sizeof(t_Col));
 	_grab_col(ret, line, d);
-	*ret = scalecol_parser(*ret, intensity);
+	scalecol_parser(ret, intensity);
 	return (ret);
 }
 

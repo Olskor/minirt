@@ -25,13 +25,12 @@ void	set_resolution(char **line, t_data *data)
 	data->he = h;
 }
 
-t_Col	scalecol_parser(t_Col col1, double sampleperpixel)
+void	scalecol_parser(t_Col *col1, double sampleperpixel)
 {
-	col1.t = col1.t * sampleperpixel;
-	col1.r = col1.r * sampleperpixel;
-	col1.g = col1.g * sampleperpixel;
-	col1.b = col1.b * sampleperpixel;
-	return (col1);
+	col1->t = col1->t * sampleperpixel;
+	col1->r = col1->r * sampleperpixel;
+	col1->g = col1->g * sampleperpixel;
+	col1->b = col1->b * sampleperpixel;
 }
 
 void	error_parse(char *msg, t_data	*data)

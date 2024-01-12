@@ -15,11 +15,11 @@
 void	_parse_line(char **line, t_data *data)
 {
 	if (ft_strnstr (*line, "pl", 2))
-		_add_plane (cr_plane (&*line), data);
+		_add_plane (cr_plane (&*line, data), data);
 	else if (ft_strnstr (*line, "cy", 2))
-		_add_cylinder (cr_cylinder (&*line), data);
+		_add_cylinder (cr_cylinder (&*line, data), data);
 	else if (ft_strnstr (*line, "sp", 2))
-		_add_sphere (cr_sphere (&*line), data);
+		_add_sphere (cr_sphere (&*line, data), data);
 	else if (ft_strnstr (*line, "sq", 2))
 		_add_cube(cr_cube (&*line, data), data);
 	else if (ft_strnstr (*line, "R", 1))
@@ -33,7 +33,7 @@ void	_parse_line(char **line, t_data *data)
 	else if (ft_strnstr (*line, "A", 1))
 		*line = _valide_ambiant (data, *line);
 	else
-		_syntax_error (*line);
+		_syntax_error (*line, data);
 }
 
 void	load(char	*path, t_data *data)
@@ -44,7 +44,7 @@ void	load(char	*path, t_data *data)
 
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-		_config_error("Le fichier passé en argument est introuvable.");
+		_config_error("Le fichier passé en argument est introuvable.", data);
 	line = get_next_line(fd);
 	sline = line;
 	while (line)
@@ -70,9 +70,9 @@ void	load(char	*path, t_data *data)
 void	valide_config(t_data *data)
 {
 	if ( ! data->ambient)
-		_config_error("Il n'y a aucun Ambiant");
+		_config_error("Il n'y a aucun Ambiant", data);
 	if ( ! data->ambient)
-		_config_error("Il n'y a aucun Ambiant");
+		_config_error("Il n'y a aucun Ambiant", data);
 }
 
 void	create_config(char *path, t_data *data)

@@ -61,7 +61,7 @@ int	main(int argc, char **argv)
 		return (write(2, "error: not enough argument\n", 27));
 	data->bounces = MAX_BOUNCES;
 	create_config(argv[1], data);
-	if (data->b_parse_error)
+	if (data->b_parse_error || !_valide_data(data))
 	{
 		cleanup(data);
 		exit(-1);

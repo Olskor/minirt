@@ -45,6 +45,8 @@ t_Col	*cr_ambient(char	**line, t_data	*d)
 	(*line) += 1;
 	on_spaces(line);
 	intensity = _double(next(line), d);
+	if (intensity < 0 || intensity >1)
+		_syntax_error("l'intensité d'Ambiant doit être entre 0 et 1.", d);
 	ret = malloc(sizeof(t_Col));
 	_grab_col(ret, line, d);
 	scalecol_parser(ret, intensity);

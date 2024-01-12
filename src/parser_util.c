@@ -23,6 +23,9 @@ void	set_resolution(char **line, t_data *data)
 	h = _double(next(line), data);
 	data->wi = w;
 	data->he = h;
+	if (w < 1 || h < 1)
+		_syntax_error("La résolution est mal définie.", data);
+
 }
 
 void	scalecol_parser(t_Col *col1, double sampleperpixel)

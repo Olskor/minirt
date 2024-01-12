@@ -6,7 +6,7 @@
 /*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:28:39 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/10 11:09:33 by fbourgue         ###   ########.fr       */
+/*   Updated: 2024/01/12 16:34:31 by fbourgue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_Col	*cr_ambient(char	**line, t_data	*d)
 	(*line) += 1;
 	on_spaces(line);
 	intensity = _double(next(line), d);
-	if (intensity < 0 || intensity >1)
+	if (intensity < 0 || intensity > 1)
 		_syntax_error("l'intensité d'Ambiant doit être entre 0 et 1.", d);
 	ret = malloc(sizeof(t_Col));
 	_grab_col(ret, line, d);

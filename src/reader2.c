@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reader2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:40:57 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/11 12:54:06 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 16:41:48 by fbourgue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	_valide_cam(t_data *data, char **line)
 		error_parse ("Une caméra est déja configurée", data);
 	data->cam = cr_camera (&*line, data);
 	if (data && data->cam && (data->cam->fov < 0 || data->cam->fov > 180))
-			error_parse ("La caméra a un FOV en dehors de [0; 180]", data);
+		error_parse ("La caméra a un FOV en dehors de [0; 180]", data);
 }
 
 void	_valide_light(t_data *data, char **line)
@@ -54,7 +54,7 @@ void	_syntax_error(char *line, t_data *d)
 	if (*line)
 	{
 		err = ft_strjoin ("Problème de syntaxe :\n", line);
-		error_parse (err,d);
+		error_parse (err, d);
 		free (err);
 	}
 }

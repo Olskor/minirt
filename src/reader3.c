@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reader3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:38:33 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/11 15:32:09 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 16:41:54 by fbourgue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ char	*_comment(int fd, char *sline, char **line)
 	sline = *line;
 	return (sline);
 }
-
 
 void	_config_error(char *line, t_data *d)
 {

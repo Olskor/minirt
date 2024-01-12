@@ -357,5 +357,6 @@ int			_valide_data(t_data *d);
 float		ft_atof(char *str);
 void		_kill_pointer_tab(void **t);
 void		_test_free(void *ptr, int i);
+void		_valid_extra_line(char **line, t_data *data);
 
 #endif

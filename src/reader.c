@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:41:39 by olskor            #+#    #+#             */
-/*   Updated: 2024/01/12 12:20:34 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 16:43:01 by fbourgue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ void	_parse_line(char **line, t_data *data)
 		*line = _valide_ambiant (data, *line);
 	else
 		_syntax_error (*line, data);
-	on_spaces(line);
-	if (**line)
-		error_parse("Erreur de syntaxe.", data);
+	_valid_extra_line(line, data);
 }
 
 void	load(char	*path, t_data *data)
@@ -71,12 +69,11 @@ void	load(char	*path, t_data *data)
 	free (sline);
 }
 
-
 void	valide_config(t_data *data)
 {
-	if ( ! data->ambient)
+	if (! data->ambient)
 		_config_error("Il n'y a aucun Ambiant", data);
-	if ( ! data->ambient)
+	if (! data->ambient)
 		_config_error("Il n'y a aucun Ambiant", data);
 }
 
@@ -93,7 +90,7 @@ void	create_config(char *path, t_data *data)
 	data->light = NULL;
 	data->mesh = NULL;
 	data->cam = NULL;
-	data->cimg= NULL;
+	data->cimg = NULL;
 	data->b_no_more_light = 0;
 	data->b_parse_error = 0;
 	data->b_no_more_res = 0;

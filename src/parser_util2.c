@@ -6,7 +6,7 @@
 /*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:22:13 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/10 11:22:28 by fbourgue         ###   ########.fr       */
+/*   Updated: 2024/01/12 16:44:07 by fbourgue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,26 @@ t_Vec3	_valide_vect_norm(t_Vec3 v, t_data *d)
 	b_fail = v.x > 1 || v.x < -1 || v.y > 1 || v.y < -1 || v.z > 1 || v.z < -1;
 	b_fail = b_fail || (v.x == 0 && v.y == 0 && v.z == 0);
 	if (b_fail)
-		error_parse("Vecteur Normal invalide (valeur non comprise entre -1 et 1, et ne peut être (0; 0; 0)).", d);
+		error_parse("Vecteur Normal invalide \
+			(valeur non comprise entre -1 et 1, \
+			et ne peut être (0; 0; 0)).", d);
 	return (v);
 }
 
 int	_valide_data(t_data *d)
 {
-	int b_fail;
+	int	b_fail;
 
 	b_fail = (!d->cam) || (!d->light) || (!d->ambient) || (!d->wi);
 	if (b_fail)
-		error_parse("Il manque un Ambiant, une Camera, une Résolution ou une Light.\nCeci peut être dû à un fichier invalide.", d);
-	return ( ! b_fail);
+		error_parse("Il manque un Ambiant, une Camera, une Résolution ou une Light.\n \
+			Ceci peut être dû à un fichier invalide.", d);
+	return (! b_fail);
+}
+
+void	_valid_extra_line(char **line, t_data *data)
+{
+	on_spaces(line);
+	if (**line)
+		error_parse("Erreur de syntaxe.", data);
 }

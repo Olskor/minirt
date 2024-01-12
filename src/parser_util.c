@@ -6,7 +6,7 @@
 /*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 23:27:20 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/10 11:22:06 by fbourgue         ###   ########.fr       */
+/*   Updated: 2024/01/12 16:37:40 by fbourgue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	set_resolution(char **line, t_data *data)
 	data->he = h;
 	if (w < 1 || h < 1)
 		_syntax_error("La résolution est mal définie.", data);
-
 }
 
 void	scalecol_parser(t_Col *col1, double sampleperpixel)

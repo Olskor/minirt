@@ -27,7 +27,8 @@ char	*next(char **line)
 		ret = ft_substr(*line, 0, next_coma - *line);
 	else
 		ret = ft_substr(*line, 0, next_space - *line);
-	*line += ft_strlen(ret) + 1;
+	if (ft_strlen(ret) > 0)
+		*line += ft_strlen(ret) + 1;
 	return (ret);
 }
 
@@ -51,8 +52,7 @@ double	_double(char *params, t_data *d)
 {
 	float	r;
 
-	if (! (params && *params))
-		error_parse(NULL, d);
+	(void) d;
 	r = ft_atof(params);
 	free(params);
 	return (r);
@@ -62,7 +62,7 @@ double	_double_fail_back(char **params, double failBack, t_data *d)
 {
 	double	ret;
 
-	if (params && *params && **params && (ft_strlen(*params) > 0))
+	if (params && *params && **params)
 	{
 		ret = _double(next(params), d);
 		return (ret);

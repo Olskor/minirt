@@ -38,6 +38,9 @@ void	_parse_line(char **line, t_data *data)
 		*line = _valide_ambiant (data, *line);
 	else
 		_syntax_error (*line, data);
+	on_spaces(line);
+	if (**line)
+		error_parse("Erreur de syntaxe.", data);
 }
 
 void	load(char	*path, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 00:30:27 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/11 16:00:34 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 11:43:56 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	cleanup(t_data	*d)
 	_kill_pointer_tab((void **)d->sphere);
 	_kill_pointer_tab((void **)d->light);
 	_kill_pointer_tab((void **)d->cimg);
-	_kill_pointer_tab((void **)d->cube);
 	_free_mesh(d->mesh);
 	free(d->cam);
 	free (d->cylinder);
@@ -50,7 +49,6 @@ void	cleanup(t_data	*d)
 	free (d->ambient);
 	free(d->light);
 	free(d->cimg);
-	free(d->cube);
 	free(d->mesh);
 	free(d);
 }

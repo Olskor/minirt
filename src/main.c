@@ -52,6 +52,21 @@ int	main2(t_data *data)
 	return (0);
 }
 
+void	_valide_ext_fichier(char *p, t_data *data)
+{
+	char	*pp;
+
+	pp = ft_strrchr(p, '.');
+	if (*pp++ == '.' && *pp++ == 'r' && *pp++ == 't' && (!*pp))
+		return ;
+	else
+	{
+		printf("Error\n%s\n", "Extension du fichier invalide.");
+		free (data);
+		exit (-1);
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_data	*data;
@@ -59,6 +74,7 @@ int	main(int argc, char **argv)
 	data = malloc(sizeof(t_data));
 	if (argc <= 1)
 		return (write(2, "error: not enough argument\n", 27));
+	_valide_ext_fichier(argv[1], data);
 	data->bounces = MAX_BOUNCES;
 	create_config(argv[1], data);
 	if (data->b_parse_error || !_valide_data(data))

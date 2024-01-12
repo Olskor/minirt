@@ -60,10 +60,6 @@ void	load(char	*path, t_data *data)
 			continue ;
 		}
 		_parse_line (&line, data);
-		if (data->b_parse_error)
-		{
-			break ;
-		}
 		free (sline);
 		line = get_next_line(fd);
 		sline = line;

@@ -68,7 +68,7 @@ int	main(int argc, char **argv)
 	}
 	data->mlx = mlx_init();
 	if (!data->mlx)
-		return (write(2, "error: memory\n", 14));
+		return (write(2, "Error\nerror: memory\n", 14));
 	alloccimg(data);
 	data->win = mlx_new_window(data->mlx, data->wi, data->he, "MiniRT");
 	if (!data->win)

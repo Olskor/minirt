@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:29:21 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/12 14:46:32 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 15:24:40 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_mesh	*cr_cube(char	**line, t_data	*d)
 
 	(*line) += 2;
 	ret = malloc(sizeof(t_mesh));
-	*ret = read_obj("box.obj", d, 0);
+	*ret = read_obj("mesh/box.obj", d, 0);
 	_grab_3_doubles(&ret->pos, line, d);
 	_grab_3_doubles(&ret->dir, line, d);
 	ret->dir = unit_vec3(_valide_vect_norm(ret->dir, d));

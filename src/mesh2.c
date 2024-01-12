@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 13:44:08 by olskor            #+#    #+#             */
-/*   Updated: 2024/01/12 14:28:17 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 15:33:09 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void	ft_split_pos(char *line, t_Vec3 **pos, int *i)
 	free_split(split);
 }
 
+void	_mesh_init(t_mesh *mesh, t_Vec3 **pos, t_Int2 *ij);
+
 t_mesh	read_obj(char *obj, t_data *d, int i)
 {
 	t_mesh	mesh;
@@ -79,7 +81,7 @@ t_mesh	read_obj(char *obj, t_data *d, int i)
 	char	*line;
 	t_Int2	ij;
 
-	ij = int2(0, 0);
+	_mesh_init(&mesh, &pos, &ij);
 	fd = open(obj, O_RDONLY);
 	if (fd == -1)
 		error_parse("Le fichier mesh est introuvable.", d);

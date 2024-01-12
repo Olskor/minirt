@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 13:45:48 by olskor            #+#    #+#             */
-/*   Updated: 2024/01/12 14:29:24 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 15:33:19 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,11 @@ void	_test_free(void *ptr, int i)
 {
 	if (ptr != NULL && i == 1)
 		free(ptr);
+}
+
+void	_mesh_init(t_mesh *mesh, t_Vec3 **pos, t_Int2 *ij)
+{
+	*ij = int2(0, 0);
+	mesh->tri = NULL;
+	*pos = NULL;
 }

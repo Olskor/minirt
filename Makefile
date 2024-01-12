@@ -30,7 +30,7 @@ input_handler value color reader random sphere plane cylinder light \
 ray img triangle mesh vector2 texture cook_torrance color2 renderer2 \
 parser parser_shape parser_low_level factory_shape \
 factory_misc parser_util factory_destroy parser_util2 parser_low_level2 \
-reader2 reader3 factory_shape2 mesh2 mesh3 texture1 texture2
+reader2 reader3 factory_shape2 mesh2 mesh3 texture1 texture2 parser_shape2
 
 LIBS_FILES	=	libft libmlx
 

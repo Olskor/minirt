@@ -25,6 +25,8 @@ void	_valide_cam(t_data *data, char **line)
 	if (data && data->cam)
 		error_parse ("Une caméra est déja configurée", data);
 	data->cam = cr_camera (&*line, data);
+	if (data && data->cam && (data->cam->fov < 0 || data->cam->fov > 180))
+			error_parse ("La caméra a un FOV en dehors de [0; 180]", data);
 }
 
 void	_valide_light(t_data *data, char **line)

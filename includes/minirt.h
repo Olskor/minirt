@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2024/01/12 14:28:59 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 15:08:21 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,6 +352,8 @@ void		_syntax_error(char *line, t_data *data);
 void		_config_error(char *line, t_data *data);
 void		set_resolution(char **line, t_data *data);
 t_Vec3		_valide_vect_norm(t_Vec3 v, t_data *d);
+double		_valide_positif_non_nul(double d, char *msg, t_data *data);
+int			_valide_data(t_data *d);
 float		ft_atof(char *str);
 void		_kill_pointer_tab(void **t);
 void		_test_free(void *ptr, int i);

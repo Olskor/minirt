@@ -53,9 +53,9 @@ t_cylinder	*cr_cylinder(char	**line, t_data	*d)
 	_grab_3_doubles(&ret->pos, line, d);
 	_grab_3_doubles(&ret->dir, line, d);
 	ret->dir =unit_vec3(_valide_vect_norm(ret->dir, d));
-	ret->rad = _valide_positif((_double(next(line), d) / 2),
+	ret->rad = _valide_positif_non_nul((_double(next(line), d) / 2),
 			"le rayon d'un cylindre", d);
-	ret->h = _valide_positif(_double(next(line), d),
+	ret->h = _valide_positif_non_nul(_double(next(line), d),
 			"la hauteur d'un cylindre", d);
 	_grab_col(&ret->mat.col, line, d);
 	ret->mat.tex = 0;
@@ -74,7 +74,7 @@ t_sphere	*cr_sphere(char	**line, t_data	*d)
 	(*line) += 2;
 	ret = malloc(sizeof(t_sphere));
 	_grab_3_doubles(&ret->pos, line, d);
-	ret->rad = _valide_positif((_double(next(line), d) / 2),
+	ret->rad = _valide_positif_non_nul((_double(next(line), d) / 2),
 			"le rayon d'une sphère ", d);
 	_grab_col(&ret->mat.col, line, d);
 	ret->mat.smooth = _double_fail_back(line, 0.0, d);
@@ -101,7 +101,7 @@ t_mesh	*cr_cube(char	**line, t_data	*d)
 	_grab_3_doubles(&ret->dir, line, d);
 	ret->dir = unit_vec3(_valide_vect_norm(ret->dir, d));
 	ret->up = unit_vec3(_valide_vect_norm(cross(ret->dir, vec3(0, 1, 0)), d));
-	size = _valide_positif((_double(next(line), d) / 2),
+	size = _valide_positif_non_nul((_double(next(line), d) / 2),
 			"La longueur du côté d'un cube ", d);
 	ret->scale = vec3(size, size, size);
 	_grab_col(&ret->mat.col, line, d);

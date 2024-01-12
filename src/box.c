@@ -6,13 +6,13 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 16:09:21 by olskor            #+#    #+#             */
-/*   Updated: 2024/01/11 13:23:33 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 11:43:41 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	create_cube2(t_data *data, int i, t_cube *cube)
+/*void	create_cube2(t_data *data, int i, t_cube *cube)
 {
 	data->mesh[i] = (t_mesh *)malloc(sizeof(t_mesh));
 	*data->mesh[i] = read_obj("box.obj");
@@ -47,4 +47,4 @@ void	create_cube(t_data *data)
 		cube = cube + 1 + (i++ *0);
 	}
 	data->mesh[i] = 0;
-}
+}*/

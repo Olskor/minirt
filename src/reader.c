@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:41:39 by olskor            #+#    #+#             */
-/*   Updated: 2024/01/11 15:00:59 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 12:08:56 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@ void	_parse_line(char **line, t_data *data)
 	else if (ft_strnstr (*line, "sp", 2))
 		_add_sphere (cr_sphere (&*line, data), data);
 	else if (ft_strnstr (*line, "sq", 2))
-		_add_cube(cr_cube (&*line, data), data);
+		_add_mesh(cr_cube (&*line, data), data);
+	else if (ft_strnstr (*line, "tr", 2))
+		_add_mesh(cr_tria (&*line, data), data);
 	else if (ft_strnstr (*line, "R", 1))
 		_valide_res (data, &*line);
-	else if (ft_strnstr (*line, "c", 1))
+	else if (ft_strnstr (*line, "C", 1))
 		_valide_cam (data, &*line);
 	else if (ft_strnstr (*line, "L", 1))
 		_valide_light (data, &*line);
@@ -87,7 +89,6 @@ void	create_config(char *path, t_data *data)
 	data->sphere = NULL;
 	data->light = NULL;
 	data->mesh = NULL;
-	data->cube = NULL;
 	data->cam = NULL;
 	data->b_no_more_light = 0;
 	data->b_parse_error = 0;

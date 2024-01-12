@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2024/01/11 15:31:17 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 11:59:49 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,14 +161,6 @@ typedef struct s_box
 	t_Mat	mat;
 }		t_box;
 
-typedef struct s_cube
-{
-	t_Vec3	pos;
-	t_Vec3	dir;
-	float	size;
-	t_Mat	mat;
-}		t_cube;
-
 typedef struct s_cylinder
 {
 	float		rad;
@@ -238,7 +230,6 @@ struct s_data
 	t_sphere		**sphere;
 	t_plane			**plane;
 	t_cylinder		**cylinder;
-	t_cube			**cube;
 	t_mesh			**mesh;
 	unsigned int	rand;
 	int				bounces;
@@ -326,38 +317,38 @@ void		_add_cylinder(t_cylinder *cylinder, t_data *data);
 void		_add_sphere(t_sphere *sphere, t_data *data);
 void		_add_plane(t_plane *plane, t_data *data);
 void		_add_light(t_light *l, t_data *data);
-void		_add_cube(t_cube *s, t_data *data);
+void		_add_mesh(t_mesh *s, t_data *data);
 t_light		*cr_light(char **line, t_data	*d);
 t_Col		*cr_ambient(char	**line, t_data	*d);
 t_sphere	*cr_sphere(char	**line, t_data	*d);
 t_plane		*cr_plane(char	**line, t_data	*d);
 t_cylinder	*cr_cylinder(char	**line, t_data	*d);
-t_cube		*cr_cube(char	**line, t_data	*d);
+t_mesh		*cr_cube(char	**line, t_data	*d);
+t_mesh		*cr_tria(char **line, t_data *d);
 t_cam		*cr_camera(char	**line, t_data	*d);
 void		create_cube(t_data *data);
 t_Col		computesky(t_Vec3 dir, t_sky sky);
 t_hit		init_hit(void);
 char		*_text_fail_back(char **params);
-
-void	on_spaces(char **s_init);
-char	*next(char **line);
-char	*ft_spacechr(const char *s);
-void	error_parse(char *msg, t_data	*data);
-char	*next(char **line);
-double	_double(char *params, t_data *d);
-double	_double_fail_back(char **params, double failBack, t_data *d);
-void	_grab_3_doubles(t_Vec3 *ret, char **line, t_data *d);
-void	_grab_col(t_Col *ret, char **line, t_data	*d);
-int		ft_atoi_free_param(char *str);
+void		on_spaces(char **s_init);
+char		*next(char **line);
+char		*ft_spacechr(const char *s);
+void		error_parse(char *msg, t_data	*data);
+char		*next(char **line);
+double		_double(char *params, t_data *d);
+double		_double_fail_back(char **params, double failBack, t_data *d);
+void		_grab_3_doubles(t_Vec3 *ret, char **line, t_data *d);
+void		_grab_col(t_Col *ret, char **line, t_data	*d);
+int			ft_atoi_free_param(char *str);
 char		*_comment(int fd, char *sline, char **line);
-void	_valide_col(t_Vec3 c, t_data	*data);
-double	_valide_positif(double d, char *msg, t_data *data);
+void		_valide_col(t_Vec3 c, t_data	*data);
+double		_valide_positif(double d, char *msg, t_data *data);
 void		_valide_res(t_data *data, char **line);
 void		_valide_cam(t_data *data, char **line);
 void		_valide_light(t_data *data, char **line);
 char		*_valide_ambiant(t_data *data, char *line);
 void		_syntax_error(char *line, t_data *data);
-void	_config_error(char *line, t_data *data);
+void		_config_error(char *line, t_data *data);
 void		set_resolution(char **line, t_data *data);
 
 

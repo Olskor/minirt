@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2024/01/11 15:23:04 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 11:44:18 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	main2(t_data *data)
 	data->img.he = data->he;
 	hook_setup(data);
 	data->cam->aspect = (float) data->wi / (float) data->he;
-	create_cube(data);
 	create_texture(data);
 	mlx_loop(data->mlx);
 	return (0);

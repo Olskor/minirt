@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:41:39 by olskor            #+#    #+#             */
-/*   Updated: 2024/01/12 12:08:56 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 12:20:34 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	_parse_line(char **line, t_data *data)
 		_add_mesh(cr_cube (&*line, data), data);
 	else if (ft_strnstr (*line, "tr", 2))
 		_add_mesh(cr_tria (&*line, data), data);
+	else if (ft_strnstr (*line, "ms", 2))
+		_add_mesh(cr_mesh (&*line, data), data);
 	else if (ft_strnstr (*line, "R", 1))
 		_valide_res (data, &*line);
 	else if (ft_strnstr (*line, "C", 1))

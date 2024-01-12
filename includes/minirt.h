@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2024/01/12 11:59:49 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 13:03:57 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,7 +294,7 @@ t_Vec3		lerpvec3(t_Vec3 u, t_Vec3 v, float val);
 t_Ray		newray(t_Vec3 orig, t_Vec3 dir);
 t_Col		raycol(t_Ray ray, t_data *data, int depth);
 void		save_img(t_data *data);
-t_mesh		read_obj(char *obj);
+t_mesh		read_obj(char *obj, t_data *d);
 t_hit		hit_mesh(t_data *data, t_Ray ray, t_hit hit);
 t_mesh		translate_mesh(t_mesh mesh);
 t_mesh		rotate_mesh(t_mesh mesh);
@@ -325,6 +325,7 @@ t_plane		*cr_plane(char	**line, t_data	*d);
 t_cylinder	*cr_cylinder(char	**line, t_data	*d);
 t_mesh		*cr_cube(char	**line, t_data	*d);
 t_mesh		*cr_tria(char **line, t_data *d);
+t_mesh		*cr_mesh(char **line, t_data *d);
 t_cam		*cr_camera(char	**line, t_data	*d);
 void		create_cube(t_data *data);
 t_Col		computesky(t_Vec3 dir, t_sky sky);
@@ -350,6 +351,7 @@ char		*_valide_ambiant(t_data *data, char *line);
 void		_syntax_error(char *line, t_data *data);
 void		_config_error(char *line, t_data *data);
 void		set_resolution(char **line, t_data *data);
+float		ft_atof(char *str);
 
 
 #endif

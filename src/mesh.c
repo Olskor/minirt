@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 19:02:20 by olskor            #+#    #+#             */
-/*   Updated: 2024/01/11 13:45:38 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 12:35:24 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ t_box_tri	calculate_box(t_mesh mesh)
 	int			i;
 
 	i = 0;
+	box.min = vec3(0, 0, 0);
+	box.max = vec3(0, 0, 0);
+	if (mesh.trinbr == 0)
+		return (box);
 	box.min = mesh.tri[0].pos1;
 	box.max = mesh.tri[0].pos1;
 	while (i < mesh.trinbr)

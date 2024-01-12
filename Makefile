@@ -5,7 +5,7 @@ LIB			= libs/
 SRC_DIR		= src/
 OBJ_DIR		= obj/
 CC			= gcc
-CFLAGS		= -g -Wall -Werror -Wextra -I 
+CFLAGS		= -Ofast -Wall -Werror -Wextra -I 
 RM			= rm -f
 AR			= ar rcs
 
@@ -23,11 +23,11 @@ WIDTH = 800
 HEIGHT = 600
 MAX_SAMPLES = 10000
 MAX_FRAMES = 1
-MAX_BOUNCES = 1
+MAX_BOUNCES = 3
 
 SRC_FILES	=	main position_handler get_next_line vector vector1 renderer \
 input_handler value color reader random sphere plane cylinder light \
-ray img triangle mesh vector2 texture box cook_torrance color2 renderer2 \
+ray img triangle mesh vector2 texture cook_torrance color2 renderer2 \
 parser parser_shape parser_low_level factory_shape \
 factory_misc parser_util factory_destroy parser_util2 parser_low_level2 \
 reader2 reader3 factory_shape2 mesh2 mesh3 texture1 texture2

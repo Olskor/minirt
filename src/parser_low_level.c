@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:30:18 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/11 15:03:16 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 13:05:58 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,11 @@ double	__conv_double(int i, double r, char *dot)
 
 double	_double(char *params, t_data *d)
 {
-	double	r;
-	char	*dot;
-	int		i;
+	float	r;
 
 	if (! (params && *params))
 		error_parse(NULL, d);
-	r = ft_atoi(params);
-	dot = ft_strchr(params, '.');
-	if (!dot)
-	{
-		free(params);
-		return (r);
-	}
-	i = ft_strlen(dot);
-	r = __conv_double (i, r, dot);
+	r = ft_atof(params);
 	free(params);
 	return (r);
 }

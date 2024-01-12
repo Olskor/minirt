@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:29:21 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/12 12:05:47 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 12:40:48 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_mesh	*cr_cube(char	**line, t_data	*d)
 
 	(*line) += 2;
 	ret = malloc(sizeof(t_mesh));
-	*ret = read_obj("box.obj");
+	*ret = read_obj("box.obj", d);
 	_grab_3_doubles(&ret->pos, line, d);
 	_grab_3_doubles(&ret->dir, line, d);
 	ret->dir = unit_vec3(ret->dir);
@@ -122,9 +122,6 @@ t_mesh	*cr_tria(char **line, t_data *d)
 	_grab_3_doubles(&ret->tri[0].pos1, line, d);
 	_grab_3_doubles(&ret->tri[0].pos2, line, d);
 	_grab_3_doubles(&ret->tri[0].pos3, line, d);
-	printf("pos1: %f %f %f\n", ret->tri[0].pos1.x, ret->tri[0].pos1.y, ret->tri[0].pos1.z);
-	printf("pos2: %f %f %f\n", ret->tri[0].pos2.x, ret->tri[0].pos2.y, ret->tri[0].pos2.z);
-	printf("pos3: %f %f %f\n", ret->tri[0].pos3.x, ret->tri[0].pos3.y, ret->tri[0].pos3.z);
 	ret->tri[1].pos1 = ret->tri[0].pos1;
 	ret->tri[1].pos3 = ret->tri[0].pos2;
 	ret->tri[1].pos2 = ret->tri[0].pos3;
@@ -137,6 +134,35 @@ t_mesh	*cr_tria(char **line, t_data *d)
 	ret->mat.bump = 0;
 	ret->mat.pbr = 0;
 	ret->mat.col.t = 0;
+	ret->box = calculate_box(*ret);
+	return (ret);
+}
+
+t_mesh	*cr_mesh(char **line, t_data *d)
+{
+	t_mesh	*ret;
+	float	size;
+
+	(*line) += 2;
+	ret = malloc(sizeof(t_mesh));
+	*ret = read_obj(next(line), d);
+	_grab_3_doubles(&ret->pos, line, d);
+	_grab_3_doubles(&ret->dir, line, d);
+	_grab_3_doubles(&ret->up, line, d);
+	ret->dir = unit_vec3(ret->dir);
+	ret->up = unit_vec3(cross(ret->dir, ret->up));
+	size = _valide_positif((_double(next(line), d) / 2),
+			"La taille d'un mesh ", d);
+	ret->scale = vec3(size, size, size);
+	_grab_col(&ret->mat.col, line, d);
+	ret->mat.smooth = _double_fail_back(line, 0.0, d);
+	ret->mat.metal = _double_fail_back(line, 0.0, d);
+	ret->mat.tex = 0;
+	ret->mat.bump = 0;
+	ret->mat.pbr = 0;
+	*ret = rotate_mesh(*ret);
+	*ret = scale_mesh(*ret);
+	*ret = translate_mesh(*ret);
 	ret->box = calculate_box(*ret);
 	return (ret);
 }

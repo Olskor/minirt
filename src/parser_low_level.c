@@ -12,10 +12,6 @@
 
 #include "../includes/minirt.h"
 
-char	*ft_spacechr(const char *s);
-void	error_parse(char *msg);
-void	on_spaces(char **s_init);
-
 char	*next(char **line)
 {
 	char	*ret;
@@ -51,14 +47,14 @@ double	__conv_double(int i, double r, char *dot)
 	return (r);
 }
 
-double	_double(char *params)
+double	_double(char *params, t_data *d)
 {
 	double	r;
 	char	*dot;
 	int		i;
 
 	if (! (params && *params))
-		error_parse(NULL);
+		error_parse(NULL, d);
 	r = ft_atoi(params);
 	dot = ft_strchr(params, '.');
 	if (!dot)
@@ -72,28 +68,28 @@ double	_double(char *params)
 	return (r);
 }
 
-double	_double_fail_back(char **params, double failBack)
+double	_double_fail_back(char **params, double failBack, t_data *d)
 {
 	double	ret;
 
 	if (params && *params && **params && (ft_strlen(*params) > 0))
 	{
-		ret = _double(next(params));
+		ret = _double(next(params), d);
 		return (ret);
 	}
 	else
 		return (failBack);
 }
 
-void	_grab_3_doubles(t_Vec3 *ret, char **line)
+void	_grab_3_doubles(t_Vec3 *ret, char **line, t_data *d)
 {
 	double	t_double[3];
 
 	t_double[0] = 0;
 	t_double[1] = 0;
 	t_double[2] = 0;
-	t_double[0] = _double(next(line));
-	t_double[1] = _double(next(line));
-	t_double[2] = _double(next(line));
+	t_double[0] = _double(next(line), d);
+	t_double[1] = _double(next(line), d);
+	t_double[2] = _double(next(line), d);
 	*ret = (vec3(t_double[0], t_double[1], t_double[2]));
 }

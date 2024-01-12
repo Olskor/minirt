@@ -12,19 +12,6 @@
 
 #include "minirt.h"
 
-t_sphere	*cr_sphere(char	**line);
-t_plane		*cr_plane(char	**line);
-t_cylinder	*cr_cylinder(char	**line);
-t_cube		*cr_cube(char	**line, t_data	*d);
-void		on_spaces(char **s_init);
-char		*_comment(int fd, char *sline, char **line);
-void		_valide_res(t_data *data, char **line);
-void		_valide_cam(t_data *data, char **line);
-void		_valide_light(t_data *data, char **line);
-char		*_valide_ambiant(t_data *data, char *line);
-void		_syntax_error(char *line);
-void		_add_cube(t_cube *s, t_data *data);
-
 void	_parse_line(char **line, t_data *data)
 {
 	if (ft_strnstr (*line, "pl", 2))
@@ -56,6 +43,8 @@ void	load(char	*path, t_data *data)
 	char	*sline;
 
 	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		_config_error("Le fichier passé en argument est introuvable.");
 	line = get_next_line(fd);
 	sline = line;
 	while (line)
@@ -75,6 +64,15 @@ void	load(char	*path, t_data *data)
 	}
 	close(fd);
 	free (sline);
+}
+
+
+void	valide_config(t_data *data)
+{
+	if ( ! data->ambient)
+		_config_error("Il n'y a aucun Ambiant");
+	if ( ! data->ambient)
+		_config_error("Il n'y a aucun Ambiant");
 }
 
 void	create_config(char *path, t_data *data)

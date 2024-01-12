@@ -12,13 +12,6 @@
 
 #include "../includes/minirt.h"
 
-void	on_spaces(char **s_init);
-char	*next(char **line);
-double	_double(char *params);
-void	_grab_3_doubles(t_Vec3 *ret, char **line);
-int		ft_atoi_free_param(char *str);
-void	_valide_col(t_Vec3 c, t_data	*data);
-
 t_Col	cr_col(t_Vec3 v, t_data	*data)
 {
 	t_Col	c;
@@ -51,7 +44,7 @@ t_Col	*cr_ambient(char	**line, t_data	*d)
 
 	(*line) += 1;
 	on_spaces(line);
-	intensity = _double(next(line));
+	intensity = _double(next(line), d);
 	ret = malloc(sizeof(t_Col));
 	_grab_col(ret, line, d);
 	*ret = scalecol_parser(*ret, intensity);
@@ -65,24 +58,24 @@ t_light	*cr_light(char	**line, t_data	*d)
 	(*line) += 1;
 	on_spaces(line);
 	ret = malloc(sizeof(t_light));
-	_grab_3_doubles(&ret->pos, line);
+	_grab_3_doubles(&ret->pos, line, d);
 	on_spaces(line);
-	ret->intensity = (_double(next(line)));
+	ret->intensity = (_double(next(line), d));
 	on_spaces(line);
 	_grab_col(&ret->col, line, d);
 	return (ret);
 }
 
-t_cam	*cr_camera(char	**line)
+t_cam	*cr_camera(char	**line, t_data	*d)
 {
 	t_cam	*ret;
 
 	(*line) += 1;
 	on_spaces(line);
 	ret = malloc(sizeof(t_cam));
-	_grab_3_doubles(&ret->pos, line);
+	_grab_3_doubles(&ret->pos, line, d);
 	on_spaces(line);
-	_grab_3_doubles(&ret->rot, line);
+	_grab_3_doubles(&ret->rot, line, d);
 	ret->rot = addvec3(ret->rot, ret->pos);
 	on_spaces(line);
 	ret->vup = vec3(0, 1, 0);

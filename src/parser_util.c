@@ -12,10 +12,6 @@
 
 #include "../includes/minirt.h"
 
-double	_double(char *params);
-void	on_spaces(char **s_init);
-char	*next(char **line);
-
 void	set_resolution(char **line, t_data *data)
 {
 	double	w;
@@ -23,8 +19,8 @@ void	set_resolution(char **line, t_data *data)
 
 	(*line) += 1;
 	on_spaces(line);
-	w = _double(next(line));
-	h = _double(next(line));
+	w = _double(next(line), data);
+	h = _double(next(line), data);
 	data->wi = w;
 	data->he = h;
 }
@@ -61,5 +57,5 @@ void	_valide_col(t_Vec3 c, t_data	*d)
 	if (c.x < 0 || c.y < 0 || c.z < 0)
 		error_parse("Valeur négative interdite pour une couleur", d);
 	if (c.x > 255 || c.y > 255 || c.z > 255)
-		error_parse("Valeur > 254 interdite pour une couleur", d);
+		error_parse("Valeur > 255 interdite pour une couleur", d);
 }

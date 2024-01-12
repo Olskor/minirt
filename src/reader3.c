@@ -12,8 +12,6 @@
 
 #include "minirt.h"
 
-char	*next(char **line);
-
 char	*_text_fail_back(char **params)
 {
 	char	*ret;
@@ -33,4 +31,17 @@ char	*_comment(int fd, char *sline, char **line)
 	*line = get_next_line (fd);
 	sline = *line;
 	return (sline);
+}
+
+
+void	_config_error(char *line, t_data *d)
+{
+	char	*err;
+
+	if (*line)
+	{
+		err = ft_strjoin ("Problème de configuration :\n", line);
+		error_parse (err, d);
+		free (err);
+	}
 }

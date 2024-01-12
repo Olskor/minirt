@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:36:42 by jauffret          #+#    #+#             */
-/*   Updated: 2024/01/12 13:03:57 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 14:01:23 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,7 +272,7 @@ int			create_trgb(t_Col col);
 t_Col		mulcol(t_Col col1, t_Col col2);
 t_Col		col4(double t, double r, double g, double b);
 t_Col		addcol(t_Col col1, t_Col col2);
-t_Col		scalecol_parser(t_Col col1, double sampleperpixel);
+void	scalecol_parser(t_Col *col1, double sampleperpixel);
 t_Col		scalecol(t_Col col, double scale);
 void		hook_setup(t_data *data);
 float		lerp(float a, float b, float t);
@@ -351,7 +351,7 @@ char		*_valide_ambiant(t_data *data, char *line);
 void		_syntax_error(char *line, t_data *data);
 void		_config_error(char *line, t_data *data);
 void		set_resolution(char **line, t_data *data);
+t_Vec3		_valide_vect_norm(t_Vec3 v, t_data *d);
 float		ft_atof(char *str);
-
 
 #endif

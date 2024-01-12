@@ -138,7 +138,7 @@ int	render(t_data *data)
 		s = int2(0, s.y + 1);
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img.mlx_img, 0, 0);
-	printf("sample : %d\n", data->sample);
+//	printf("sample : %d\n", data->sample);
 	data->sample++;
 	return (0);
 }

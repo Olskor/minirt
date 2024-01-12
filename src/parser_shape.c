@@ -20,7 +20,7 @@ t_plane	*cr_plane(char	**line, t_data	*d)
 	ret = malloc(sizeof(t_plane));
 	_grab_3_doubles(&ret->pos, line, d);
 	_grab_3_doubles(&ret->norm, line, d);
-	unit_vec3(ret->norm);
+	unit_vec3(_valide_vect_norm(ret->norm, d));
 	_grab_col(&ret->mat.col, line, d);
 	ret->mat.smooth = _double_fail_back(line, 0.0, d);
 	ret->mat.metal = _double_fail_back(line, 0.0, d);
@@ -49,7 +49,7 @@ t_cylinder	*cr_cylinder(char	**line, t_data	*d)
 	ret = malloc(sizeof(t_cylinder));
 	_grab_3_doubles(&ret->pos, line, d);
 	_grab_3_doubles(&ret->dir, line, d);
-	ret->dir = unit_vec3(ret->dir);
+	ret->dir =unit_vec3(_valide_vect_norm(ret->dir, d));
 	ret->rad = _valide_positif((_double(next(line), d) / 2),
 			"le rayon d'un cylindre", d);
 	ret->h = _valide_positif(_double(next(line), d),
@@ -93,8 +93,8 @@ t_mesh	*cr_cube(char	**line, t_data	*d)
 	*ret = read_obj("box.obj", d);
 	_grab_3_doubles(&ret->pos, line, d);
 	_grab_3_doubles(&ret->dir, line, d);
-	ret->dir = unit_vec3(ret->dir);
-	ret->up = unit_vec3(cross(ret->dir, vec3(0, 1, 0)));
+	ret->dir = unit_vec3(_valide_vect_norm(ret->dir, d));
+	ret->up = unit_vec3(_valide_vect_norm(cross(ret->dir, vec3(0, 1, 0)), d));
 	size = _valide_positif((_double(next(line), d) / 2),
 			"La longueur du côté d'un cube ", d);
 	ret->scale = vec3(size, size, size);

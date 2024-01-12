@@ -61,7 +61,9 @@ void	load(char	*path, t_data *data)
 		}
 		_parse_line (&line, data);
 		if (data->b_parse_error)
+		{
 			break ;
+		}
 		free (sline);
 		line = get_next_line(fd);
 		sline = line;
@@ -92,6 +94,7 @@ void	create_config(char *path, t_data *data)
 	data->light = NULL;
 	data->mesh = NULL;
 	data->cam = NULL;
+	data->cimg= NULL;
 	data->b_no_more_light = 0;
 	data->b_parse_error = 0;
 	data->b_no_more_res = 0;

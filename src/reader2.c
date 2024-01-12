@@ -39,6 +39,7 @@ char	*_valide_ambiant(t_data *data, char *line)
 {
 	if (data->ambient)
 		error_parse ("Une Ambient est déja configurée", data);
+	free (data->ambient);
 	data->ambient = cr_ambient (&line, data);
 	data->ambient->t = 1;
 	return (line);

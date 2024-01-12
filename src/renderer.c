@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 01:13:30 by olskor            #+#    #+#             */
-/*   Updated: 2024/01/12 16:34:01 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/12 17:42:54 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,16 @@ t_Col	pb_shading(t_Ray ray, t_data *data, t_hit hit, int depth)
 		col = mulcol(scalecol(raycol(newray(hit.p, target),
 						data, depth - 1), 0.5),
 				lerpcol(col4(0, 0.4, 0.4, 0.4), hit.mat.col, hit.mat.metal));
-		col = scalecol(col, saturate(hit.mat.smooth + hit.mat.metal));
-		col = addcol(col,
+		col = addcol(scalecol(col, saturate(hit.mat.smooth + hit.mat.metal)),
 				mulcol(scalecol(raycol(newray(hit.p, diffuse),
 							data, depth - 1), 0.5), hit.mat.col));
 		return (col);
 	}
 	if (data->sky.active)
 		return (computesky(unit_vec3(ray.dir), data->sky));
-	return (scalecol(*data->ambient, 2));
+	if (depth < MAX_BOUNCES + 1)
+		return (scalecol(*data->ambient, 2));
+	return (col4(0, 0, 0, 0));
 }
 
 t_Col	raycol(t_Ray ray, t_data *data, int depth)
@@ -71,7 +72,7 @@ t_Col	raycol(t_Ray ray, t_data *data, int depth)
 	t_hit	hit;
 
 	if (depth == 0)
-		return (col4(0, 0, 0, 0));
+		return (scalecol(*data->ambient, 2));
 	hit = init_hit();
 	hit = hit_sphere(data, ray, hit);
 	hit = hit_plane(data, ray, hit);

@@ -6,7 +6,7 @@
 /*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2024/01/15 09:41:06 by olskor           ###   ########.fr       */
+/*   Updated: 2024/01/15 11:42:10 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ void	create_texture(t_data *data);
 
 int	main2(t_data *data)
 {
+	if (!data->win)
+	{
+		free(data->win);
+		return (1);
+	}
 	data->img.mlx_img = mlx_new_image(data->mlx, data->wi, data->he);
 	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp,
 			&data->img.line_len, &data->img.endian);
@@ -73,7 +78,10 @@ int	main(int argc, char **argv)
 
 	data = malloc(sizeof(t_data));
 	if (argc <= 1)
+	{
+		free(data);
 		return (write(2, "error: not enough argument\n", 27));
+	}
 	_valide_ext_fichier(argv[1], data);
 	data->bounces = MAX_BOUNCES;
 	create_config(argv[1], data);
@@ -87,10 +95,5 @@ int	main(int argc, char **argv)
 		return (write(2, "Error\nerror: memory\n", 14));
 	alloccimg(data);
 	data->win = mlx_new_window(data->mlx, data->wi, data->he, "MiniRT");
-	if (!data->win)
-	{
-		free(data->win);
-		return (1);
-	}
 	return (main2(data));
 }

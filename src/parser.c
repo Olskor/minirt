@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:28:39 by fbourgue          #+#    #+#             */
-/*   Updated: 2024/01/12 16:34:31 by fbourgue         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:47:40 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,15 @@ t_cam	*cr_camera(char	**line, t_data	*d)
 	_grab_3_doubles(&ret->pos, line, d);
 	on_spaces(line);
 	_grab_3_doubles(&ret->rot, line, d);
-	ret->rot = addvec3(ret->rot, ret->pos);
 	on_spaces(line);
-	ret->vup = vec3(0, 1, 0);
+	ret->rot = unit_vec3(ret->rot);
+	if (ret->rot.x == 0 && ret->rot.y == 1 && ret->rot.z == 0)
+		ret->vup = vec3(0, 0, 1);
+	else if (ret->rot.x == 0 && ret->rot.y == -1 && ret->rot.z == 0)
+		ret->vup = vec3(0, 0, -1);
+	else
+		ret->vup = vec3(0, 1, 0);
+	ret->rot = addvec3(ret->rot, ret->pos);
 	ret->fov = ft_atoi_free_param(next(line));
 	return (ret);
 }

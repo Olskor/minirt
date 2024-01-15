@@ -1,7 +1,11 @@
 R 800			600
-A 0.1				255,255,255
+A 0.1			255,255,255
 
 C 0,0,-1		0,0,1		65
 
-l 1,3.0,-1.5					1	255,255,255
-sp 0,0,1	 				1 	255,10,10 0.8 0
+l 1,3.0,-1.5					0.2	255,255,255
+#sp 0,0,1	 				1 	255,255,255 1 1 texture/earth.xpm texture/earth_bump.xpm texture/earth_pbr.xpm
+#sp 0.1,0,1	 				1 	255,255,10 1 1 texture/earth.xpm texture/earth_bump.xpm texture/earth_pbr.xpm
+cy 0,0,1	0,1,0  0.5 1 255,20,255
+cy 0,0,1	1,0,0  0.5 1 255,20,255
+pl 0,-0.5,0 		0,1,0 			255,255,255	0.8 0

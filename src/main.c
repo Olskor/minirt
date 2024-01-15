@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbourgue <fbourgue@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olskor <olskor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 17:07:13 by jauffret          #+#    #+#             */
-/*   Updated: 2024/01/12 16:42:07 by fbourgue         ###   ########.fr       */
+/*   Updated: 2024/01/15 09:41:06 by olskor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	_valide_ext_fichier(char *p, t_data *data)
 	char	*pp;
 
 	pp = ft_strrchr(p, '.');
-	if (*pp++ == '.' && *pp++ == 'r' && *pp++ == 't' && (!*pp))
+	if (pp && *pp && *pp++ == '.' && *pp++ == 'r' && *pp++ == 't' && (!*pp))
 		return ;
 	else
 	{

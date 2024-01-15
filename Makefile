@@ -64,6 +64,7 @@ clean:
 fclean:		clean
 			@$(RM) -f $(NAME)
 			@$(RM) -f $(LIBFT)/libft.a
+			@$(RM) -f $(LIBS)/libft.a
 			@echo "$(CYAN)minirt executable files cleaned!$(DEF_COLOR)"
 			@echo "$(CYAN)libft executable files cleaned!$(DEF_COLOR)"
 

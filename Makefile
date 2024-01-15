@@ -23,7 +23,7 @@ WIDTH = 800
 HEIGHT = 600
 MAX_SAMPLES = 10000
 MAX_FRAMES = 1
-MAX_BOUNCES = 3
+MAX_BOUNCES = 1
 
 SRC_FILES	=	main position_handler get_next_line vector vector1 renderer \
 input_handler value color reader random sphere plane cylinder light \

@@ -45,22 +45,10 @@ Run the program with the following command:
 Replace scenes/scene.rt with the path to your scene configuration file.
 Example Scenes
 
-Below are some example scenes rendered with MiniRT:
-Example 1: Simple Sphere
+Below is an example scene rendered with MiniRT:
 
-Example 2: Multiple Objects
-
-Example 3: Full Scene
 ![image](https://github.com/Olskor/minirt/assets/105324070/fa0a1052-bca6-4efd-8e63-b32de2efb4c9)
 
-
-Contributing
-
-Contributions are welcome! Please fork the repository and create a pull request with your changes.
-License
-
-This project is licensed under the MIT License. See the LICENSE file for more information.
-Acknowledgements
 
     The 42 School for providing the project guidelines and resources
     Various online resources for tutorials and documentation on ray tracing techniques

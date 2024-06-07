@@ -3,37 +3,34 @@ MiniRT
 MiniRT is a simple ray tracer project developed as part of the curriculum at 42. The goal of this project is to create a basic ray tracing engine that can render 3D scenes. This project helps in understanding the fundamentals of computer graphics, particularly ray tracing, which is a rendering technique for generating realistic images by simulating the way light interacts with objects.
 Features
 
-    Render scenes with basic geometric shapes (spheres, planes, etc.)
-    Implement lighting models including ambient, diffuse, and specular lighting
-    Handle reflections for added realism
-    Parse scene descriptions from a configuration file
+- Render scenes with basic geometric shapes (spheres, planes, etc.)
+- Implement lighting models including ambient, diffuse, and specular lighting
+- Handle reflections for added realism
+- Handle Disney's PBR shading
+- Handle bumpmaps and textures
+- support for basic .obj
+- Parse scene descriptions from a configuration file
 
 Getting Started
 Prerequisites
 
 Before you begin, ensure you have met the following requirements:
 
-    You are using a Unix-like operating system (Linux, macOS)
-    You have gcc or cc installed on your system
-    You have make installed on your system
+- You are using a Unix-like operating system (Linux, macOS)
+- You have gcc or cc installed on your system
+- You have make installed on your system
 
 Installation
 
-    Clone this repository to your local machine:
-
-    sh
-
-git clone https://github.com/yourusername/minirt.git
+Clone this repository to your local machine:
+    
+    git clone https://github.com/yourusername/minirt.git
 
 Navigate to the project directory:
 
-sh
-
-cd minirt
+    cd minirt
 
 Compile the project:
-
-sh
 
     make
 
@@ -43,9 +40,7 @@ To render a scene, you need to provide a configuration file that describes the o
 
 Run the program with the following command:
 
-sh
-
-./minirt scenes/scene.rt
+    ./minirt scenes/scene.rt
 
 Replace scenes/scene.rt with the path to your scene configuration file.
 Example Scenes
@@ -55,7 +50,9 @@ Example 1: Simple Sphere
 
 Example 2: Multiple Objects
 
-Example 3: Reflections
+Example 3: Full Scene
+![image](https://github.com/Olskor/minirt/assets/105324070/fa0a1052-bca6-4efd-8e63-b32de2efb4c9)
+
 
 Contributing
 
